@@ -1,2 +1,4 @@
 # DemoPythonAT
-Demo autotest project in Python
+Демо проект автотестов на Python.
+
+Фрейморк автотестов включает: Pytest, Selenium, ChromeDriver
