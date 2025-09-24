@@ -1,11 +1,8 @@
 
 def assert_is_equal(expected, actual):
     """Проверяем что значения равны"""
-    try:
-        assert expected == actual, (f"Проверяем, что ожидаемое значение: '{expected}',"
-                                    f" совпадает с фактическим: '{actual}'")
-    except TypeError as e:
-        print(f"TypeError: {e}")
+    assert expected == actual, (f"Ожидаемое значение: '{expected}'\n"
+                                f"НЕ совпадает с фактическим: '{actual}'")
 
 def assert_is_empty(element):
     """Проверяем что значение веб элемента пустое"""
