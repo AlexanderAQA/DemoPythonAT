@@ -34,12 +34,12 @@ class LoginPage(BasePage):
 
     def enter_password(self, password):
         """Вводим пароль"""
-        self.enter_text(*self.password_input, password)
+        self.enter_text(self.password_input, password)
         return self
 
     def click_login(self):
         """Кликаем кнопку Войти"""
-        self.click(*self.login_button)
+        self.click(self.login_button)
         return self
 
     def login(self, username, password):

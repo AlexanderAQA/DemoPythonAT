@@ -29,7 +29,7 @@ class BasePage:
         element = self.wait_for_element(locator)
         print(f"Очищаем поле")
         element.clear()
-        print(f"Вводим текст: '{text}' в поле '{locator.text}'")
+        print(f"Вводим текст: '{text}'")
         element.send_keys(text)
 
     def get_element_text(self, locator):
