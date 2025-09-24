@@ -29,17 +29,17 @@ class LoginPage(BasePage):
 
     def enter_username(self, username):
         """Вводим логин"""
-        self.driver.find_element(*self.username_input).send_keys(username)
+        self.enter_text(self.username_input, username)
         return self
 
     def enter_password(self, password):
         """Вводим пароль"""
-        self.driver.find_element(*self.password_input).send_keys(password)
+        self.enter_text(*self.password_input, password)
         return self
 
     def click_login(self):
         """Кликаем кнопку Войти"""
-        self.driver.find_element(*self.login_button).click()
+        self.click(*self.login_button)
         return self
 
     def login(self, username, password):
