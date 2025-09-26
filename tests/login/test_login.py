@@ -1,7 +1,8 @@
+import allure
 import pytest
 from src.utils.test_data import get_valid_user, get_login_list, get_invalid_user
 from src.utils.assertions import *
-from tests.conftest import driver
+from conftest import driver
 
 # Креды для входа
 username, password = get_valid_user()
@@ -9,6 +10,9 @@ invalid_username, invalid_password = get_invalid_user()
 
 @pytest.mark.login
 @pytest.mark.positive
+@allure.title("Валидный логин")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.link("https://testit.example.com/tc-1", name="ТК 1")
 def test_valid_login(driver, login_page):
     (login_page
      .open()
@@ -21,6 +25,9 @@ def test_valid_login(driver, login_page):
     assert_is_equal(username, actual_username)
 
 @pytest.mark.negative
+@allure.title("Логин с невалидными данными")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.link("https://testit.example.com/tc-5", name="ТК 5")
 def test_invalid_login(driver, login_page):
     (login_page
      .open()
@@ -33,30 +40,22 @@ def test_invalid_login(driver, login_page):
     expected_error_1 = "Введены неверные имя участника или пароль. Попробуйте ещё раз."
     expected_error_2 = "Возникли проблемы с отправленными данными"
 
-    assert error_message == expected_error_1 or error_message == expected_error_2
     print(f"\nПроверяем, что сообщение об ошибке совпадает с ожидаемой:\n{expected_error_1}\nили\n{expected_error_2}")
+    assert error_message == expected_error_1 or error_message == expected_error_2
 
     assert_is_equal(driver.current_url, expected_url)
 
 @pytest.mark.parametrize("login", get_login_list())
+@allure.title("Валидация поля логин")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.link("https://testit.example.com/tc-2262", name="ТК 2262")
 def test_login_input_validation(driver, login, base_page, login_page):
-    login_page.open()
+    username_field = login_page.username_input
 
-    assert_is_empty(driver.find_element(*login_page.username_input))
-
-    driver.find_element(*login_page.username_input).send_keys(login)
-    print(f"Вводим значение: {login}")
-
-    assert_is_equal(login, driver.find_element(*login_page.username_input).get_attribute("value"))
-
-    base_page.refresh()
-    print("Обновляем страницу")
-
-    base_page.assert_is_empty(driver.find_element(*login_page.username_input))
-    print("Проверяем, что поле логин снова пустое")
-
-def test_always_fails(driver, login_page):
-    login_page.open()
-    assert driver.title == "ASDJHALSKJDHIUHkJSHDJNSDKJHKSHDKSHD"
-
-
+    (login_page
+     .open()
+     .assert_value_is_empty(username_field)
+     .enter_username(login)
+     .assert_is_equal(login, login_page.get_username_field_value())
+     .refresh()
+     .assert_value_is_empty(username_field))
