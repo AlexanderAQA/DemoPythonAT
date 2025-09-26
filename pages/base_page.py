@@ -5,6 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from src.utils.assertions import assert_is_empty
+
+
 class BasePage:
     """Страница с базововыми методами"""
     # Сколько ждать секунд
@@ -37,7 +40,7 @@ class BasePage:
 
     def refresh(self):
         print(f"Обновляем страницу")
-        self.driver.refresh()
+        WebDriver.refresh(self.driver)
 
     def double_click(self, element):
         if not isinstance(self.driver, WebDriver):
@@ -51,3 +54,9 @@ class BasePage:
         print(f"Нажатие правой кнопки мыши на элемент: '{element}'")
         action = ActionChains(self.driver)
         action.context_click(element).perform()
+
+    def assert_value_is_empty(self, element):
+        """Проверяем, что значение веб элемента пустое"""
+        print("Проверяем, что значение веб элемента пустое")
+        value = self.get_element_text(element)
+        assert_is_empty(value)

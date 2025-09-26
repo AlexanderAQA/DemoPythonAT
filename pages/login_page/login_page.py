@@ -1,6 +1,7 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
+from src.utils.assertions import *
 
 class LoginPage(BasePage):
     """Страница логина"""
@@ -20,25 +21,32 @@ class LoginPage(BasePage):
     error_message = (By.XPATH, "//*[@class='cdx-message__content']")
     submit_button = (By.ID, 'wpLoginAttempt')
     username_element = (By.ID, "pt-userpage")
-    actual_username = (By.XPATH, "//*[@id='pt-userpage']/a/span")
 
     def open(self):
         """Открываем страницу логина"""
+        print(f"Открываем страницу логина: {self.login_url}")
         self.driver.get(self.login_url)
         return self
 
     def enter_username(self, username):
         """Вводим логин"""
+        print(f"Заполняем поле username: '{username}'")
         self.enter_text(self.username_input, username)
         return self
 
+    def get_username_field_value(self):
+        """Получаем значение введенное в поле 'username'"""
+        self.get_element_text(self.username_input)
+
     def enter_password(self, password):
         """Вводим пароль"""
+        print(f"Заполняем поле password: '{password}'")
         self.enter_text(self.password_input, password)
         return self
 
     def click_login(self):
         """Кликаем кнопку Войти"""
+        print("Кликаем кнопку Войти")
         self.click(self.login_button)
         return self
 
@@ -52,8 +60,3 @@ class LoginPage(BasePage):
     def get_error_message(self):
         """Получаем текст ошибки"""
         return self.get_element_text(self.error_message)
-
-    def get_logged_in_username(self):
-        """Получаем имя авторизованного пользователя в нижнем регистре"""
-        element = self.driver.find_element(*self.actual_username)
-        return element.text.lower()
