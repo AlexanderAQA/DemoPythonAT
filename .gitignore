@@ -38,7 +38,6 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
-report.html
 .tox/
 .nox/
 .coverage
@@ -213,3 +212,8 @@ __marimo__/
 /.idea/modules.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
+
+# Allure-report (results)
+allure-results/
+
+.report.html
