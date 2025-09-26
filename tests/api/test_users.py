@@ -16,10 +16,11 @@ def test_get_user_returns_correct_user_data():
 def test_create_post_returns_new_post_data():
     title = "Hello World"
     body = "This is a test post."
+    user_id = 1
 
-    post, status_code = post_info(title=title, body="This is a test post.", user_id=1)
+    post, status_code = post_info(title = title, body = body, user_id = user_id)
 
     assert_is_equal(title, post["title"])
     assert_is_equal(body, post["body"])
-    assert_is_equal(1, post["userId"])
+    assert_is_equal(user_id, post["userId"])
     assert_is_equal(201, status_code)
