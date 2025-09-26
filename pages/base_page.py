@@ -4,9 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 from src.utils.assertions import assert_is_empty
-
 
 class BasePage:
     """Страница с базововыми методами"""

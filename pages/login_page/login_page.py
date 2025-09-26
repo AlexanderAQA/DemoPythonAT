@@ -1,7 +1,6 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
-from src.utils.assertions import *
 
 class LoginPage(BasePage):
     """Страница логина"""
