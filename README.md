@@ -30,10 +30,10 @@
 ## Запуск тестов
 
 **Из командной строки с выбором тестов:**<br>
-```pytest -m <метка> --alluredir allure-results```<br>
-Например: ```pytest -m positive --alluredir allure-results```<br>
+```pytest -m <метка>```<br>
+Например: ```pytest -m positive```<br>
 **Из командной строки сразу ВСЕ тесты:**<br>
-```pytest -m --alluredir allure-results```<br>
+```pytest -m```<br>
 
 **Генерация отчетов:**<br>
 ```allure serve allure-results```<br>
