@@ -216,4 +216,4 @@ __marimo__/
 # Allure-report (results)
 allure-results/
 
-.report.html
+*report.html
