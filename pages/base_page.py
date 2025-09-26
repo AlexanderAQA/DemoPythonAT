@@ -18,9 +18,11 @@ class BasePage:
     search_input_field = (By.XPATH, "//input[@id='searchInput']")
 
     def wait_for_element(self, locator, timeout = waitSec):
+        """Ожидание веб элемента"""
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
     def click(self, locator):
+        """Клик по элементу"""
         try:
             self.wait_for_element(locator).click()
         except NoSuchElementException:

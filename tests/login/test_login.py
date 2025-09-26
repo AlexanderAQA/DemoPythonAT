@@ -18,9 +18,9 @@ def test_valid_login(driver, login_page):
      .open()
      .login(username, password))
 
-    actual_username = login_page.get_logged_in_username()
+    actual_username = login_page.get_logged_in_username().lower()
 
-    print(f"Проверка что введеное имя пользователя: '{username}'\n"
+    print(f"Проверка что введенное имя пользователя: '{username}'\n"
           f"совпадает с указанным на сайте после входа: '{actual_username}'")
     assert_is_equal(username, actual_username)
 
