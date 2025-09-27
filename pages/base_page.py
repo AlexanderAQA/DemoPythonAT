@@ -4,7 +4,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from src.utils.assertions import assert_is_empty
+from src.utils.assertions import CommonAssertions
+
 
 class BasePage:
     """Страница с базововыми методами"""
@@ -13,6 +14,7 @@ class BasePage:
 
     def __init__(self, driver):
         self.driver = driver
+        self.asserts = CommonAssertions(driver, self)
 
     # Общие локаторы
     search_input_field = (By.XPATH, "//input[@id='searchInput']")
@@ -27,6 +29,7 @@ class BasePage:
             self.wait_for_element(locator).click()
         except NoSuchElementException:
             print(f"Элемент не найден. Локатор: '{locator}'")
+        return self
 
     def enter_text(self, locator, text):
         element = self.wait_for_element(locator)
@@ -34,13 +37,15 @@ class BasePage:
         element.clear()
         print(f"Вводим текст: '{text}'")
         element.send_keys(text)
+        return self
 
     def get_element_text(self, locator):
-        return self.wait_for_element(locator).text
+        return self.wait_for_element(locator).get_attribute("value")
 
     def refresh(self):
         print(f"Обновляем страницу")
-        WebDriver.refresh(self.driver)
+        self.driver.refresh()
+        return self
 
     def double_click(self, element):
         if not isinstance(self.driver, WebDriver):
@@ -49,14 +54,14 @@ class BasePage:
         print(f"Двойной клик на элемент: '{element}'")
         action = ActionChains(self.driver)
         action.double_click(element).perform()
+        return self
 
     def right_click(self, element):
         print(f"Нажатие правой кнопки мыши на элемент: '{element}'")
         action = ActionChains(self.driver)
         action.context_click(element).perform()
+        return self
 
-    def assert_value_is_empty(self, element):
-        """Проверяем, что значение веб элемента пустое"""
-        print("Проверяем, что значение веб элемента пустое")
-        value = self.get_element_text(element)
-        assert_is_empty(value)
+    def to_assertions(self):
+        """Переходим к проверкам"""
+        return CommonAssertions(self.driver)

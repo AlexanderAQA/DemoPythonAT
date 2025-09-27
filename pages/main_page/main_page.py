@@ -3,7 +3,7 @@ from pages.base_page import BasePage
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 class MainPage(BasePage):
-    """Главная страница после логина"""
+    """Главная страница после входа"""
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
         self.driver = driver

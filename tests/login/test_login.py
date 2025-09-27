@@ -22,7 +22,7 @@ def test_valid_login(driver, login_page):
 
     print(f"Проверка что введенное имя пользователя: '{username}'\n"
           f"совпадает с указанным на сайте после входа: '{actual_username}'")
-    assert_is_equal(username, actual_username)
+    CommonAssertions(driver).assert_is_equal(username, actual_username)
 
 @pytest.mark.negative
 @allure.title("Логин с невалидными данными")
@@ -43,7 +43,7 @@ def test_invalid_login(driver, login_page):
     print(f"\nПроверяем, что сообщение об ошибке совпадает с ожидаемой:\n{expected_error_1}\nили\n{expected_error_2}")
     assert error_message == expected_error_1 or error_message == expected_error_2
 
-    assert_is_equal(driver.current_url, expected_url)
+    CommonAssertions(driver).assert_is_equal(driver.current_url, expected_url)
 
 @pytest.mark.parametrize("login", get_login_list())
 @allure.title("Валидация поля логин")
@@ -54,8 +54,8 @@ def test_login_input_validation(driver, login, base_page, login_page):
 
     (login_page
      .open()
-     .assert_value_is_empty(username_field)
+     .asserts.assert_value_is_empty(username_field).to_parent_page()
      .enter_username(login)
-     .assert_is_equal(login, login_page.get_username_field_value())
+     .asserts.assert_is_equal(login, login_page.get_username_field_value()).to_parent_page()
      .refresh()
-     .assert_value_is_empty(username_field))
+     .asserts.assert_value_is_empty(username_field))

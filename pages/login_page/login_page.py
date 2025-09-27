@@ -1,6 +1,9 @@
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
+from src.utils import assertions
+from src.utils.assertions import CommonAssertions
+
 
 class LoginPage(BasePage):
     """Страница логина"""
@@ -9,9 +12,9 @@ class LoginPage(BasePage):
         self.driver = driver
 
         # URL для тестов
-        self.login_url = ("https://ru.wikipedia.org/w/index.php?returnto=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F+%D1%"
-                     "81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0&title=%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:%D0"
-                     "%92%D1%85%D0%BE%D0%B4&centralAuthAutologinTried=1&centralAuthError=Not+centrally+logged+in")
+        self.login_url = ("https://auth.wikimedia.org/ruwiki/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:"
+                          "%D0%92%D1%85%D0%BE%D0%B4?useformat=desktop&usesul3=1&returnto=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%"
+                          "D0%B2%D0%BD%D0%B0%D1%8F+%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
 
     # Локаторы
     username_input = (By.XPATH, "//input[@id='wpName1']")
@@ -33,9 +36,13 @@ class LoginPage(BasePage):
         self.enter_text(self.username_input, username)
         return self
 
+    def to_assertions(self):
+        """Переходим к проверкам"""
+        return CommonAssertions(self.driver)
+
     def get_username_field_value(self):
         """Получаем значение введенное в поле 'username'"""
-        self.get_element_text(self.username_input)
+        return self.get_element_text(self.username_input)
 
     def enter_password(self, password):
         """Вводим пароль"""

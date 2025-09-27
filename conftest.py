@@ -30,7 +30,7 @@ def driver(request):
     yield driver
     driver.quit()
 
-def pytest_exception_interact(node, call, report):
+def pytest_exception_interact(node, report):
     if report.failed:
         driver = getattr(node, "_driver", None)
         if driver:
@@ -51,3 +51,7 @@ def base_page(driver):
 @pytest.fixture
 def login_page(driver):
     return LoginPage(driver)
+
+@pytest.fixture
+def main_page(driver):
+    return MainPage(driver)
