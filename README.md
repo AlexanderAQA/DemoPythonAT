@@ -38,4 +38,5 @@
 **Генерация отчетов:**<br>
 ```allure serve allure-results```<br>
 **Пример того, как выглядит отчет после генерации:**<br>
-![скрин](src/readme/screenshots/allure-report-example.png)
+![скрин1](src/readme/screenshots/allure-report-example.png)
+![скрин2](src/readme/screenshots/detail-case-example.png)
