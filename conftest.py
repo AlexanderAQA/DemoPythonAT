@@ -40,7 +40,7 @@ def pytest_exception_interact(node, report):
         if driver:
             # Сохраняем скриншот
             screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime("%H-%M-%S-%d-%m-%Y")}_{node.name}.png")
-            # os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
+            os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
             driver.save_screenshot(screenshot_path)
             print(f"Скриншот сохранён: {screenshot_path}")
 
