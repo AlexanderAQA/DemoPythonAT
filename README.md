@@ -24,3 +24,19 @@
 <br>**tests** — Тесты:
 - **login** — Тесты связанные с логином и авторизацией пользователей
 - **api** — API тесты
+
+---
+
+## Запуск тестов
+
+**Из командной строки с выбором тестов:**<br>
+```pytest -m <метка> -v```<br>
+Например: ```pytest -m positive -v```<br>
+**Из командной строки сразу ВСЕ тесты:**<br>
+```pytest -v```<br>
+
+**Генерация отчетов:**<br>
+```allure serve allure-results```<br>
+**Пример того, как выглядит отчет после генерации:**<br>
+![скрин1](src/readme/screenshots/allure-report-example.png)
+![скрин2](src/readme/screenshots/detail-case-example.png)
