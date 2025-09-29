@@ -1,11 +1,6 @@
 import allure
 import pytest
-
-from pages.base_page import BasePage
-from pages.login_page.login_page import LoginPage
 from src.utils.test_data import get_valid_user, get_login_list, get_invalid_user
-from conftest import driver, main_page
-
 
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.epic("Sign")
