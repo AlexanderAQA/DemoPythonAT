@@ -19,4 +19,5 @@ class CommonAssertions:
         return self
 
     def to_parent_page(self):
+        """Возврат на родительскую страницу"""
         return self.parent_page
