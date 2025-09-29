@@ -7,16 +7,20 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
+# Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from src.utils.api_client import ApiClient
 from src.screenshots import Screenshots
 from pages.base_page import BasePage
 from pages.login_page.login_page import LoginPage
+from pages.main_page.main_page import MainPage
 
-@pytest.fixture(scope="function")
+@pytest.fixture(autouse=True)
 def driver(request):
+    global driver
     # Инициализация хром драйвера
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
@@ -44,7 +48,7 @@ def pytest_configure(config):
     allure_dir = os.path.join(project_root, "allure-results")
     config.option.allure_report_dir = allure_dir
 
-@pytest.fixture
+@pytest.fixture(scope="function", autouse=True)
 def base_page(driver):
     return BasePage(driver)
 
@@ -52,6 +56,10 @@ def base_page(driver):
 def login_page(driver):
     return LoginPage(driver)
 
-@pytest.fixture
+@pytest.fixture(scope="function", autouse=True)
 def main_page(driver):
     return MainPage(driver)
+
+@pytest.fixture(scope="function", autouse=True)
+def api_client():
+    return ApiClient()
