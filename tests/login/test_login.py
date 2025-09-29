@@ -68,6 +68,6 @@ class TestLogin:
          .open()
          .assert_value_is_empty(username_field)
          .enter_username(login)
-         .asserts.assert_is_equal(login, login_page.get_username_field_value())
+         .asserts.assert_is_equal(login, login_page.get_username_field_value()).to_parent_page()
          .refresh_page()
          .assert_value_is_empty(username_field))

@@ -27,7 +27,7 @@ class TestUsersApi:
     @allure.title("POST-запрос для создание сообщения")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://testit.example.com/tc-1000", name="ТК 1000")
-    def test_create_post_returns_new_post_data(self):
+    def test_create_post_returns_new_post_data(self, api_client):
         client = ApiClient()
 
         title = "Hello World"
@@ -36,7 +36,7 @@ class TestUsersApi:
 
         post, status_code = client.post_info(title = title, body = body, user_id = user_id)
 
-        (client.assertions
+        (api_client.assertions
          .assert_is_equal(title, post["title"])
          .assert_is_equal(body, post["body"])
          .assert_is_equal(user_id, post["userId"])
