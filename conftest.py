@@ -23,6 +23,9 @@ from src.utils.test_data import generate_random_string
 
 logger = logging.getLogger(__name__)
 
+def pytest_addoption(parser):
+    parser.addoption("--debug-mode")
+
 @pytest.fixture(autouse=True)
 def driver(request):
     logger.debug(f"driver: request\n{request}")
@@ -31,7 +34,7 @@ def driver(request):
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--headless=new")
+    # chrome_options.add_argument("--headless=new")
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
