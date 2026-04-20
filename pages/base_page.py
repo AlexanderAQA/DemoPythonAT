@@ -4,6 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from locators.base_page_locators import BaseArtyPageLocators
 from src.utils.assertions import CommonAssertions
 
 class BasePage:
@@ -78,4 +79,9 @@ class BasePage:
         """Проверяем, что значение веб элемента пустое"""
         value = self.get_element_text(element)
         self.asserts.assert_is_empty(value)
+        return self
+
+    def open_user_menu(self):
+        locator = BaseArtyPageLocators.user_menu
+        self.click(locator)
         return self

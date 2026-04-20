@@ -17,8 +17,9 @@ if project_root not in sys.path:
 from src.utils.api_client import ApiClient
 from src.screenshots import Screenshots
 from pages.base_page import BasePage
-from pages.login_page.login_page import LoginPage
-from pages.main_page.main_page import MainPage
+from pages.old.login_page.login_page import LoginPage
+# from pages.old.main_page import MainPage
+from pages.main_arty_page import MainArtyPage
 from src.utils.test_data import generate_random_string
 
 logger = logging.getLogger(__name__)
@@ -113,9 +114,14 @@ def login_page(driver):
     page = LoginPage(driver)
     yield page
 
-@pytest.fixture(scope="function", autouse=True)
-def main_page(driver):
-    page = MainPage(driver)
+# @pytest.fixture(scope="function", autouse=True)
+# def main_page(driver):
+#     page = MainPage(driver)
+#     yield page
+
+@pytest.fixture(scope="function", autouse=False)
+def main_arty_page(driver):
+    page = MainArtyPage(driver)
     yield page
 
 @pytest.fixture(scope="function", autouse=True)
