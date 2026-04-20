@@ -1,4 +1,6 @@
 import os
+import random
+import string
 
 # Абсолютный путь к тестовым данным
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -29,3 +31,7 @@ def get_login_list():
     """
     with open(os.path.join(DATA_DIR, 'logins.txt'), 'r') as f:
         return [line.strip() for line in f.readlines()]
+
+def generate_random_string(str_length=7):
+    rand_str = ''.join(random.choice(string.ascii_letters) for _ in range(str_length))
+    return rand_str

@@ -1,5 +1,7 @@
+import logging
 import os
 import sys
+import allure
 import pytest
 from datetime import datetime
 from selenium import webdriver
@@ -17,9 +19,13 @@ from src.screenshots import Screenshots
 from pages.base_page import BasePage
 from pages.login_page.login_page import LoginPage
 from pages.main_page.main_page import MainPage
+from src.utils.test_data import generate_random_string
+
+logger = logging.getLogger(__name__)
 
 @pytest.fixture(autouse=True)
 def driver(request):
+    logger.debug(f"driver: request\n{request}")
     global driver
     # Инициализация хром драйвера
     chrome_options = Options()
@@ -31,8 +37,55 @@ def driver(request):
 
     driver.implicitly_wait(4)
     request.node._driver = driver
+    logger.debug("yield driver")
     yield driver
+    logger.debug(f"Закрываем вебдрайвер: {driver.current_url}")
     driver.quit()
+
+@pytest.fixture()
+def clear_cookies(driver):
+    yield
+    logger.debug("Удаляем cookie браузера")
+    driver.delete_all_cookies()
+
+
+@pytest.fixture(autouse=True, scope="session")
+def set_logger(request):
+    global logger
+    debug_value = str(request.config.getoption("--debug-mode")).lower()
+    debug_enabled = debug_value in ("true", "yes")
+    logger = logging.getLogger()
+
+    if debug_enabled:
+        print("Debug ON")
+        log_level = logging.DEBUG
+    else:
+        print("Debug OFF")
+        log_level = logging.INFO
+
+    logging.basicConfig(
+        level=log_level,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler(sys.stdout)
+        ])
+    logger = logging.getLogger()
+
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+
+    console_handler = logging.StreamHandler(sys.stdout)
+    logger.addHandler(console_handler)
+
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("selenium").setLevel(logging.WARNING)
+
+
+@pytest.fixture()
+def generate_string():
+    with allure.step("Генерируем случайную строку"):
+        return generate_random_string(7)
+
 
 def pytest_exception_interact(node, report):
     if report.failed:
@@ -54,11 +107,13 @@ def base_page(driver):
 
 @pytest.fixture
 def login_page(driver):
-    return LoginPage(driver)
+    page = LoginPage(driver)
+    yield page
 
 @pytest.fixture(scope="function", autouse=True)
 def main_page(driver):
-    return MainPage(driver)
+    page = MainPage(driver)
+    yield page
 
 @pytest.fixture(scope="function", autouse=True)
 def api_client():
