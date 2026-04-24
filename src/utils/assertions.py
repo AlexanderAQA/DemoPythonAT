@@ -1,7 +1,14 @@
+from telnetlib import EC
+from selenium.webdriver.support.wait import WebDriverWait
+
+
 class CommonAssertions:
     """Класс базовых проверок"""
 
     def __init__(self, page):
+        self.account_header = None
+        self.driver = None
+        self.logger = None
         self.parent_page = page
 
     def assert_is_equal(self, expected, actual):
@@ -21,3 +28,9 @@ class CommonAssertions:
     def to_parent_page(self):
         """Возврат на родительскую страницу"""
         return self.parent_page
+
+    def assert_account_header(self, timeout=10):
+        WebDriverWait(self.driver, timeout).until(
+            EC.visibility_of_element_located(self.account_header)
+        )
+        return self

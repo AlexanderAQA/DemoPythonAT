@@ -13,6 +13,7 @@ class BasePage:
     waitSec = 5
 
     def __init__(self, driver):
+        self.logger = None
         self.driver = driver
         self.asserts = CommonAssertions(self)
 
@@ -83,5 +84,25 @@ class BasePage:
 
     def open_user_menu(self):
         locator = BaseArtyPageLocators.user_menu
+        self.click(locator)
+        return self
+
+    def click_authorization(self):
+        locator = BaseArtyPageLocators.authorization
+        self.click(locator)
+        return self
+
+    def click_login_field(self):
+        locator = BaseArtyPageLocators.login_field
+        self.click(locator)
+        return self
+
+    def click_password_field(self):
+        locator = BaseArtyPageLocators.password_field
+        self.click(locator)
+        return self
+
+    def click_login_button(self):
+        locator = BaseArtyPageLocators.login_button
         self.click(locator)
         return self
