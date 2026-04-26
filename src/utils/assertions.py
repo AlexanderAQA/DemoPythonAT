@@ -1,9 +1,14 @@
 from telnetlib import EC
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class CommonAssertions:
     """Класс базовых проверок"""
+
+    # Локаторы
+    exit_button = (By.XPATH, "//div[contains(@class,'list-group')]//a[normalize-space()='Выход']")
 
     def __init__(self, page):
         self.account_header = None
@@ -29,8 +34,12 @@ class CommonAssertions:
         """Возврат на родительскую страницу"""
         return self.parent_page
 
-    def assert_account_header(self, timeout=10):
+    def assert_account_header(self, timeout: int = 10):
         WebDriverWait(self.driver, timeout).until(
             EC.visibility_of_element_located(self.account_header)
         )
         return self
+
+    def assert_logged_in(self, timeout: int = 10):
+        return (self.is_element_visible(self.account_header, timeout) and
+                self.is_element_visible(self.exit_button, timeout))

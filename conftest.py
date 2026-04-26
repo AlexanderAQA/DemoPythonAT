@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from pages.old.login_page import LoginPage
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))

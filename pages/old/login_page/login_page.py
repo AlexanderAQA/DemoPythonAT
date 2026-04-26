@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from locators.base_page_locators import BaseArtyPageLocators
 from pages.base_page import BasePage
 
 class LoginPage(BasePage):
@@ -55,3 +56,26 @@ class LoginPage(BasePage):
     def get_error_message(self):
         """Получаем текст ошибки"""
         return self.get_element_text(self.error_message)
+
+    def click_login_field(self):
+        locator = BaseArtyPageLocators.login_field
+        self.click(locator)
+        return self
+
+    def click_password_field(self):
+        locator = BaseArtyPageLocators.password_field
+        self.click(locator)
+        return self
+
+    def click_login_button(self):
+        locator = BaseArtyPageLocators.login_button
+        self.click(locator)
+        return self
+
+    def fill_login_field(self, email: str):
+        self.enter_text(self.login_field, email)
+        return self
+
+    def fill_password_field(self, password: str):
+        self.enter_text(self.password_field, password)
+        return self

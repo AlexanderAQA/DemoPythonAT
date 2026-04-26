@@ -1,11 +1,13 @@
 from selenium.common import NoSuchElementException, TimeoutException
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 from locators.base_page_locators import BaseArtyPageLocators
+from pages.old.login_page import LoginPage
 from src.utils.assertions import CommonAssertions
+
 
 class BasePage:
     """Страница с базововыми методами"""
@@ -80,29 +82,4 @@ class BasePage:
         """Проверяем, что значение веб элемента пустое"""
         value = self.get_element_text(element)
         self.asserts.assert_is_empty(value)
-        return self
-
-    def open_user_menu(self):
-        locator = BaseArtyPageLocators.user_menu
-        self.click(locator)
-        return self
-
-    def click_authorization(self):
-        locator = BaseArtyPageLocators.authorization
-        self.click(locator)
-        return self
-
-    def click_login_field(self):
-        locator = BaseArtyPageLocators.login_field
-        self.click(locator)
-        return self
-
-    def click_password_field(self):
-        locator = BaseArtyPageLocators.password_field
-        self.click(locator)
-        return self
-
-    def click_login_button(self):
-        locator = BaseArtyPageLocators.login_button
-        self.click(locator)
         return self
