@@ -1,4 +1,6 @@
 import allure
+
+from locators.account_page_locators import AccountPageLocators
 from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
 
@@ -23,7 +25,7 @@ class MainPage(BasePage):
 
     def get_logged_in_username(self):
         """Получаем имя авторизованного пользователя"""
-        return BasePage.get_element_text(self, MainPageLocators.actual_username)
+        return BasePage.get_element_text(self, AccountPageLocators.actual_username)
 
     def click_authorization(self):
         self.click(MainPageLocators.auth_button)

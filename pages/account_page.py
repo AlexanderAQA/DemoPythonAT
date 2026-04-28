@@ -20,3 +20,7 @@ class AccountPage(BasePage):
         self.wait_for_element(AccountPageLocators.actual_username)
 
         return self
+
+    def get_logged_username(self):
+        """Получаем имя авторизованного пользователя"""
+        return BasePage.get_element_text(self, AccountPageLocators.actual_username)
