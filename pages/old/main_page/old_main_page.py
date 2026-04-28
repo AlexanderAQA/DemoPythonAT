@@ -1,12 +1,11 @@
 from telnetlib import EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from locators.main_page_locators import MainArtyPageLocators
 from pages.old.login_page import LoginPage
-from locators.main_page_locators import MainArtyPageLocators
+from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
 
-class MainPage(BasePage):
+class OldMainPage(BasePage):
     """Главная страница после входа"""
     def __init__(self, driver):
         super().__init__(driver)
@@ -20,7 +19,7 @@ class MainPage(BasePage):
 
     def open_user_menu(self):
         WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(MainArtyPageLocators.user_menu)
+            EC.element_to_be_clickable(MainPageLocators.user_menu)
         ).click()
         return self
 
@@ -29,7 +28,7 @@ class MainPage(BasePage):
         return BasePage.get_element_text(self, self.actual_username)
 
     def click_authorization(self):
-        locator = MainArtyPageLocators.authorization
+        locator = MainPageLocators.auth_button
         self.click(locator)
 
         return LoginPage(self.driver)
@@ -37,7 +36,7 @@ class MainPage(BasePage):
     def accept_cookies(self):
         try:
             cookie_btn = WebDriverWait(self.driver, 2).until(
-                EC.element_to_be_clickable(MainArtyPageLocators.cookie_button)
+                EC.element_to_be_clickable(MainPageLocators.cookie_button)
             )
             cookie_btn.click()
         except Exception:

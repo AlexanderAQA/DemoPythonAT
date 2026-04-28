@@ -1,11 +1,8 @@
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from locators.base_page_locators import BaseArtyPageLocators
-from pages.old.login_page import LoginPage
 from src.utils.assertions import CommonAssertions
 
 
@@ -18,9 +15,6 @@ class BasePage:
         self.logger = None
         self.driver = driver
         self.asserts = CommonAssertions(self)
-
-    # Общие локаторы
-    search_input_field = (By.XPATH, "//input[@id='searchInput']")
 
     def wait_for_element(self, locator, timeout=waitSec):
         """

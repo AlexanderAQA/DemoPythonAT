@@ -1,22 +1,10 @@
-from selenium.webdriver.common.by import By
-from locators.base_page_locators import BaseArtyPageLocators
+from locators.base_page_locators import BasePageLocators
 from pages.base_page import BasePage
+
 
 class LoginPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
-
-    # URL для тестов
-    login_url = ("https://auth.wikimedia.org/ruwiki/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:"
-                      "%D0%92%D1%85%D0%BE%D0%B4?useformat=desktop&usesul3=1&returnto=%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%"
-                      "D0%B2%D0%BD%D0%B0%D1%8F+%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
-    # Локаторы
-    username_input = (By.XPATH, "//input[@id='wpName1']")
-    password_input = (By.ID, "wpPassword1")
-    login_button = (By.ID, "pt-login")
-    error_message = (By.XPATH, "//*[@class='cdx-message__content']")
-    submit_button = (By.ID, 'wpLoginAttempt')
-    username_element = (By.ID, "pt-userpage")
 
     def open(self):
         """Открываем страницу логина"""
@@ -27,23 +15,23 @@ class LoginPage(BasePage):
     def enter_username(self, username):
         """Вводим логин"""
         print("Заполняем поле username")
-        self.enter_text(self.username_input, username)
+        self.enter_text(BasePageLocators.login_field, username)
         return self
 
     def get_username_field_value(self):
         """Получаем значение введенное в поле 'username'"""
-        return self.get_element_text(self.username_input)
+        return self.get_element_text(BasePageLocators.login_field)
 
     def enter_password(self, password):
         """Вводим пароль"""
         print(f"Заполняем поле password: '{password}'")
-        self.enter_text(self.password_input, password)
+        self.enter_text(BasePageLocators.password_field, password)
         return self
 
     def click_login(self):
         """Кликаем кнопку Войти"""
         print("Кликаем кнопку Войти")
-        self.click(self.login_button)
+        self.click(BasePageLocators.login_button)
         return self
 
     def login(self, username, password):
@@ -55,27 +43,27 @@ class LoginPage(BasePage):
 
     def get_error_message(self):
         """Получаем текст ошибки"""
-        return self.get_element_text(self.error_message)
+        return self.get_element_text(BasePageLocators.error_message)
 
     def click_login_field(self):
-        locator = BaseArtyPageLocators.login_field
+        locator = BasePageLocators.login_field
         self.click(locator)
         return self
 
     def click_password_field(self):
-        locator = BaseArtyPageLocators.password_field
+        locator = BasePageLocators.password_field
         self.click(locator)
         return self
 
     def click_login_button(self):
-        locator = BaseArtyPageLocators.login_button
+        locator = BasePageLocators.login_button
         self.click(locator)
         return self
 
     def fill_login_field(self, email: str):
-        self.enter_text(self.login_field, email)
+        self.enter_text(BasePageLocators.login_field, email)
         return self
 
     def fill_password_field(self, password: str):
-        self.enter_text(self.password_field, password)
+        self.enter_text(BasePageLocators.password_field, password)
         return self
