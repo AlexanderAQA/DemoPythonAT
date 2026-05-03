@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 from locators.account_page_locators import AccountPageLocators
 
@@ -7,20 +9,21 @@ class AccountPage(BasePage):
 
 
     def assert_account_header(self):
-        self.wait_for_element(AccountPageLocators.account_header)
+        with allure.step(f"Проверка заголовка элемента `Моя учетная запись`"):
+         self.wait_for_element(AccountPageLocators.account_header)
 
         return self
 
     def assert_exit_button(self):
-        self.wait_for_element(AccountPageLocators.exit_button)
+        with allure.step(f"Проверка кнопки `Выход` в ЛК после авторизации"):
+         self.wait_for_element(AccountPageLocators.exit_button)
 
         return self
 
-    def assert_username(self):
-        self.wait_for_element(AccountPageLocators.actual_username)
+
+    def assert_username(self, expected_name: str = "Ольга"):
+        with allure.step(f"Проверка актуального имени пользователя: '{expected_name}'"):
+         actual_text = self.wait_for_element(AccountPageLocators.actual_username(expected_name)).text
+         assert expected_name in actual_text, f"Ожидалось '{expected_name}', найдено '{actual_text}'"
 
         return self
-
-    def get_logged_username(self):
-        """Получаем имя авторизованного пользователя"""
-        return BasePage.get_element_text(self, AccountPageLocators.actual_username)

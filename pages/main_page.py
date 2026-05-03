@@ -1,5 +1,4 @@
 import allure
-
 from locators.account_page_locators import AccountPageLocators
 from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
@@ -19,21 +18,14 @@ class MainPage(BasePage):
         return self
 
     def open_user_menu(self):
-        self.click(MainPageLocators.user_menu)
+        with allure.step(f"Клик на заголовок `Личный кабинет`"):
+            self.click(MainPageLocators.user_menu)
 
-        return self
+            return self
 
-    def get_logged_in_username(self):
-        """Получаем имя авторизованного пользователя"""
-        return BasePage.get_element_text(self, AccountPageLocators.actual_username)
+    def element_is_visible (self, element):
+        with allure.step(f"Присутствие элемента на странице"):
+            is_displayed = element.is_displayed()
+            assert is_displayed, f"Элемент отображается на странице"
 
-    def click_authorization(self):
-        self.click(MainPageLocators.auth_button)
-
-        return self
-
-
-    def accept_cookies(self):
-        self.click(MainPageLocators.cookie_button)
-
-        return self
+            return self

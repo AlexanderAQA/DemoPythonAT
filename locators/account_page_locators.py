@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
-class AccountPageLocators():
+class AccountPageLocators:
+    """Локаторы страницы учетной записи ArtyShop"""
 
     # Заголовок "Моя учетная запись" после входа
     account_header = (By.XPATH, "//div[@id='content']//h1[normalize-space()='Моя учетная запись']")
@@ -8,5 +9,9 @@ class AccountPageLocators():
     # Кнопка "Выход" в ЛК после авторизации
     exit_button = (By.XPATH, "//div[contains(@class,'list-group')]//a[normalize-space()='Выход']")
 
-    # Актуальное имя пользователя в заголовке после авторизации
-    actual_username = (By.XPATH, "//span[normalize-space()='{text}']")
+    # Имя пользователя в хедере после авторизации
+    @staticmethod
+    def actual_username(text: str):
+        locator = (By.XPATH, f"//span[normalize-space()='{text}']")
+
+        return locator

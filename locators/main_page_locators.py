@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 
-class MainPageLocators():
+class MainPageLocators:
     """Локаторы главной страницы ArtyShop"""
 
     # Заголовок "Личный кабинет"

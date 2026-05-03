@@ -1,9 +1,3 @@
-from telnetlib import EC
-from selenium.common import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from locators.account_page_locators import AccountPageLocators
-
 
 class CommonAssertions:
     """Класс базовых проверок"""

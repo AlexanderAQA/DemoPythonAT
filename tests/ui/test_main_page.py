@@ -1,6 +1,5 @@
 import allure
 import pytest
-from pages import account_page
 from src.utils.test_data import get_valid_user, get_invalid_user
 
 @allure.epic("Главная страница")
@@ -29,4 +28,5 @@ class TestMainPage:
 
         (account_page
            .assert_account_header()
-           .assert_exit_button())
+           .assert_exit_button()
+           .assert_username())

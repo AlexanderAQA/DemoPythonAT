@@ -1,9 +1,12 @@
+import allure
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from locators.main_page_locators import MainPageLocators
 from src.utils.assertions import CommonAssertions
+
 
 
 class BasePage:
@@ -33,12 +36,12 @@ class BasePage:
         # TODO: Позже довести до ума
 
     def click(self, locator):
-        """Клик по элементу"""
-        try:
+        with allure.step(f"Клик по элементу"):
+         try:
             self.wait_for_element(locator).click()
-        except NoSuchElementException:
+         except NoSuchElementException:
             print(f"Элемент не найден. Локатор: '{locator}'")
-        return self
+         return self
 
     def enter_text(self, locator, text):
         element = self.wait_for_element(locator)
@@ -73,7 +76,19 @@ class BasePage:
         return self
 
     def assert_value_is_empty(self, element):
-        """Проверяем, что значение веб элемента пустое"""
-        value = self.get_element_text(element)
-        self.asserts.assert_is_empty(value)
-        return self
+        with allure.step(f"Проверка что значение веб элемента пустое"):
+            value = self.get_element_text(element)
+            self.asserts.assert_is_empty(value)
+            return self
+
+    def click_authorization(self):
+        with allure.step(f"Клик по кнопке `Авторизация` в выпадающем меню"):
+            self.click(MainPageLocators.auth_button)
+
+            return self
+
+    def accept_cookies(self):
+        with allure.step(f"Принять куки"):
+            self.click(MainPageLocators.cookie_button)
+
+            return self
