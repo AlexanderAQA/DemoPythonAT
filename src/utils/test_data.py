@@ -1,6 +1,7 @@
 import os
 import random
 import string
+from dataclasses import dataclass
 
 # Абсолютный путь к тестовым данным
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -35,3 +36,11 @@ def get_login_list():
 def generate_random_string(str_length=7):
     rand_str = ''.join(random.choice(string.ascii_letters) for _ in range(str_length))
     return rand_str
+
+@dataclass
+class TestUsers:
+    login: str
+    password: str
+    name: str
+
+USER_OLGA = TestUsers("helgaautotests@gmail.com", "Helgaautotests26", "Ольга")

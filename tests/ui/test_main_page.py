@@ -1,5 +1,7 @@
 import allure
 import pytest
+
+from src.utils.test_data import USER_OLGA
 from src.utils.test_data import get_valid_user, get_invalid_user
 
 @allure.epic("Главная страница")
@@ -21,9 +23,9 @@ class TestMainPage:
 
         (login_page
           .click_login_field()
-          .fill_login_field("helgaautotests@gmail.com")
+          .fill_login_field(USER_OLGA)
           .click_password_field()
-          .fill_password_field ("Helgaautotests26")
+          .fill_password_field (USER_OLGA)
           .click_login_button())
 
         (account_page

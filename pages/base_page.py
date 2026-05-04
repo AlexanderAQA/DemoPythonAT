@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import allure
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -37,11 +39,11 @@ class BasePage:
 
     def click(self, locator):
         with allure.step(f"Клик по элементу"):
-         try:
-            self.wait_for_element(locator).click()
-         except NoSuchElementException:
-            print(f"Элемент не найден. Локатор: '{locator}'")
-         return self
+            try:
+                self.wait_for_element(locator).click()
+            except NoSuchElementException:
+                print(f"Элемент не найден. Локатор: '{locator}'")
+            return self
 
     def enter_text(self, locator, text):
         element = self.wait_for_element(locator)
@@ -88,7 +90,14 @@ class BasePage:
             return self
 
     def accept_cookies(self):
-        with allure.step(f"Принять куки"):
+        with allure.step(f"Принимаем куки"):
             self.click(MainPageLocators.cookie_button)
+
+            return self
+
+    def element_is_visible (self, element):
+        with allure.step(f"Присутствие элемента на странице"):
+            is_displayed = element.is_displayed()
+            assert is_displayed, f"Элемент отображается на странице"
 
             return self

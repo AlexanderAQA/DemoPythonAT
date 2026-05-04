@@ -11,4 +11,4 @@ class MainPageLocators:
     auth_button = (By.XPATH, f"//a[normalize-space(text())='Авторизация']")
 
     # Кнопка "ОК" принять cookies
-    cookie_button = (By.XPATH, "//button[contains(@class, 'bg-primary') and normalize-space()='ОК']")
+    cookie_button = (By.XPATH, "//button[contains(@value,'cookie.confirm&agree')]")
