@@ -12,13 +12,21 @@ class AccountPage(BasePage):
 
     def assert_account_header(self):
         with (allure.step("Проверка, что заголовок 'Моя учетная запись' отображается")):
-            assert self.element_is_visible(AccountPageLocators.account_header), "Заголовок 'Моя учетная запись' отсутствует"
-
+            assert self.wait_for_element(AccountPageLocators.account_header), \
+                "Заголовок 'Моя учетная запись' отсутствует"
             return self
 
 
     def assert_exit_button(self):
         with allure.step("Проверка присутствия кнопки 'Выход' в личном кабинете"):
-            assert self.wait_for_element(AccountPageLocators.exit_button), "Кнопка 'Выход' отсутствует"
+            assert self.wait_for_element(AccountPageLocators.exit_button), \
+                "Кнопка 'Выход' отсутствует"
+
+            return self
+
+    def assert_username(self, expected_name: str = "Ольга"):
+        with allure.step(f"Проверка актуального имени пользователя: '{expected_name}'"):
+            actual_name = self.wait_for_element(AccountPageLocators.actual_username(expected_name)).text
+            assert expected_name in actual_name, f"Ожидалось '{expected_name}', найдено '{actual_name}'"
 
             return self
