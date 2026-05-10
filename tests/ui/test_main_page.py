@@ -1,6 +1,5 @@
 import allure
 import pytest
-
 from src.utils.test_data import USER_OLGA
 from src.utils.test_data import get_valid_user, get_invalid_user
 
@@ -22,13 +21,10 @@ class TestMainPage:
            .click_authorization())
 
         (login_page
-          .click_login_field()
-          .fill_login_field(USER_OLGA)
-          .click_password_field()
-          .fill_password_field (USER_OLGA)
+          .fill_login_password_fields(USER_OLGA)
           .click_login_button())
 
         (account_page
            .assert_account_header()
            .assert_exit_button()
-           .assert_username())
+           .assert_username(USER_OLGA.name))

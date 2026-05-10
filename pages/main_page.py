@@ -1,5 +1,4 @@
 import allure
-from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
 
 class MainPage(BasePage):
@@ -15,9 +14,3 @@ class MainPage(BasePage):
             self.driver.get(url)
 
         return self
-
-    def open_user_menu(self):
-        with allure.step(f"Клик на заголовок `Личный кабинет`"):
-            self.click(MainPageLocators.user_menu)
-
-            return self

@@ -1,5 +1,4 @@
 import allure
-
 from pages.base_page import BasePage
 from locators.login_page_locators import LoginPageLocators
 
@@ -67,14 +66,9 @@ class LoginPage(BasePage):
 
             return self
 
-    def fill_login_field(self, user):
-        with allure.step(f"Заполнение текстом поля логина на странице авторизации"):
+    def fill_login_password_fields(self, user):
+        with allure.step(f"Заполнение текстом поля логина и пароля на странице авторизации"):
             self.enter_text(LoginPageLocators.login_field, user.login)
-
-            return self
-
-    def fill_password_field(self, user):
-        with allure.step(f"Заполнение текстом поля пароля на странице авторизации"):
             self.enter_text(LoginPageLocators.password_field, user.password)
 
             return self

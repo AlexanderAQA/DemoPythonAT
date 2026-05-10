@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 import allure
 from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -95,9 +93,19 @@ class BasePage:
 
             return self
 
-    def element_is_visible (self, element):
+    def element_is_visible(self, locator, timeout: int = 10):
         with allure.step(f"Присутствие элемента на странице"):
-            is_displayed = element.is_displayed()
-            assert is_displayed, f"Элемент отображается на странице"
+            try:
+                element = WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(locator)
+                )
+                return element.is_displayed()
+            except:
+
+                return False
+
+    def open_user_menu(self):
+        with allure.step(f"Клик на заголовок `Личный кабинет`"):
+            self.click(MainPageLocators.user_menu)
 
             return self

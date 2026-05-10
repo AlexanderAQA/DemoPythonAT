@@ -4,9 +4,6 @@ import allure
 class CommonAssertions:
     """Класс базовых проверок"""
 
-    # Локаторы
-
-
     def __init__(self, page):
         self.account_header = None
         self.driver = None
