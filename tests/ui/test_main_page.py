@@ -21,10 +21,11 @@ class TestMainPage:
            .click_authorization())
 
         (login_page
-          .fill_login_password_fields(USER_OLGA)
+          .enter_username(USER_OLGA)
+          .enter_password(USER_OLGA)
           .click_login_button())
 
         (account_page
            .assert_account_header()
            .assert_exit_button()
-           .assert_username(USER_OLGA.name))
+           .assert_username(USER_OLGA))

@@ -7,7 +7,7 @@ class AccountPageLocators:
     ACCOUNT_HEADER = (By.XPATH, "//div[@id='content']//h1[normalize-space()='Моя учетная запись']")
 
     # Кнопка "Выход" в ЛК после авторизации
-    exit_button = (By.XPATH, "//div[contains(@class,'list-group')]//a[normalize-space()='Выход']")
+    EXIT_BUTTON = (By.XPATH, "//div[contains(@class,'list-group')]//a[normalize-space()='Выход']")
 
     # Имя пользователя в хедере после авторизации
     @staticmethod

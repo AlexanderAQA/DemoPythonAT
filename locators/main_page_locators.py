@@ -5,10 +5,10 @@ class MainPageLocators:
     """Локаторы главной страницы ArtyShop"""
 
     # Заголовок "Личный кабинет"
-    user_menu = (By.XPATH, "//a[@class='dropdown-toggle']")
+    USER_MENU = (By.XPATH, "//a[@class='dropdown-toggle']")
 
     # Кнопка "Авторизация" в выпадающем меню
-    auth_button = (By.XPATH, f"//a[normalize-space(text())='Авторизация']")
+    AUTH_BUTTON = (By.XPATH, f"//a[normalize-space(text())='Авторизация']")
 
     # Кнопка "ОК" принять cookies
-    cookie_button = (By.XPATH, "//button[contains(@value,'cookie.confirm&agree')]")
+    COOKIE_BUTTON = (By.XPATH, "//button[contains(@value,'cookie.confirm&agree')]")

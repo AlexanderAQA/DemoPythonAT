@@ -19,7 +19,7 @@ class OldMainPage(BasePage):
 
     def open_user_menu(self):
         WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(MainPageLocators.user_menu)
+            EC.element_to_be_clickable(MainPageLocators.USER_MENU)
         ).click()
         return self
 
@@ -28,7 +28,7 @@ class OldMainPage(BasePage):
         return BasePage.get_element_text(self, self.actual_username)
 
     def click_authorization(self):
-        locator = MainPageLocators.auth_button
+        locator = MainPageLocators.AUTH_BUTTON
         self.click(locator)
 
         return LoginPage(self.driver)
@@ -36,7 +36,7 @@ class OldMainPage(BasePage):
     def accept_cookies(self):
         try:
             cookie_btn = WebDriverWait(self.driver, 2).until(
-                EC.element_to_be_clickable(MainPageLocators.cookie_button)
+                EC.element_to_be_clickable(MainPageLocators.COOKIE_BUTTON)
             )
             cookie_btn.click()
         except Exception:

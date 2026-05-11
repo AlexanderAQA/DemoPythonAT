@@ -1,6 +1,8 @@
 import allure
 from pages.base_page import BasePage
 from locators.login_page_locators import LoginPageLocators
+from src.utils.test_data import TestUsers
+
 
 class LoginPage(BasePage):
     def __init__(self, driver):
@@ -12,26 +14,26 @@ class LoginPage(BasePage):
             self.driver.get(self.login_url)
             return self
 
-    def enter_username(self, username):
+    def enter_username(self, user: TestUsers):
         """Вводим логин"""
         with allure.step("Заполняем поле username"):
-            self.enter_text(LoginPageLocators.login_field, username)
+            self.enter_text(LoginPageLocators.LOGIN_FIELD, user.login)
             return self
 
     def get_username_field_value(self):
         """Получаем значение введенное в поле 'username'"""
-        return self.get_element_text(LoginPageLocators.login_field)
+        return self.get_element_text(LoginPageLocators.LOGIN_FIELD)
 
-    def enter_password(self, password):
+    def enter_password(self, user: TestUsers):
         """Вводим пароль"""
         with allure.step(f"Заполняем поле password"):
-            self.enter_text(LoginPageLocators.password_field, password)
+            self.enter_text(LoginPageLocators.PASSWORD_FIELD, user.password)
         return self
 
     def click_login(self):
         """Кликаем кнопку Войти"""
         with allure.step("Кликаем кнопку Войти"):
-            self.click(LoginPageLocators.login_button)
+            self.click(LoginPageLocators.LOGIN_BUTTON)
             return self
 
     def login(self, username, password):
@@ -47,28 +49,21 @@ class LoginPage(BasePage):
 
     def click_login_field(self):
         with allure.step(f"Клик по полю ввода E-Mail на странице авторизации"):
-            locator = LoginPageLocators.login_field
+            locator = LoginPageLocators.LOGIN_FIELD
             self.click(locator)
 
             return self
 
     def click_password_field(self):
         with allure.step(f"Клик по полю ввода пароля на странице авторизации"):
-            locator = LoginPageLocators.password_field
+            locator = LoginPageLocators.PASSWORD_FIELD
             self.click(locator)
 
             return self
 
     def click_login_button(self):
         with allure.step(f"Клик по кнопке `Войти`"):
-            locator = LoginPageLocators.login_button
+            locator = LoginPageLocators.LOGIN_BUTTON
             self.click(locator)
-
-            return self
-
-    def fill_login_password_fields(self, user):
-        with allure.step(f"Заполнение текстом поля логина и пароля на странице авторизации"):
-            self.enter_text(LoginPageLocators.login_field, user.login)
-            self.enter_text(LoginPageLocators.password_field, user.password)
 
             return self

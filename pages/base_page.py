@@ -83,13 +83,13 @@ class BasePage:
 
     def click_authorization(self):
         with allure.step(f"Клик по кнопке `Авторизация` в выпадающем меню"):
-            self.click(MainPageLocators.auth_button)
+            self.click(MainPageLocators.AUTH_BUTTON)
 
             return self
 
     def accept_cookies(self):
         with allure.step(f"Принимаем куки"):
-            self.click(MainPageLocators.cookie_button)
+            self.click(MainPageLocators.COOKIE_BUTTON)
 
             return self
 
@@ -106,6 +106,6 @@ class BasePage:
 
     def open_user_menu(self):
         with allure.step(f"Клик на заголовок `Личный кабинет`"):
-            self.click(MainPageLocators.user_menu)
+            self.click(MainPageLocators.USER_MENU)
 
             return self
