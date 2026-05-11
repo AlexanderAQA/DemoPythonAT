@@ -1,7 +1,8 @@
 from selenium.webdriver.common.by import By
+from locators.base_page_locators import BasePageLocators
 from pages.base_page import BasePage
 
-class LoginPage(BasePage):
+class OldLoginPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -17,41 +18,64 @@ class LoginPage(BasePage):
     submit_button = (By.ID, 'wpLoginAttempt')
     username_element = (By.ID, "pt-userpage")
 
-    def open(self):
+    def old_open(self):
         """Открываем страницу логина"""
         print(f"Открываем страницу логина: {self.login_url}")
         self.driver.get(self.login_url)
         return self
 
-    def enter_username(self, username):
+    def old_enter_username(self, username):
         """Вводим логин"""
         print("Заполняем поле username")
         self.enter_text(self.username_input, username)
         return self
 
-    def get_username_field_value(self):
+    def old_get_username_field_value(self):
         """Получаем значение введенное в поле 'username'"""
         return self.get_element_text(self.username_input)
 
-    def enter_password(self, password):
+    def old_enter_password(self, password):
         """Вводим пароль"""
         print(f"Заполняем поле password: '{password}'")
         self.enter_text(self.password_input, password)
         return self
 
-    def click_login(self):
+    def old_click_login(self):
         """Кликаем кнопку Войти"""
         print("Кликаем кнопку Войти")
         self.click(self.login_button)
         return self
 
-    def login(self, username, password):
+    def old_login(self, username, password):
         """Вводим логин, пароль и кликаем войти"""
         self.enter_username(username)
         self.enter_password(password)
         self.click_login()
         return self
 
-    def get_error_message(self):
+    def old_get_error_message(self):
         """Получаем текст ошибки"""
         return self.get_element_text(self.error_message)
+
+    def old_click_login_field(self):
+        locator = BasePageLocators.login_field
+        self.click(locator)
+        return self
+
+    def old_click_password_field(self):
+        locator = BasePageLocators.password_field
+        self.click(locator)
+        return self
+
+    def old_click_login_button(self):
+        locator = BasePageLocators.login_button
+        self.click(locator)
+        return self
+
+    def old_fill_login_field(self, email: str):
+        self.enter_text(self.login_field, email)
+        return self
+
+    def old_fill_password_field(self, password: str):
+        self.enter_text(self.password_field, password)
+        return self
