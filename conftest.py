@@ -8,7 +8,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from locators.cart_page_locators import CartPageLocators
 from pages.account_page import AccountPage
+
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -127,3 +129,14 @@ def api_client():
 def account_page(driver):
     page = AccountPage(driver)
     yield page
+
+@pytest.fixture
+def clean_cart(driver):
+    driver.get("https://shop.finarty.ru/cart")
+    while True:
+        try:
+            driver.find_element(*CartPageLocators.CLEAR_CART_BUTTON).click()
+        except:
+            break
+    driver.get("https://shop.finarty.ru/")
+    return

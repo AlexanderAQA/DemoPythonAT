@@ -4,6 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from locators.base_page_locators import BasePageLocators
 from locators.main_page_locators import MainPageLocators
 from src.utils.assertions import CommonAssertions
 
@@ -107,5 +108,11 @@ class BasePage:
     def open_user_menu(self):
         with allure.step(f"Клик на заголовок `Личный кабинет`"):
             self.click(MainPageLocators.USER_MENU)
+
+            return self
+
+    def click_books_link(self):
+        with allure.step(f"Клик по разделу 'Книги' в верхнем меню"):
+            self.click(BasePageLocators.BOOKS_LINK)
 
             return self
