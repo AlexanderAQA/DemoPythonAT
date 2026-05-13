@@ -1,3 +1,4 @@
+from locators.base_page_locators import BasePageLocators
 from pages.base_page import BasePage
 import allure
 import time
@@ -8,11 +9,11 @@ class BooksPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    # def click_buy_button(self):
-    #     with allure.step("Клик по кнопке 'Купить' три книги Яна Арта"):
-    #         self.click(BooksPageLocators.BUY_BUTTON)
-    #
-    #     return self
+    def click_buy_button(self):
+        with allure.step("Клик по кнопке 'Купить' три книги Яна Арта"):
+            self.click(BooksPageLocators.BUY_BUTTON)
+
+        return self
 
     def click_product_in_cart_button(self):
         with allure.step("Клик по кнопке `Товаров`"):
@@ -38,3 +39,9 @@ class BooksPage(BasePage):
             time.sleep(0.2)
 
         return self
+
+    def click_books_link(self):
+        with allure.step(f"Клик по разделу 'Книги' в верхнем меню"):
+            self.click(BasePageLocators.BOOKS_LINK)
+
+            return self

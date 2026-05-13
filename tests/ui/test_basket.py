@@ -1,6 +1,8 @@
 import allure
 import pytest
 import time
+
+from pages import books_page
 from src.utils.test_data import USER_OLGA
 from src.utils.test_data import get_valid_user, get_invalid_user
 
@@ -27,8 +29,6 @@ class TestMainPage:
           .click_login_button())
 
         time.sleep(2)
-
-        books_page = base_page.click_books_link()
 
         (books_page
             .click_books_link()
