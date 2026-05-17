@@ -109,3 +109,9 @@ class BasePage:
             self.click(MainPageLocators.USER_MENU)
 
             return self
+
+    def scroll_to_element(self, locator):
+        with allure.step(f"Прокрутка к элементу: {locator}"):
+            element = self.wait_for_element(locator)
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        return self

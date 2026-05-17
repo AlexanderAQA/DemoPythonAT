@@ -6,14 +6,14 @@ class CartPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    def assert_quantity(self, expected: int = 1):
+    def assert_quantity(self, expected: int):
         with allure.step(f"Проверка количества книг в корзине = {expected}"):
             actual = int(self.wait_for_element(CartPageLocators.QUANTITY_INPUT).get_attribute('value'))
-            assert actual == expected, f"Ожидаемо {expected}, фактически {actual}"
+            self.asserts.assert_is_equal(expected, actual)
 
         return self
 
-    def clear_cart(self):
+    def clear_cart_button(self):
         with allure.step("Клик по кнопке очистки корзины"):
             self.click(CartPageLocators. CLEAR_CART_BUTTON)
 

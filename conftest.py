@@ -10,7 +10,8 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from locators.cart_page_locators import CartPageLocators
 from pages.account_page import AccountPage
-
+from pages.books_page import BooksPage
+from pages.cart_page import CartPage
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -36,7 +37,7 @@ def driver(request):
     # Инициализация хром драйвера
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument("--disable-notifications")
+    # chrome_options.add_argument("--disable-notifications")
     # chrome_options.add_argument("--headless=new")
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
@@ -130,13 +131,18 @@ def account_page(driver):
     page = AccountPage(driver)
     yield page
 
+@pytest.fixture(scope="function", autouse=False)
+def books_page(driver):
+    page = BooksPage(driver)
+    yield page
+
+@pytest.fixture(scope="function", autouse=False)
+def cart_page(driver):
+    page = CartPage(driver)
+    yield page
+
 @pytest.fixture
-def clean_cart(driver):
-    driver.get("https://shop.finarty.ru/cart")
-    while True:
-        try:
-            driver.find_element(*CartPageLocators.CLEAR_CART_BUTTON).click()
-        except:
-            break
-    driver.get("https://shop.finarty.ru/")
-    return
+def clear_cart(driver):
+    cart_page = CartPage(driver)
+    yield
+    cart_page.clear_cart_button()
