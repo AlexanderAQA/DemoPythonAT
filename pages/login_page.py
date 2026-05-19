@@ -1,13 +1,11 @@
 import allure
-
-from locators.account_page_locators import AccountPageLocators
-from locators.base_page_locators import BasePageLocators
 from pages.base_page import BasePage
 from locators.login_page_locators import LoginPageLocators
 from src.utils.test_data import TestUsers
 
 
 class LoginPage(BasePage):
+    """Страница Логина"""
     def __init__(self, driver):
         super().__init__(driver)
 

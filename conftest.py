@@ -8,7 +8,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from locators.cart_page_locators import CartPageLocators
 from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
@@ -144,5 +143,5 @@ def cart_page(driver):
 @pytest.fixture
 def clear_cart(driver):
     cart_page = CartPage(driver)
-    yield
     cart_page.clear_cart_button()
+

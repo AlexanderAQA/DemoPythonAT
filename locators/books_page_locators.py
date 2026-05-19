@@ -23,7 +23,7 @@ class BooksPageLocators:
 
         return locator
 
-    # Кнопка "Купить" книга три книги Яна Арта "Книги"
+    # Кнопка "Купить" в карточке книги
     @staticmethod
     def get_buy_button(book_name: str):
         locator = (By.XPATH, f"//div[contains(@class, 'product-thumb')][.//a[contains(text(),'{book_name}')]]//button[@class='cart-add-button']")

@@ -3,18 +3,25 @@ import allure
 from locators.cart_page_locators import CartPageLocators
 
 class CartPage(BasePage):
+    """Страница Корзина"""
     def __init__(self, driver):
         super().__init__(driver)
 
     def assert_quantity(self, expected: int):
         with allure.step(f"Проверка количества книг в корзине = {expected}"):
-            actual = int(self.wait_for_element(CartPageLocators.QUANTITY_INPUT).get_attribute('value'))
+            actual = int(self.wait_for_element(CartPageLocators.get_quantity_input(expected)).get_attribute('value'))
             self.asserts.assert_is_equal(expected, actual)
 
         return self
 
     def clear_cart_button(self):
         with allure.step("Клик по кнопке очистки корзины"):
-            self.click(CartPageLocators. CLEAR_CART_BUTTON)
+            self.click(CartPageLocators.CLEAR_CART_BUTTON)
 
             return self
+
+# def clear_cart(self):
+#     with allure.step("Очистка корзины"):
+#         self.driver.get("https://shop.finarty.ru/cart")
+#         while self.driver.find_elements(CartPageLocators.CLEAR_CART_BUTTON):
+#             self.driver.find_element(CartPageLocators.CLEAR_CART_BUTTON).click()
