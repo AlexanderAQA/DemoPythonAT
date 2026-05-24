@@ -36,7 +36,7 @@ def driver(request):
     # Инициализация хром драйвера
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
-    # chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument("--disable-notifications")
     # chrome_options.add_argument("--headless=new")
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
@@ -139,9 +139,4 @@ def books_page(driver):
 def cart_page(driver):
     page = CartPage(driver)
     yield page
-
-@pytest.fixture
-def clear_cart(driver):
-    cart_page = CartPage(driver)
-    cart_page.clear_cart_button()
 

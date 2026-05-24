@@ -12,7 +12,8 @@ class CartPageLocators:
     # Локатор книги для добавления в корзину
     @staticmethod
     def get_book_link(book_name: str):
-        locator = (By.XPATH, f"//td[contains(@class, 'text-start') and contains(@class, 'text-wrap')]//a[contains='{book_name}']")
+        locator = (By.XPATH, f"//td[contains(@class, 'text-start') and contains(@class, 'text-wrap')]"
+                             f"//a[contains='{book_name}']")
 
         return locator
 

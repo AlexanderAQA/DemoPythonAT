@@ -1,3 +1,5 @@
+from selenium.webdriver import Keys
+import time
 from pages.base_page import BasePage
 import allure
 from locators.cart_page_locators import CartPageLocators
@@ -20,8 +22,16 @@ class CartPage(BasePage):
 
             return self
 
-# def clear_cart(self):
-#     with allure.step("Очистка корзины"):
-#         self.driver.get("https://shop.finarty.ru/cart")
-#         while self.driver.find_elements(CartPageLocators.CLEAR_CART_BUTTON):
-#             self.driver.find_element(CartPageLocators.CLEAR_CART_BUTTON).click()
+    def clear_cart(self):
+        with allure.step("Очистка корзины"):
+            self.driver.get("https://shop.finarty.ru/cart")
+            while self.driver.find_elements(*CartPageLocators.CLEAR_CART_BUTTON):
+                self.clear_cart_button()
+                try:
+                    alert = self.driver.switch_to.alert
+                    alert.accept()
+                except:
+                    pass
+                time.sleep(0.3)
+
+        return self

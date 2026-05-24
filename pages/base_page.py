@@ -95,14 +95,14 @@ class BasePage:
 
             return self
 
-    def element_is_visible(self, locator, timeout: int = 10):
+    def assert_element_is_visible(self, locator, timeout: int = 10):
         with allure.step(f"Присутствие элемента на странице"):
             try:
-                element = WebDriverWait(self.driver, timeout).until(
+                WebDriverWait(self.driver, timeout).until(
                 EC.visibility_of_element_located(locator)
                 )
-                return element.is_displayed()
-            except:
+                return True
+            except TimeoutException:
 
                 return False
 
