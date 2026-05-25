@@ -65,22 +65,10 @@ class LoginPage(BasePage):
 
             return self
 
-    # def authorization(self):
-    #     with allure.step(f"Авторизация в личном кабинете"):
-    #         self.open()
-    #         self.accept_cookies()
-    #         self.open_user_menu()
-    #         self.click_authorization()
-    #         self.enter_username(USER_OLGA)
-    #         self.enter_password(USER_OLGA)
-    #         self.click_login_button()
-    #         self.wait_for()
-    #
-    #         return self
-
     def authorization(self):
         with allure.step("Авторизация в личном кабинете"):
-            is_authorized = self.driver.find_elements(*AccountPageLocators.get_actual_username("Ольга"))
+            elements = self.driver.find_elements(*AccountPageLocators.get_actual_username('{text}'))
+            is_authorized = elements and elements[0].text.strip() != ""
 
             if not is_authorized:
                 with allure.step("Пользователь не авторизован, выполняем вход"):
@@ -92,7 +80,8 @@ class LoginPage(BasePage):
                     self.click_login_button()
                     self.wait_for()
             else:
-                with allure.step(f"Пользователь '{"Ольга"}' уже авторизован"):
+                user_name = elements[0].text.strip()
+                with allure.step(f"Пользователь '{user_name}' уже авторизован"):
                     pass
 
             return self

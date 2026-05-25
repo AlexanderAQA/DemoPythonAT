@@ -1,6 +1,5 @@
 import allure
 import pytest
-from src.utils.test_data import USER_OLGA
 
 @allure.epic("Корзина")
 class TestMainPage:
@@ -8,12 +7,16 @@ class TestMainPage:
     @pytest.mark.ui
     @allure.title("Товары в корзине")
     @allure.link("https://testit.example.com/tc-1")
-    def test_basket(self, main_page, books_page, login_page, base_page, cart_page):
-        (cart_page
-            .clear_cart()
+    def test_basket(self, main_page, login_page, books_page, base_page, cart_page):
+        (main_page
+            .open_main_page()
             .accept_cookies())
 
-        (base_page
+        (login_page
+            .authorization())
+
+        (cart_page
+            .clear_cart()
             .click_books_link())
 
         (books_page

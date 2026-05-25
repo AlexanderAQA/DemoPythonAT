@@ -1,8 +1,6 @@
 from pages.base_page import BasePage
 import allure
 from locators.books_page_locators import BooksPageLocators
-from pages.login_page import LoginPage
-
 
 class BooksPage(BasePage):
     """Страница Книги"""
@@ -26,7 +24,6 @@ class BooksPage(BasePage):
 
     def click_go_to_cart_button(self):
         with allure.step("Клик по кнопке 'Перейти в корзину'"):
-            LoginPage(self.driver).authorization()
             element = self.wait_for_element(BooksPageLocators.GO_TO_CART_BUTTON)
             self.driver.execute_script("arguments[0].click();", element)
 
