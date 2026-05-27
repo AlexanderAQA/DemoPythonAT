@@ -1,5 +1,5 @@
-from selenium.webdriver import Keys
 import time
+from locators.books_page_locators import BooksPageLocators
 from pages.base_page import BasePage
 import allure
 from locators.cart_page_locators import CartPageLocators
@@ -34,4 +34,12 @@ class CartPage(BasePage):
                     pass
                 time.sleep(0.3)
 
+        return self
+
+    def check_price(self, book_name: str, price: str):
+        with allure.step(f"Сверка цены товара и стоимости в корзине"):
+            book_price = self.get_element_text(BooksPageLocators.get_book_price(book_name))
+            cart_price = self.get_element_text(CartPageLocators.get_cart_total_price(price))
+            assert book_price == price and cart_price == price, \
+                f"Цены не совпадают: книга='{book_price}', корзина='{cart_price}', ожидалось='{price}'"
         return self

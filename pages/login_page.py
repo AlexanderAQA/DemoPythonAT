@@ -65,9 +65,11 @@ class LoginPage(BasePage):
 
             return self
 
-    def authorization(self):
+    def authorization(self, user: TestUsers):
         with allure.step("Авторизация в личном кабинете"):
-            elements = self.driver.find_elements(*AccountPageLocators.get_actual_username('{text}'))
+            self.open_main_page()
+            self.accept_cookies()
+            elements = self.driver.find_elements(*AccountPageLocators.get_actual_username(f'{user.name}'))
             is_authorized = elements and elements[0].text.strip() != ""
 
             if not is_authorized:
@@ -75,8 +77,8 @@ class LoginPage(BasePage):
                     self.open()
                     self.open_user_menu()
                     self.click_authorization()
-                    self.enter_username(USER_OLGA)
-                    self.enter_password(USER_OLGA)
+                    self.enter_username(user)
+                    self.enter_password(user)
                     self.click_login_button()
                     self.wait_for()
             else:

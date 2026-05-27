@@ -23,3 +23,11 @@ class CartPageLocators:
         locator = (By.XPATH, f"//input[@name='quantity' and @type='number']")
 
         return locator
+
+    # Локатор общей цены в корзине
+    @staticmethod
+    def get_cart_total_price(price: str):
+        locator = (By.XPATH, f"//tfoot[@id='checkout-total']//tr[td[normalize-space()='Итого']]"
+                             f"/td[@class='text-end' and normalize-space()='{price}']")
+        return locator
+

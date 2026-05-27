@@ -20,6 +20,7 @@ class BasePage:
         self.logger = None
         self.driver = driver
         self.asserts = CommonAssertions(self)
+        self.main_url = 'https://shop.finarty.ru/'
 
     def wait_for_element(self, locator, timeout=waitSec):
         """
@@ -36,6 +37,13 @@ class BasePage:
             print(f"[wait_for_element] Timeout: элемент {locator} не найден за {timeout} секунд!")
             return None
         # TODO: Позже довести до ума
+
+    def open_main_page(self):
+        url = self.main_url
+        with allure.step(f"Открываем главную страницу finarty: {url}"):
+            self.driver.get(url)
+
+        return self
 
     def click(self, locator):
         with allure.step(f"Клик по элементу"):

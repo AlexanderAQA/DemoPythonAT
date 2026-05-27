@@ -14,17 +14,25 @@ class BooksPageLocators:
     # Кнопка "Перейти в корзину" после нажатия на "Товаров в корзине" на странице "Книги"
     GO_TO_CART_BUTTON = (By.XPATH, "//a[normalize-space()='Перейти в корзину']")
 
-    # Карточка товара
-    @staticmethod
-    def get_product_card(book_name: str):
-        locator = (By.XPATH, f"//div[@id='content']//a[normalize-space()='{book_name}']")
-
-        return locator
-
     # Кнопка "Купить" в карточке книги
     @staticmethod
     def get_buy_button(book_name: str):
         locator = (By.XPATH, f"//div[contains(@class, 'product-thumb')][.//a[contains(text(),'{book_name}')]]"
                              f"//button[@class='cart-add-button']")
+
+        return locator
+
+    # Локатор названия книги
+    @staticmethod
+    def get_book_name(book_name: str):
+        locator = (By.XPATH, f"//div[@id='content']//a[normalize-space()='{book_name}']")
+
+        return locator
+
+    # Локатор цены книги
+    @staticmethod
+    def get_book_price(book_name: str):
+        locator = (By.XPATH, f"//h4[normalize-space()='{book_name}']/.."
+                             f"//span[@class='price-new']")
 
         return locator
