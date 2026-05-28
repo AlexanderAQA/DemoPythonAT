@@ -35,7 +35,7 @@ class BasePage:
             )
         except TimeoutException as e:
             print(f"[wait_for_element] Timeout: элемент {locator} не найден за {timeout} секунд!")
-            return None
+            return False
         # TODO: Позже довести до ума
 
     def open_main_page(self):

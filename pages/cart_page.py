@@ -36,10 +36,8 @@ class CartPage(BasePage):
 
         return self
 
-    def check_price(self, book_name: str, price: str):
+    def check_price(self, price: str):
         with allure.step(f"Сверка цены товара и стоимости в корзине"):
-            book_price = self.get_element_text(BooksPageLocators.get_book_price(book_name))
-            cart_price = self.get_element_text(CartPageLocators.get_cart_total_price(price))
-            assert book_price == price and cart_price == price, \
-                f"Цены не совпадают: книга='{book_price}', корзина='{cart_price}', ожидалось='{price}'"
+            self.assert_element_is_visible(CartPageLocators.get_cart_total_price(price))
+
         return self

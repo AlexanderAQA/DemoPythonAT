@@ -42,3 +42,10 @@ class BooksPage(BasePage):
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
 
             return self
+
+
+    def get_price_from_book(self, book_name: str):
+        with allure.step(f"Сохранение цены книги"):
+            book_price = self.wait_for_element(BooksPageLocators.get_book_price(book_name)).text
+
+        return book_price

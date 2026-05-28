@@ -32,7 +32,6 @@ class BooksPageLocators:
     # Локатор цены книги
     @staticmethod
     def get_book_price(book_name: str):
-        locator = (By.XPATH, f"//h4[normalize-space()='{book_name}']/.."
-                             f"//span[@class='price-new']")
+        locator = (By.XPATH, f"//h4[normalize-space()='{book_name}']/..//span[@class='price-new']")
 
         return locator
