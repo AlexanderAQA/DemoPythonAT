@@ -11,7 +11,7 @@ class AccountPage(BasePage):
 
     def assert_account_header(self):
         with allure.step("Проверка, что заголовок 'Моя учетная запись' отображается"):
-            assert self.element_is_visible(AccountPageLocators.ACCOUNT_HEADER)
+            self.assert_element_is_visible(AccountPageLocators.ACCOUNT_HEADER)
 
             return self
 

@@ -9,6 +9,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from pages.account_page import AccountPage
+from pages.books_page import BooksPage
+from pages.cart_page import CartPage
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -127,3 +129,14 @@ def api_client():
 def account_page(driver):
     page = AccountPage(driver)
     yield page
+
+@pytest.fixture(scope="function", autouse=False)
+def books_page(driver):
+    page = BooksPage(driver)
+    yield page
+
+@pytest.fixture(scope="function", autouse=False)
+def cart_page(driver):
+    page = CartPage(driver)
+    yield page
+

@@ -1,12 +1,16 @@
 import allure
+
+from locators.account_page_locators import AccountPageLocators
 from pages.base_page import BasePage
 from locators.login_page_locators import LoginPageLocators
-from src.utils.test_data import TestUsers
+from src.utils.test_data import TestUsers, USER_OLGA
 
 
 class LoginPage(BasePage):
+    """Страница Логина"""
     def __init__(self, driver):
         super().__init__(driver)
+        self.login_url = 'https://shop.finarty.ru/login'
 
     def open(self):
         """Открываем страницу логина"""
@@ -36,13 +40,6 @@ class LoginPage(BasePage):
             self.click(LoginPageLocators.LOGIN_BUTTON)
             return self
 
-    def login(self, username, password):
-        """Вводим логин, пароль и кликаем войти"""
-        self.enter_username(username)
-        self.enter_password(password)
-        self.click_login()
-        return self
-
     def get_error_message(self):
         """Получаем текст ошибки"""
         return self.get_element_text(LoginPageLocators.error_message)
@@ -65,5 +62,28 @@ class LoginPage(BasePage):
         with allure.step(f"Клик по кнопке `Войти`"):
             locator = LoginPageLocators.LOGIN_BUTTON
             self.click(locator)
+
+            return self
+
+    def authorization(self, user: TestUsers):
+        with allure.step("Авторизация в личном кабинете"):
+            self.open_main_page()
+            self.accept_cookies()
+            elements = self.driver.find_elements(*AccountPageLocators.get_actual_username(f'{user.name}'))
+            is_authorized = elements and elements[0].text.strip() != ""
+
+            if not is_authorized:
+                with allure.step("Пользователь не авторизован, выполняем вход"):
+                    self.open()
+                    self.open_user_menu()
+                    self.click_authorization()
+                    self.enter_username(user)
+                    self.enter_password(user)
+                    self.click_login_button()
+                    self.wait_for()
+            else:
+                user_name = elements[0].text.strip()
+                with allure.step(f"Пользователь '{user_name}' уже авторизован"):
+                    pass
 
             return self

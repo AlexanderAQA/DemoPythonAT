@@ -4,6 +4,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from locators.base_page_locators import BasePageLocators
+import time
 from locators.main_page_locators import MainPageLocators
 from src.utils.assertions import CommonAssertions
 
@@ -18,6 +20,7 @@ class BasePage:
         self.logger = None
         self.driver = driver
         self.asserts = CommonAssertions(self)
+        self.main_url = 'https://shop.finarty.ru/'
 
     def wait_for_element(self, locator, timeout=waitSec):
         """
@@ -32,8 +35,15 @@ class BasePage:
             )
         except TimeoutException as e:
             print(f"[wait_for_element] Timeout: элемент {locator} не найден за {timeout} секунд!")
-            return None
+            return False
         # TODO: Позже довести до ума
+
+    def open_main_page(self):
+        url = self.main_url
+        with allure.step(f"Открываем главную страницу finarty: {url}"):
+            self.driver.get(url)
+
+        return self
 
     def click(self, locator):
         with allure.step(f"Клик по элементу"):
@@ -93,14 +103,14 @@ class BasePage:
 
             return self
 
-    def element_is_visible(self, locator, timeout: int = 10):
+    def assert_element_is_visible(self, locator, timeout: int = 10):
         with allure.step(f"Присутствие элемента на странице"):
             try:
-                element = WebDriverWait(self.driver, timeout).until(
+                WebDriverWait(self.driver, timeout).until(
                 EC.visibility_of_element_located(locator)
                 )
-                return element.is_displayed()
-            except:
+                return True
+            except TimeoutException:
 
                 return False
 
@@ -109,3 +119,21 @@ class BasePage:
             self.click(MainPageLocators.USER_MENU)
 
             return self
+
+    def scroll_to_element(self, locator):
+        with allure.step(f"Прокрутка к элементу: {locator}"):
+            element = self.wait_for_element(locator)
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        return self
+
+    def click_books_link(self):
+        with allure.step(f"Клик по разделу 'Книги' в верхнем меню"):
+            self.refresh_page()
+            self.click(BasePageLocators.BOOKS_LINK)
+
+            return self
+
+    def wait_for(self, millis: int = 200):
+        with allure.step(f"Ожидание {millis} мс"):
+            time.sleep(millis / 1000)
+        return self
