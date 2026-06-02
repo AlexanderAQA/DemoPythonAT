@@ -30,39 +30,41 @@ class AccountPage(BasePage):
 
     def click_change_information(self):
         with allure.step("Клик по кнопке 'Изменить информацию'"):
-            self.click(AccountPageLocators.CHANGE_INFORMATION_BUTTON)
+            self.click(AccountPageLocators.CHANGE_INFO_BUTTON)
 
         return self
 
     def assert_field_headers(self):
         with allure.step("Проверка наличия всех основных заголовков полей на странице"):
-            self.wait_for_element(AccountPageLocators.YOUR_ACCOUNT)
-            self.wait_for_element(AccountPageLocators.NAME_PATRONYMIC)
-            self.wait_for_element(AccountPageLocators.SURNAME)
-            self.wait_for_element(AccountPageLocators.EMAIL)
-            self.wait_for_element(AccountPageLocators.TELEPHONE)
+            self.assert_element_is_visible(AccountPageLocators.HEAD_YOUR_ACCOUNT)
+            self.assert_element_is_visible(AccountPageLocators.FIRSTNAME_FIELD_LABEL)
+            self.assert_element_is_visible(AccountPageLocators.SURNAME_FIELD_LABEL)
+            self.assert_element_is_visible(AccountPageLocators.EMAIL_FIELD_LABEL)
+            self.assert_element_is_visible(AccountPageLocators.TELEPHONE_FIELD_LABEL)
 
         return self
 
-    def assert_profile_field_values(self):
+    def assert_profile_field_values(self, expected: list):
         with allure.step("Проверка значений во всех полях профиля"):
-            self.wait_for_element(AccountPageLocators.get_text_in_name_field("Ольга"))
-            self.wait_for_element(AccountPageLocators.get_text_in_surname_field("Тверская"))
-            self.wait_for_element(AccountPageLocators.get_text_in_email_field("helgaautotests@gmail.com"))
-            self.wait_for_element(AccountPageLocators.get_text_in_telephone_field("+7 (900) 000-00-00"))
+            actual_name = self.wait_for_element(AccountPageLocators.TEXT_IN_NAME_FIELD).get_attribute('value'),
+            actual_sur = self.wait_for_element(AccountPageLocators.TEXT_IN_SURNAME_FIELD).get_attribute('value'),
+            actual_email = self.wait_for_element(AccountPageLocators.TEXT_IN_EMAIL_FIELD).get_attribute('value'),
+            actual_phone = self.wait_for_element(AccountPageLocators.TEXT_IN_TELEPHONE_FIELD).get_attribute('value')
+            actual_fields = [*actual_name, *actual_sur, *actual_email, actual_phone]
 
+            self.asserts.assert_is_equal(expected, actual_fields)
         return self
 
     def assert_back_continue_buttons(self):
         with allure.step("Проверка наличия кнопок 'Назад' и 'Продолжить'"):
-            self.wait_for_element(AccountPageLocators.BACK_BUTTON)
-            self.wait_for_element(AccountPageLocators.CONTINUE_BUTTON)
+            self.assert_element_is_visible(AccountPageLocators.BACK_BUTTON)
+            self.assert_element_is_visible(AccountPageLocators.CONTINUE_BUTTON)
 
         return self
 
     def assert_pers_account_and_home_buttons(self):
         with allure.step("Проверка наличия кнопок `Домой` и `Личный кабинет`"):
-            self.wait_for_element(AccountPageLocators.HOME)
-            self.wait_for_element(AccountPageLocators.PERS_ACCOUNT)
+            self.assert_element_is_visible(AccountPageLocators.HOME_BUTTON_IN_ACCOUNT)
+            self.assert_element_is_visible(AccountPageLocators.PERS_ACCOUNT_BUTTON)
 
         return self

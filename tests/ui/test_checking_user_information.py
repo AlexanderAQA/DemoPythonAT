@@ -16,6 +16,6 @@ class TestMainPage:
         (account_page
          .click_change_information()
          .assert_field_headers()
-         .assert_profile_field_values()
+         .assert_profile_field_values(["Ольга", "Тверская", "helgaautotests@gmail.com", "+7 (900) 000-00-00"])
          .assert_back_continue_buttons()
          .assert_pers_account_and_home_buttons())
