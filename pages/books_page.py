@@ -43,9 +43,51 @@ class BooksPage(BasePage):
 
             return self
 
-
     def get_price_from_book(self, book_name: str):
         with allure.step(f"Сохранение цены книги"):
             book_price = self.wait_for_element(BooksPageLocators.get_book_price(book_name)).text
 
         return book_price
+
+    def click_book_name(self, book_name: str):
+        with allure.step("Клик по карточке книги '{book_name}'"):
+            element = self.wait_for_element(BooksPageLocators.get_book_name(book_name))
+            self.driver.execute_script("arguments[0].click();", element)
+
+        return self
+
+    def assert_book_info_displayed(self, book_cart_name, book_price, article_code):
+        with allure.step("Проверка отображения названия, цены и артикула"):
+            self.assert_element_is_visible(BooksPageLocators.get_book_cart_name(book_cart_name))
+            self.assert_element_is_visible(BooksPageLocators.get_book_cart_price(book_price))
+            self.assert_element_is_visible(BooksPageLocators.ARTICLE_LABEL)
+            self.assert_element_is_visible(BooksPageLocators.get_book_article_code(article_code))
+
+        return self
+
+    def check_quantity_buttons(self):
+        with allure.step("Проверка работы кнопок '+' и '-'"):
+            self.click(BooksPageLocators.PLUS_BUTTON)
+            self.assert_element_is_visible(BooksPageLocators.get_book_quantity(2))
+            self.click(BooksPageLocators.MINUS_BUTTON)
+            self.assert_element_is_visible(BooksPageLocators.get_book_quantity(1))
+
+        return self
+
+    def check_wishlist(self, count):
+        with allure.step("Проверка работы кнопки 'Добавить в избранное'"):
+            self.click(BooksPageLocators.ADD_TO_FAVORITES_BUTTON)
+            self.assert_element_is_visible(BooksPageLocators.get_count_of_bookmarks(count + 1))
+            self.click(BooksPageLocators.DELETE_FROM_FAVORITES_BUTTON)
+            self.assert_element_is_visible(BooksPageLocators.get_count_of_bookmarks(count))
+
+        return self
+
+    def assert_description_content(self):
+        with allure.step("Проверка наличия названий книг и фразы про автограф в описании"):
+            self.assert_element_is_visible(BooksPageLocators.KLYAKSA_BOOK)
+            self.assert_element_is_visible(BooksPageLocators.THOUSAND_YEARS_BOOK)
+            self.assert_element_is_visible(BooksPageLocators.COUNTDOWN_BOOK)
+            self.assert_element_is_visible(BooksPageLocators.PHRASE_AUTOGRAPH)
+
+        return self
