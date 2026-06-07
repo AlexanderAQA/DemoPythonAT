@@ -14,6 +14,28 @@ class BooksPageLocators:
     # Кнопка "Перейти в корзину" после нажатия на "Товаров в корзине" на странице "Книги"
     GO_TO_CART_BUTTON = (By.XPATH, "//a[normalize-space()='Перейти в корзину']")
 
+    # Локатор фразы "Книги поставляются с автографом автора" в описании карточки
+    PHRASE_AUTOGRAPH = (By.XPATH, "//div[@id='tab-description']"
+                                  "//span[contains(text(), 'Книга поставляется с автографом автора')]")
+
+    # Локатор количества книг в карточке
+    QUANTITY_BOOKS = (By.XPATH, f"//input[@id='input-quantity']")
+
+    # Локатор лейбла "Артикул" книги в карточке
+    ARTICLE_LABEL = (By.XPATH, "//li[contains(text(), 'Артикул')]")
+
+    # Локатор кнопки + в карточке
+    PLUS_BUTTON = (By.XPATH, "//span[@class='bt_plus']")
+
+    # Локатор кнопки - в карточке
+    MINUS_BUTTON = (By.XPATH, "//span[@class='bt_minus']")
+
+    # Локатор кнопки "Добавить в избранное" в карточке
+    ADD_TO_FAVORITES_BUTTON = (By.XPATH, "//button[@title='Добавить в закладки']")
+
+    # Локатор кнопки "Удалить из закладок" в карточке
+    DELETE_FROM_FAVORITES_BUTTON = (By.XPATH, "//button[@title='Удалить из закладок']")
+
     # Кнопка "Купить" в карточке книги
     @staticmethod
     def get_buy_button(book_name: str):
@@ -22,10 +44,10 @@ class BooksPageLocators:
 
         return locator
 
-    # Локатор названия книги
+    # Локатор названия книги на странице "Книги"
     @staticmethod
     def get_book_name(book_name: str):
-        locator = (By.XPATH, f"//div[@id='content']//a[normalize-space()='{book_name}']")
+        locator = (By.XPATH, f"//a[contains(normalize-space(), '{book_name}')]")
 
         return locator
 
@@ -57,54 +79,16 @@ class BooksPageLocators:
 
         return locator
 
-    # Локатор количества книг в карточке
-    @staticmethod
-    def get_book_quantity(quantity: int):
-        locator = (By.XPATH, f"//input[@id='input-quantity' and @value='{quantity}']")
-
-        return locator
-
-    # Список локаторов для всех книг в описании
-    @staticmethod
-    def get_books_in_description():
-        locators = [
-            (By.XPATH, "//div[@id='tab-description']//strong[contains(text(), 'Клякса в небе и фифти-фифти')]"),
-            (By.XPATH, "//div[@id='tab-description']//strong[contains(text(), '1000 лет одиночества')]"),
-            (By.XPATH, "//div[@id='tab-description']//strong[contains(text(), 'Обратный отсчет')]")
-        ]
-
-        return locators
-
-    # Локатор количества в закладках
+    #Локатор количества в закладках
     @staticmethod
     def get_count_of_bookmarks(count: int):
         locator = (By.XPATH, f"//span[contains(@class, 'd-lg-inline') and normalize-space()='Закладки ({count})']")
 
         return locator
 
-    # Локатор лейбла "Артикул" книги в карточке
-    ARTICLE_LABEL = (By.XPATH, "//li[contains(text(), 'Артикул')]")
+    #Локатор названия книг в описании карточки товара
+    @staticmethod
+    def get_name_book_in_description(name_in_description: str):
+        locator = (By.XPATH, f"//div[@id='tab-description']//strong[contains(text(), '{name_in_description}')]")
 
-    # Локатор кнопки + в карточке
-    PLUS_BUTTON = (By.XPATH, "//span[@class='bt_plus']")
-
-    # Локатор кнопки - в карточке
-    MINUS_BUTTON = (By.XPATH, "//span[@class='bt_minus']")
-
-    # Локатор кнопки "Добавить в избранное" в карточке
-    ADD_TO_FAVORITES_BUTTON = (By.XPATH, "//button[@title='Добавить в закладки']")
-
-    # Локатор кнопки "Удалить из закладок" в карточке
-    DELETE_FROM_FAVORITES_BUTTON = (By.XPATH, "//button[@title='Удалить из закладок']")
-
-    # Локатор названия книги "Клякса в небе и фифти-фифти" в описании карточки
-    KLYAKSA_BOOK = (By.XPATH, "//div[@id='tab-description']//strong[contains(text(), 'Клякса в небе и фифти-фифти')]")
-
-    # Локатор названия книги "1000 лет одиночества" в описании карточки
-    THOUSAND_YEARS_BOOK = (By.XPATH, "//div[@id='tab-description']//strong[contains(text(), '1000 лет одиночества')]")
-
-    # Локатор названия книги "Обратный отсчет" в описании карточки
-    COUNTDOWN_BOOK = (By.XPATH, "//div[@id='tab-description']//strong[contains(text(), 'Обратный отсчет')]")
-
-    # Локатор фразы "Книги поставляются с автографом автора" в описании карточки
-    PHRASE_AUTOGRAPH = (By.XPATH, "//div[@id='tab-description']//span[contains(text(), 'автографом')]")
+        return locator

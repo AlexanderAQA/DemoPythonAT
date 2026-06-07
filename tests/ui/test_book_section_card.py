@@ -1,9 +1,12 @@
+import random
 import allure
 import pytest
-from src.utils.test_data import USER_OLGA
+from src.utils.test_data import USER_OLGA, BOOK_1, BOOK_2, BOOK_3
+
 
 @allure.epic("Карточка товара раздела `Книги`")
-class TestMainPage:
+class TestBooksCardPage:
+    books_list = [BOOK_1, BOOK_2, BOOK_3]
 
     @pytest.mark.ui
     @allure.title("Карточка товара раздела `Книги`")
@@ -12,19 +15,15 @@ class TestMainPage:
         (login_page
          .authorization(USER_OLGA)
          .click_books_link())
-        book_name = "3 в 1: три книги Яна Арта из серии «Библиотека Finversia»"
-        expected_price = "1 480 ₽"
-        expected_article = "ФК0179"
-        bookmarks_count = 0
+        book = random.choice(self.books_list)
 
         (books_page
-          .scroll_to_book(book_name)
-          .click_book_name(book_name)
-          .assert_book_info_displayed(
-                book_cart_name=book_name,
-                book_price=expected_price,
-                article_code=expected_article
-          )
+          .scroll_to_book(book.name)
+          .click_book_name(book.name)
+          .assert_book_cart_name_displayed(book.name)
+          .assert_book_cart_price_displayed(book.price)
+          .assert_article_code_displayed(book.article)
+          .assert_article_label_displayed()
           .check_quantity_buttons()
-          .check_wishlist(count=bookmarks_count)
-          .assert_description_content())
+          .check_wishlist()
+          .assert_description_content(book.name))

@@ -6,7 +6,7 @@ from src.utils.test_data import USER_OLGA
 
 
 @allure.epic("Корзина")
-class TestMainPage:
+class TestBasketPage:
 
     @pytest.mark.ui
     @allure.title("Товары в корзине")

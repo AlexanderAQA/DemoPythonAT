@@ -44,3 +44,13 @@ class TestUsers:
     name: str
 
 USER_OLGA = TestUsers("helgaautotests@gmail.com", "Helgaautotests26", "Ольга")
+
+@dataclass
+class TestBooks:
+    name: str
+    price: str
+    article: str
+
+BOOK_1 = TestBooks("Клякса в небе и фифти-фифти","860 ₽", "ФК0176")
+BOOK_2 = TestBooks("1000 лет одиночества", "690 ₽","ФК0119")
+BOOK_3 = TestBooks("Обратный отсчет","390 ₽", "ФК0192")

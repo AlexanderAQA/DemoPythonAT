@@ -33,9 +33,10 @@ class BasePage:
             return WebDriverWait(self.driver, timeout).until(
                 EC.presence_of_element_located(locator)
             )
-        except TimeoutException as e:
-            print(f"[wait_for_element] Timeout: элемент {locator} не найден за {timeout} секунд!")
-            return False
+        except TimeoutException:
+            error_msg = f"[wait_for_element] Timeout: элемент {locator} не найден за {timeout} секунд!"
+            print(error_msg)
+            raise TimeoutException(error_msg)
         # TODO: Позже довести до ума
 
     def open_main_page(self):
