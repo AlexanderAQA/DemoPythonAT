@@ -1,7 +1,6 @@
 from pages.base_page import BasePage
 import allure
 from locators.books_page_locators import BooksPageLocators
-import re
 
 
 class BooksPage(BasePage):
@@ -116,8 +115,7 @@ class BooksPage(BasePage):
 
     def assert_description_content(self, expected_book_name: str):
         with allure.step(f"Проверка наличия названий книги и фразы про автограф в описании"):
-            if expected_book_name:
-                self.assert_element_is_visible(BooksPageLocators.get_name_book_in_description(expected_book_name))
+            self.assert_element_is_visible(BooksPageLocators.get_name_book_in_description(expected_book_name))
             self.assert_element_is_visible(BooksPageLocators.PHRASE_AUTOGRAPH)
 
         return self
