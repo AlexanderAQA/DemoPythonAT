@@ -95,21 +95,22 @@ class BooksPage(BasePage):
 
         return self
 
-    def check_wishlist(self, start_count: int = 0):
+    def check_wishlist(self):
         with allure.step(f"Проверка работы кнопки 'Добавить в избранное'"):
-            quantity_wishlist = start_count
-
-            expected_wishlist = quantity_wishlist + 1
+            text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
+            quantity_wishlist = int(text.split('(')[1].split(')')[0])
+            expected_list = quantity_wishlist + 1
             self.click(BooksPageLocators.ADD_TO_FAVORITES_BUTTON)
-            self.wait_for_element(BooksPageLocators.get_count_of_bookmarks(expected_wishlist))
-            actual_wishlist = expected_wishlist
-            self.asserts.assert_is_equal(expected_wishlist, actual_wishlist)
 
-            expected_wishlist = quantity_wishlist
+            text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
+            actual_list = int(text.split('(')[1].split(')')[0])
+            self.asserts.assert_is_equal(expected_list, actual_list)
+            expected_list = quantity_wishlist
             self.click(BooksPageLocators.DELETE_FROM_FAVORITES_BUTTON)
-            self.wait_for_element(BooksPageLocators.get_count_of_bookmarks(expected_wishlist))
-            actual_wishlist = expected_wishlist
-            self.asserts.assert_is_equal(expected_wishlist, actual_wishlist)
+
+            text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
+            actual_list = int(text.split('(')[1].split(')')[0])
+            self.asserts.assert_is_equal(expected_list, actual_list)
 
         return self
 
@@ -119,4 +120,3 @@ class BooksPage(BasePage):
             self.assert_element_is_visible(BooksPageLocators.PHRASE_AUTOGRAPH)
 
         return self
-

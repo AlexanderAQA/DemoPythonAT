@@ -36,6 +36,9 @@ class BooksPageLocators:
     # Локатор кнопки "Удалить из закладок" в карточке
     DELETE_FROM_FAVORITES_BUTTON = (By.XPATH, "//button[@title='Удалить из закладок']")
 
+    # Локатор количества в закладках
+    GET_COUNT_OF_BOOKMARKS = (By.XPATH, "//span[contains(@class, 'd-lg-inline') and contains(text(), 'Закладки')]")
+
     # Кнопка "Купить" в карточке книги
     @staticmethod
     def get_buy_button(book_name: str):
@@ -76,13 +79,6 @@ class BooksPageLocators:
     @staticmethod
     def get_book_article_code(article_code: str):
         locator = (By.XPATH, f"//li[contains(text(), 'Артикул')]/b[normalize-space()='{article_code}']")
-
-        return locator
-
-    #Локатор количества в закладках
-    @staticmethod
-    def get_count_of_bookmarks(count: int):
-        locator = (By.XPATH, f"//span[contains(@class, 'd-lg-inline') and normalize-space()='Закладки ({count})']")
 
         return locator
 
