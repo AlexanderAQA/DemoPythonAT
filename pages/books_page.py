@@ -119,3 +119,4 @@ class BooksPage(BasePage):
             self.assert_element_is_visible(BooksPageLocators.PHRASE_AUTOGRAPH)
 
         return self
+
