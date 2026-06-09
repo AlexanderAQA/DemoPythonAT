@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ "main", "add_ci_cd" ]
   schedule:
-    - cron: '35 16 * * *'
+    - cron: '37 16 * * *'
 
 permissions:
   contents: read
