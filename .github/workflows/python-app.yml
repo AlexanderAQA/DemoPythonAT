@@ -8,6 +8,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main", "add_ci_cd" ]
+  schedule:
+    - cron: '35 16 * * *'
 
 permissions:
   contents: read
@@ -36,4 +38,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test
       run: |
-        pytest -v -m ui
+        pytest -v -m ui --debug-mode true
