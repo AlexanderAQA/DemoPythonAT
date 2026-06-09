@@ -35,9 +35,12 @@ def driver(request):
     global driver
     # Инициализация хром драйвера
     chrome_options = Options()
-    chrome_options.add_argument("--start-maximized")
+    if os.getenv("CI"):
+        chrome_options.add_argument("--headless=new")
+    else:
+        chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-notifications")
-    # chrome_options.add_argument("--headless=new")
+
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
