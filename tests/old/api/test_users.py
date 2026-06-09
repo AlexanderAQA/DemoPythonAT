@@ -9,7 +9,7 @@ from src.utils.api_client import ApiClient
 class TestUsersApi:
 
     @pytest.mark.positive
-    @pytest.mark.api
+    # @pytest.mark.api
     @allure.title("GET-запрос по ID пользователя")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://testit.example.com/tc-221", name="ТК 221")
@@ -23,7 +23,7 @@ class TestUsersApi:
          .assert_is_equal(200, status_code))
 
     @pytest.mark.positive
-    @pytest.mark.api
+    # @pytest.mark.api
     @allure.title("POST-запрос для создание сообщения")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://testit.example.com/tc-1000", name="ТК 1000")
