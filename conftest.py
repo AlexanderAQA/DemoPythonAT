@@ -8,9 +8,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from pages.account_page import AccountPage
-from pages.books_page import BooksPage
-from pages.cart_page import CartPage
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -19,6 +16,9 @@ if project_root not in sys.path:
 
 from src.utils.api_client import ApiClient
 from src.screenshots import Screenshots
+from pages.account_page import AccountPage
+from pages.books_page import BooksPage
+from pages.cart_page import CartPage
 from pages.base_page import BasePage
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
@@ -98,7 +98,7 @@ def pytest_exception_interact(node, report):
         driver = getattr(node, "_driver", None)
         if driver:
             # Сохраняем скриншот
-            screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime("%H-%M-%S-%d-%m-%Y")}_{node.name}.png")
+            screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime('%H-%M-%S-%d-%m-%Y')}_{node.name}.png")
             os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
             driver.save_screenshot(screenshot_path)
             print(f"Скриншот сохранён: {screenshot_path}")
