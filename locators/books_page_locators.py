@@ -39,6 +39,9 @@ class BooksPageLocators:
     # Локатор количества в закладках
     GET_COUNT_OF_BOOKMARKS = (By.XPATH, "//span[contains(@class, 'd-lg-inline') and contains(text(), 'Закладки')]")
 
+    # Локатор цены книги в карточке
+    GET_BOOK_CART_PRICE = (By.XPATH, "//span[@class='price-new']")
+
     # Кнопка "Купить" в карточке книги
     @staticmethod
     def get_buy_button(book_name: str):
@@ -65,13 +68,6 @@ class BooksPageLocators:
     @staticmethod
     def get_book_cart_name(book_cart_name: str):
         locator = (By.XPATH, f"//h1[normalize-space()='{book_cart_name}']")
-
-        return locator
-
-    # Локатор цены книги в карточке
-    @staticmethod
-    def get_book_cart_price(book_price: str):
-        locator = (By.XPATH, f"//span[@class='price-new' and normalize-space()='{book_price}']")
 
         return locator
 

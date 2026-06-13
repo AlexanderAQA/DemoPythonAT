@@ -35,9 +35,7 @@ class BasePage:
             )
         except TimeoutException:
             error_msg = f"[wait_for_element] Timeout: элемент {locator} не найден за {timeout} секунд!"
-            print(error_msg)
-            raise TimeoutException(error_msg)
-        # TODO: Позже довести до ума
+            raise AssertionError(error_msg)
 
     def open_main_page(self):
         url = self.main_url
