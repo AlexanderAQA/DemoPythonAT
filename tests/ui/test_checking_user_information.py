@@ -4,7 +4,7 @@ from src.utils.test_data import USER_OLGA
 
 
 @allure.epic("Аккаунт")
-class TestMainPage:
+class TestUserInformationPage:
 
     @pytest.mark.ui
     @allure.title("Аккаунт пользователя")
