@@ -3,7 +3,6 @@ import allure
 import pytest
 from src.utils.test_data import USER_OLGA, BOOK_1, BOOK_2, BOOK_3
 
-
 @allure.epic("Карточка товара раздела `Книги`")
 class TestBooksCardPage:
     books_list = [BOOK_1, BOOK_2, BOOK_3]
@@ -19,19 +18,22 @@ class TestBooksCardPage:
 
         (books_page
             .scroll_to_book(book.name)
-            .click_book_name(book.name)
+            .click_book_by_name(book.name)
             .assert_book_cart_name_displayed(book.name)
             .assert_book_cart_price_displayed(book.price)
             .assert_article_code_displayed(book.article)
-            .assert_article_label_displayed()
-            .get_quantity_books()
+            .assert_article_label_displayed())
+
+        start_qty = books_page.get_quantity_books()
+        start_wishlist = books_page.get_wishlist_count()
+
+        (books_page
             .click_plus_button()
-            .assert_plus()
+            .assert_plus(start_qty + 1)
             .click_minus_button()
-            .assert_minus()
-            .get_wishlist_count()
+            .assert_minus(start_qty)
             .click_add_to_wishlist()
-            .assert_wishlist_count_add()
+            .assert_wishlist_count_add(start_wishlist + 1)
             .click_delete_from_wishlist()
-            .assert_wishlist_count_delete()
+            .assert_wishlist_count_delete(start_wishlist)
             .assert_description_content(book.name))

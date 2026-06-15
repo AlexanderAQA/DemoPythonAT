@@ -66,14 +66,14 @@ class BooksPageLocators:
 
     # Локатор названия книги в карточке
     @staticmethod
-    def get_book_cart_name(book_cart_name: str):
+    def get_book_cart_by_name(book_cart_name: str):
         locator = (By.XPATH, f"//h1[normalize-space()='{book_cart_name}']")
 
         return locator
 
     # Локатор артикула книги в карточке
     @staticmethod
-    def get_book_article_code(article_code: str):
+    def get_book_by_article(article_code: str):
         locator = (By.XPATH, f"//li[contains(text(), 'Артикул')]/b[normalize-space()='{article_code}']")
 
         return locator

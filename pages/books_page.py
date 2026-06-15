@@ -9,7 +9,7 @@ class BooksPage(BasePage):
         super().__init__(driver)
 
     def click_buy_button(self, book_name):
-        with allure.step(f"Клик по кнопке 'Купить'"):
+        with allure.step("Клик по кнопке 'Купить'"):
             self.wait_for()
             self.driver.switch_to.default_content()
             self.click(BooksPageLocators.get_buy_button(book_name))
@@ -50,7 +50,7 @@ class BooksPage(BasePage):
 
         return book_price
 
-    def click_book_name(self, book_name: str):
+    def click_book_by_name(self, book_name: str):
         with allure.step(f"Клик по карточке книги '{book_name}'"):
             element = self.wait_for_element(BooksPageLocators.get_book_name(book_name))
             self.driver.execute_script("arguments[0].click();", element)
@@ -58,8 +58,8 @@ class BooksPage(BasePage):
         return self
 
     def assert_book_cart_name_displayed(self, book_cart_name):
-        with allure.step(f"Проверка отображения названия, цены и артикула"):
-            self.assert_element_is_visible(BooksPageLocators.get_book_cart_name(book_cart_name))
+        with allure.step(f"Проверка отображения названия книги"):
+            self.assert_element_is_visible(BooksPageLocators.get_book_cart_by_name(book_cart_name))
 
         return self
 
@@ -75,7 +75,7 @@ class BooksPage(BasePage):
 
     def assert_article_code_displayed(self, article_code):
         with allure.step(f"Проверка отображения названия, цены и артикула"):
-            self.assert_element_is_visible(BooksPageLocators.get_book_article_code(article_code))
+            self.assert_element_is_visible(BooksPageLocators.get_book_by_article(article_code))
 
         return self
 
@@ -85,26 +85,12 @@ class BooksPage(BasePage):
 
         return self
 
-    # def check_quantity_buttons(self):
-    #     with allure.step(f"Проверка работы кнопок '+' и '-'"):
-    #         quantity_books = int(self.wait_for_element(BooksPageLocators.QUANTITY_BOOKS).get_attribute('value'))
-    #         expected_plus = quantity_books + 1
-    #         self.click(BooksPageLocators.PLUS_BUTTON)
-    #         actual_plus = int(self.wait_for_element(BooksPageLocators.QUANTITY_BOOKS).get_attribute('value'))
-    #         self.asserts.assert_is_equal(expected_plus, actual_plus)
-    #         expected_minus = quantity_books
-    #         self.click(BooksPageLocators.MINUS_BUTTON)
-    #         actual_minus = int(self.wait_for_element(BooksPageLocators.QUANTITY_BOOKS).get_attribute('value'))
-    #         self.asserts.assert_is_equal(expected_minus, actual_minus)
-    #
-    #     return self
-
     def get_quantity_books(self):
-        with allure.step(f"Получить и сохранить текущее количество"):
+        with allure.step(f"Получить текущее количество книг"):
             value = self.wait_for_element(BooksPageLocators.QUANTITY_BOOKS).get_attribute('value')
-            self.quantity_books = int(value)
+            quantity_books = int(value)
 
-            return self
+            return quantity_books
 
     def click_plus_button(self):
         with allure.step(f"Кликнуть плюс"):
@@ -112,13 +98,12 @@ class BooksPage(BasePage):
 
             return self
 
-    def assert_plus(self):
-        with allure.step(f"Проверить, что после плюса стало +1"):
-            expected_plus = self.quantity_books + 1
+    def assert_plus(self, expected_count):
+        with allure.step(f"Проверить, что после плюса стало {expected_count}"):
             actual_plus = int(self.wait_for_element(BooksPageLocators.QUANTITY_BOOKS).get_attribute('value'))
-            self.asserts.assert_is_equal(expected_plus, actual_plus)
+            self.asserts.assert_is_equal(expected_count, actual_plus)
 
-            return self
+        return self
 
     def click_minus_button(self):
         with allure.step(f"Кликнуть минус"):
@@ -126,32 +111,12 @@ class BooksPage(BasePage):
 
             return self
 
-    def assert_minus(self):
-        with allure.step(f"Проверить, что после минуса вернулось исходное"):
-            expected_minus = self.quantity_books
+    def assert_minus(self, expected_count):
+        with allure.step(f"Проверить, что после минуса вернулось {expected_count}"):
             actual_minus = int(self.wait_for_element(BooksPageLocators.QUANTITY_BOOKS).get_attribute('value'))
-            self.asserts.assert_is_equal(expected_minus, actual_minus)
+            self.asserts.assert_is_equal(expected_count, actual_minus)
 
-            return self
-
-    # def check_wishlist(self):
-    #     with allure.step(f"Проверка работы кнопки 'Добавить в избранное'"):
-    #         text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
-    #         quantity_wishlist = int(text.split('(')[1].split(')')[0])
-    #         expected_list = quantity_wishlist + 1
-    #         self.click(BooksPageLocators.ADD_TO_FAVORITES_BUTTON)
-    #
-    #         text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
-    #         actual_list = int(text.split('(')[1].split(')')[0])
-    #         self.asserts.assert_is_equal(expected_list, actual_list)
-    #         expected_list = quantity_wishlist
-    #         self.click(BooksPageLocators.DELETE_FROM_FAVORITES_BUTTON)
-    #
-    #         text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
-    #         actual_list = int(text.split('(')[1].split(')')[0])
-    #         self.asserts.assert_is_equal(expected_list, actual_list)
-    #
-    #     return self
+        return self
 
     def assert_description_content(self, expected_book_name: str):
         with allure.step(f"Проверка наличия названий книги и фразы про автограф в описании"):
@@ -163,9 +128,9 @@ class BooksPage(BasePage):
     def get_wishlist_count(self):
         with allure.step(f"Получить текущее количество избранного"):
             text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
-            self.wishlist_count = int(text.split('(')[1].split(')')[0])
+            wishlist_count = int(text.split('(')[1].split(')')[0])
 
-            return self
+            return wishlist_count
 
     def click_add_to_wishlist(self):
         with allure.step(f"Кликнуть на добавить в избранное"):
@@ -173,14 +138,13 @@ class BooksPage(BasePage):
 
             return self
 
-    def assert_wishlist_count_add(self):
-        with allure.step(f"Проверить что значения совпадают с ожидаемым (+1)"):
-            expected = self.wishlist_count + 1
+    def assert_wishlist_count_add(self, expected_count):
+        with allure.step(f"Проверить количество закладок после добавления +1"):
             text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
             actual_list = int(text.split('(')[1].split(')')[0])
-            self.asserts.assert_is_equal(expected, actual_list)
+            self.asserts.assert_is_equal(expected_count, actual_list)
 
-            return self
+        return self
 
     def click_delete_from_wishlist(self):
         with allure.step(f"Кликнуть на удалить из избранного"):
@@ -188,11 +152,10 @@ class BooksPage(BasePage):
 
             return self
 
-    def assert_wishlist_count_delete(self):
-        with allure.step(f"Проверить что значения совпадают с ожидаемым (-1)"):
-            expected = self.wishlist_count
+    def assert_wishlist_count_delete(self, expected_count):
+        with allure.step(f"Проверить количество закладок после удаления -1"):
             text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
             actual_list = int(text.split('(')[1].split(')')[0])
-            self.asserts.assert_is_equal(expected, actual_list)
+            self.asserts.assert_is_equal(expected_count, actual_list)
 
-            return self
+        return self
