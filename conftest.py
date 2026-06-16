@@ -39,8 +39,9 @@ def driver(request):
         chrome_options.add_argument("--headless=new")
     else:
         chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument('--ignore-certificate-errors')
+        chrome_options.add_argument('--allow-running-insecure-content')
     chrome_options.add_argument("--disable-notifications")
-
 
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
