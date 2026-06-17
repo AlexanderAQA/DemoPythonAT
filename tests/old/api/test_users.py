@@ -1,6 +1,6 @@
 import allure
 import pytest
-from src.utils.api_client import ApiClient
+from src.utils.old_api_client import ApiClient
 
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.epic("Sign")
