@@ -24,3 +24,9 @@ class CommonAssertions:
     def to_parent_page(self):
         """Возврат на родительскую страницу"""
         return self.parent_page
+
+    def assert_text_match(self, expected_text, actual_text):
+        with allure.step("Проверка, что ожидаемый текст содержится в фактическом"):
+            assert expected_text in actual_text, f"Text '{expected_text}' not found in: {actual_text}"
+
+            return self
