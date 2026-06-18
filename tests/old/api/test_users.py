@@ -5,7 +5,7 @@ from src.utils.old_api_client import ApiClient
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.epic("Sign")
 @allure.story("Sign Feature Functionality")
-@allure.severity(allure.severity_level.BLOCKER)
+
 class TestUsersApi:
 
     @pytest.mark.positive
