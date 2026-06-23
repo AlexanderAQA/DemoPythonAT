@@ -18,11 +18,9 @@ class TestAuthMethod:
             password=user.password
         )
 
-        # Проверка, что есть токен
-        assert customer_token, "Customer token not received after login"
-
-        # проверка успешного логина
+        # проверка успешного логина и что есть токен
         (api_client.assertions
+         .assert_symbol_length(26, customer_token)
          .assert_is_equal(200, login_status))
 
         # Данные для проверки

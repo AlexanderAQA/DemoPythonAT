@@ -58,7 +58,7 @@ class ApiClient:
         # Поиск login_token
         token_match = re.search(r'login_token=([a-zA-Z0-9]+)', form_resp.text)
         if not token_match:
-            return None, form_resp.status_code
+            return False, form_resp.status_code
 
         login_token = token_match.group(1)
 
@@ -82,17 +82,13 @@ class ApiClient:
         customer_token = None
 
         # Парсим JSON ответ
-        try:
-            data = response.json()
-            redirect_url = data.get("redirect", "")
+        data = response.json()
+        redirect_url = data.get("redirect", "")
 
-            # Ищем customer_token в URL редиректа
-            token_match = re.search(r'customer_token=([a-zA-Z0-9]+)', redirect_url)
-            if token_match:
-                customer_token = token_match.group(1)
-                print(f"[LOGIN] Token found in redirect URL: {customer_token[:10]}...")
-        except:
-            pass
+        # Ищем customer_token в URL редиректа
+        token_match = re.search(r'customer_token=([a-zA-Z0-9]+)', redirect_url)
+        if token_match:
+            customer_token = token_match.group(1)
 
         # Если не найден в redirect, ищем в cookie
         if not customer_token:
