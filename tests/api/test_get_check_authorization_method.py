@@ -41,3 +41,4 @@ class TestAuthMethod:
          .assert_text_match(expected_username, response_html)
          .assert_text_match(expected_token_param, response_html)
          .assert_text_match(expected_logout_link, response_html))
+
