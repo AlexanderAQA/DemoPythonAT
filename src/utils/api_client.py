@@ -33,10 +33,9 @@ class ApiClient:
         response = self.session.post(url, headers=self.headers, data=payload)
 
         try:
-            if response.headers.get('content-type') == 'application/json':
-                return response.json(), response.status_code
+            return response.json(), response.status_code
         except ValueError:
-            return {"error": "Невалидный JSON"}, response.status_code
+            raise ValueError("Невалидный JSON")
 
     def get_account_page(self, customer_token: str):
         """GET запрос к личному кабинету с токеном"""
