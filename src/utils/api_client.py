@@ -94,3 +94,29 @@ class ApiClient:
             customer_token = self.session.cookies.get("customer_token")
 
         return customer_token, response.status_code
+
+
+    def post_login(self, email: str, password: str, login_token):
+        """Авторизация с извлечением токена из redirect URL"""
+
+        # страница логина для того чтобы сайт пустил пользователя
+        form_url = f"{self.base_url}?route=account/login"
+        form_resp = self.session.get(form_url, headers=self.headers)
+
+        # POST-запрос
+        login_url = f"{self.base_url}?route=account/login.login&login_token={login_token}"
+
+        encoded_email = quote(email, safe='')
+        payload = f"email={encoded_email}&password={quote(password, safe='')}&redirect={quote(self.base_url + 'account', safe='')}"
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-Requested-With": "XMLHttpRequest",
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "Referer": f"{self.base_url}login"
+        }
+
+        response = self.session.post(login_url, headers=headers, data=payload, allow_redirects=False)
+
+        return response.json(), response.status_code

@@ -46,26 +46,17 @@ def test_auth_with_invalid_token(api_client):
     invalid_token = "12345_fake_token"
 
     # Маркеры страницы входа
-    expected_url = 'content="https://shop.finarty.ru/login"'
-    expected_title = "Авторизация"
-    expected_password_field = "input-password"
-    expected_login_button = ">Войти</"
+    expected_url = {'redirect': 'https://shop.finarty.ru/login'}
     expected_username = USER_OLGA.name
 
     # Запрос с невалидным токеном
-    response_html, status_code = api_client.get_account_page(customer_token=invalid_token)
+    response_html, status_code = api_client.post_login(USER_OLGA.login, USER_OLGA.password, invalid_token)
 
     # Проверки
     (api_client.assertions
-     .assert_is_equal(200, status_code)  # что страница загрузилась (там нет кодов ошибок нигде, только 200 и редирект на страницу логина)
-     .assert_text_match(expected_title, response_html)  # что есть заголовок "Авторизация"
-     .assert_text_match(expected_url, response_html)  # в url есть /login
-     .assert_text_match(expected_password_field, response_html)  # что есть поле пароля
-     .assert_text_match(expected_login_button, response_html))  # что есть кнопка "Войти"
+     .assert_is_equal(200, status_code)
+     .assert_is_equal(expected_url, response_html)
+     .assert_text_match("redirect", response_html)
+     .assert_not_match(expected_username, response_html))
 
-    # Проверка, что пользователь не авторизован с невалидным токеном
-    assert expected_username not in response_html, (
-        f"Пользователь '{expected_username}' найден на странице входа."
-        f"Пользователь авторизовался с невалидным токеном."
-    )
 
