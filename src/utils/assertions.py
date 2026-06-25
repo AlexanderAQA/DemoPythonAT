@@ -36,3 +36,11 @@ class CommonAssertions:
             assert len(actual_text) == expected_length, "Количество символов не совпадает с ожидаемым"
 
             return self
+
+    def assert_not_match(self, expected, actual):
+        with allure.step("Проверка что текст не совпадает с фактическим"):
+            assert expected not in actual, (
+                f"Текст '{expected}' найден на странице, но не должен был там находиться."
+            )
+
+            return self
