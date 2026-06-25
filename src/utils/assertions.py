@@ -30,3 +30,9 @@ class CommonAssertions:
             assert expected_text in actual_text, f"Text '{expected_text}' not found in: {actual_text}"
 
             return self
+
+    def assert_symbol_length(self, expected_length, actual_text):
+        with allure.step("Проверка количества букв и чисел в строке"):
+            assert len(actual_text) == expected_length, "Количество символов не совпадает с ожидаемым"
+
+            return self
