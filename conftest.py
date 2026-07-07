@@ -11,6 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
+from src.utils.api_client_hh import ApiHH
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -139,4 +140,8 @@ def books_page(driver):
 def cart_page(driver):
     page = CartPage(driver)
     yield page
+
+@pytest.fixture(scope="function", autouse=True)
+def api_client_hh():
+    return ApiHH()
 
