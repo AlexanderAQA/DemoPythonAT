@@ -12,6 +12,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from src.utils.api_client_hh import ApiHH
+from src.utils.api_client_weather import ApiWeather
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -144,4 +145,8 @@ def cart_page(driver):
 @pytest.fixture(scope="function", autouse=True)
 def api_client_hh():
     return ApiHH()
+
+@pytest.fixture(scope="function")
+def api_client_weather():
+    return ApiWeather()
 
