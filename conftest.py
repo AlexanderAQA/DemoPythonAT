@@ -149,4 +149,3 @@ def api_client_hh():
 @pytest.fixture(scope="function")
 def api_client_weather():
     return ApiWeather()
-

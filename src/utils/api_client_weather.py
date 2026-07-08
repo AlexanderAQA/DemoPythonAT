@@ -45,3 +45,4 @@ class ApiWeather:
 		current_relative_humidity_2m = current.Variables(1).Value()
 		print(f"Температура: {current_temperature_2m}")
 		print(f"Влажность воздуха: {current_relative_humidity_2m}")
+		return current_temperature_2m, current_relative_humidity_2m

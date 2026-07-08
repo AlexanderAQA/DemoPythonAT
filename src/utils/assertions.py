@@ -44,3 +44,10 @@ class CommonAssertions:
             )
 
             return self
+
+    def assert_is_not_none(self, actual):
+        """Проверяем, что значение не None"""
+        with allure.step(f"Проверяем, что значение не None"):
+            assert actual is not None, f"Ожидали не None, но получили: {actual}"
+
+            return self
