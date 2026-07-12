@@ -51,3 +51,4 @@ class CommonAssertions:
             assert actual is not None, f"Ожидали не None, но получили: {actual}"
 
             return self
+

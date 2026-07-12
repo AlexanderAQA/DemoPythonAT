@@ -1,40 +1,48 @@
 import allure
 import pytest
 import re
+from jsonschema import validate, ValidationError
+from src.schemas.weather_schema import WEATHER_RESPONSE_SCHEMA
 
 
 class TestWeather:
 
     @pytest.mark.positive
     @pytest.mark.api
-    @allure.title("Получения страны из справочника")
-    def test_get_weather(self, api_client_weather, capsys):
-        #  Шаг 1: Вызов метода
-        api_client_weather.get_weather()
+    @allure.title("Получение погоды")
+    def test_get_weather(self, api_client_weather):
+        body, status_code = api_client_weather.get_weather_requests()
 
-        # Шаг 2: Перехват вывода консоли
-        captured = capsys.readouterr()
-        output = captured.out
+        temperature = body["current"]["temperature_2m"]
+        humidity = body["current"]["relative_humidity_2m"]
+        print(f"{temperature}°C, {humidity}%")
 
-        # Шаг 3: Извлечение данных через regex
-        temp_match = re.search(r'Температура:\s*([-\d.]+)', output)
-        humidity_match = re.search(r'Влажность воздуха:\s*([\d.]+)', output)
-
-        assert temp_match, f"Не найдена температура в выводе:\n{output}"
-        assert humidity_match, f"Не найдена влажность в выводе:\n{output}"
-
-        temperature = float(temp_match.group(1))
-        humidity = float(humidity_match.group(1))
-
-        # Чтобы было видно в консоли, что там есть какие-то данные
-        print(f"\n Температура: {temperature}")
-        print(f" Влажность воздуха: {humidity}")
-
-        #  Шаг 4: Проверки
         (api_client_weather.assertions
+         .assert_is_equal(200, status_code)
          .assert_is_not_none(temperature)
          .assert_is_not_none(humidity))
 
-        # Проверка диапазонов
+        assert isinstance(temperature, (int, float)), f"Температура должна быть числом"
+        assert isinstance(humidity, (int, float)), f"Влажность должна быть числом"
         assert -50 <= temperature <= 60, f"Температура вне пределов: {temperature}°C"
         assert 0 <= humidity <= 100, f"Влажность вне пределов: {humidity}%"
+
+
+    def test_get_weather_schema_validation(self, api_client_weather):
+        """Проверка, что ответ API соответствует ожидаемой JSON-схеме"""
+        body, status_code = api_client_weather.get_weather_requests()
+
+        api_client_weather.assertions.assert_is_equal(200, status_code)
+
+        try:
+            validate(instance=body, schema=WEATHER_RESPONSE_SCHEMA)
+        except ValidationError as e:
+            pytest.fail(f"JSON не соответствует схеме: {e.message}\nПуть: {' -> '.join(map(str, e.path))}")
+
+        temperature = body["current"]["temperature_2m"]
+        humidity = body["current"]["relative_humidity_2m"]
+        print(f"{temperature}°C, {humidity}%")
+
+        assert -50 <= temperature <= 60, f"Температура вне пределов: {temperature}°C"
+        assert 0 <= humidity <= 100, f"Влажность вне пределов: {humidity}%"
+
