@@ -142,7 +142,7 @@ def cart_page(driver):
     page = CartPage(driver)
     yield page
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 def api_client_hh():
     return ApiHH()
 

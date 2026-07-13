@@ -1,4 +1,5 @@
 import allure
+from collections.abc import Sized
 
 
 class CommonAssertions:
@@ -45,10 +46,16 @@ class CommonAssertions:
 
             return self
 
-    def assert_is_not_none(self, actual):
-        """Проверяем, что значение не None"""
-        with allure.step(f"Проверяем, что значение не None"):
-            assert actual is not None, f"Ожидали не None, но получили: {actual}"
+    def assert_is_not_empty(self, actual):
+        """Проверка: значение не None и не пустое"""
+        with allure.step(f"Проверка на непустое значение: {actual!r}"):
+            # Проверка None
+            assert actual is not None, "Ожидали значение, но получили None"
+
+            # Если объект имеет длину (строка, список, dict): проверка, что она > 0
+            if isinstance(actual, Sized):
+                assert len(actual) > 0, (
+                    f"Ожидали непустое значение, но получили пустое: {actual!r}"
+                )
 
             return self
-

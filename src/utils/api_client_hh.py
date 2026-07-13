@@ -1,13 +1,11 @@
 import requests
 from src.utils.assertions import CommonAssertions
 
-
-
 class ApiHH:
     def __init__(self):
         self.assertions = CommonAssertions(self)
         # Базовый URL магазина
-        self.base_url = "https://hh.ru/"
+        self.base_url = "https://api.hh.ru"
 
         # Сохраняет куки между запросами
         self.session = requests.Session()
@@ -21,8 +19,10 @@ class ApiHH:
         }
 
     def get_country_hh_user(self):
-        url = f"{self.base_url}areas/countries"
-
+        url = f"{self.base_url.rstrip('/')}/areas"
         response = self.session.get(url, headers=self.headers)
 
-        return response.text, response.status_code
+        if "application/json" not in response.headers.get("content-type", ""):
+            raise ValueError(f"Server returned non-JSON: {response.status_code}")
+
+        return response.json(), response.status_code

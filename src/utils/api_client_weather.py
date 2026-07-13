@@ -1,7 +1,6 @@
 import requests
 from src.utils.assertions import CommonAssertions
 
-
 class ApiWeather:
     def __init__(self):
         self.assertions = CommonAssertions(self)
