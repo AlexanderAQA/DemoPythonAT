@@ -8,22 +8,22 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from pages.account_page import AccountPage
-from pages.books_page import BooksPage
-from pages.cart_page import CartPage
-from src.utils.api_client_hh import ApiHH
-from src.utils.api_client_weather import ApiWeather
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from src.utils.api_client_hh import ApiHH
+from src.utils.api_client_weather import ApiWeather
 from src.utils.api_client import ApiClient
 from src.screenshots import Screenshots
 from pages.base_page import BasePage
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
+from pages.account_page import AccountPage
+from pages.books_page import BooksPage
+from pages.cart_page import CartPage
 from src.utils.test_data import generate_random_string
 
 logger = logging.getLogger(__name__)
@@ -33,14 +33,23 @@ def pytest_addoption(parser):
 
 @pytest.fixture(autouse=True)
 def driver(request):
-    # if not request.node.get_closest_marker("api"):
+    if request.node.get_closest_marker("api"):
+        yield None
+        return
+    else:
         logger.debug(f"driver: request\n{request}")
         global driver
         # Инициализация хром драйвера
         chrome_options = Options()
-        chrome_options.add_argument("--start-maximized")
+
+
+        if os.getenv("CI"):
+            chrome_options.add_argument("--headless=new")
+        else:
+            chrome_options.add_argument("--start-maximized")
+            chrome_options.add_argument('--ignore-certificate-errors')
+            chrome_options.add_argument('--allow-running-insecure-content')
         chrome_options.add_argument("--disable-notifications")
-        # chrome_options.add_argument("--headless=new")
 
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
@@ -101,7 +110,8 @@ def pytest_exception_interact(node, report):
         driver = getattr(node, "_driver", None)
         if driver:
             # Сохраняем скриншот
-            screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime("%H-%M-%S-%d-%m-%Y")}_{node.name}.png")
+            screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime('%H-%M-%S-%d-%m-%Y')}_"
+                                                                f"{node.name}.png")
             os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
             driver.save_screenshot(screenshot_path)
             print(f"Скриншот сохранён: {screenshot_path}")
