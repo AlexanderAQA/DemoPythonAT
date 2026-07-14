@@ -4,7 +4,7 @@ from src.utils.assertions import CommonAssertions
 class ApiHH:
     def __init__(self):
         self.assertions = CommonAssertions(self)
-        # Базовый URL магазина
+        # Базовый URL
         self.base_url = "https://api.hh.ru"
 
         # Сохраняет куки между запросами

@@ -20,15 +20,11 @@ class TestWeather:
         api_client_weather.assertions.assert_is_equal(200, status_code)
 
         # Валидация структуры ответа по JSON-схеме
-        try:
-            validate(instance=body, schema=WEATHER_RESPONSE_SCHEMA)
-        except ValidationError as e:
-            pytest.fail(f"JSON не соответствует схеме: {e.message}\nПуть: {' -> '.join(map(str, e.path))}")
+        validate(instance=body, schema=WEATHER_RESPONSE_SCHEMA)
 
         # Извлечение и проверка температуры и влажности
         temperature = body["current"]["temperature_2m"]
         humidity = body["current"]["relative_humidity_2m"]
-        print(f"{temperature}°C, {humidity}%")
 
         # Ассерты
         (api_client_weather.assertions

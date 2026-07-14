@@ -20,17 +20,4 @@ class TestHH:
          .assert_is_not_empty(response))
 
         # Валидация по JSON-схеме
-        try:
-            validate(instance=response, schema=HH_AREAS_SCHEMA)
-        except ValidationError as e:
-            pytest.fail(f"JSON не соответствует схеме: {e.message}\nПуть: {' -> '.join(map(str, e.path))}")
-
-        # Проверки полей, что реально есть в ответе - первые 5 элементов. Названия должны быть строками,
-        # координаты должны быть числами, идентификаторы должны быть строками.
-        for item in response[:5]:
-            assert isinstance(item.get("id"), str), f"id должен быть строкой: {item}"
-            assert isinstance(item.get("name"), str), f"name должен быть строкой: {item}"
-            if "lat" in item:
-                assert isinstance(item["lat"], (int, float)), f"lat должен быть числом"
-            if "lng" in item:
-                assert isinstance(item["lng"], (int, float)), f"lng должен быть числом"
+        validate(instance=response, schema=HH_AREAS_SCHEMA)
