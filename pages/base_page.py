@@ -53,11 +53,11 @@ class BasePage:
             return self
 
     def enter_text(self, locator, text):
-        element = self.wait_for_element(locator)
-        print(f"Очищаем поле")
-        element.clear()
-        print(f"Вводим текст: '{text}'")
-        element.send_keys(text)
+        with allure.step("Очистка поля"):
+            element = self.wait_for_element(locator)
+            element.clear()
+        with allure.step(f"Вводим текст '{text}'"):
+            element.send_keys(text)
         return self
 
     def get_element_text(self, locator):
