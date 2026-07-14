@@ -1,4 +1,5 @@
 import allure
+from collections.abc import Sized
 
 
 class CommonAssertions:
@@ -42,5 +43,19 @@ class CommonAssertions:
             assert expected not in actual, (
                 f"Текст '{expected}' найден на странице, но не должен был там находиться."
             )
+
+            return self
+
+    def assert_is_not_empty(self, actual):
+        """Проверка: значение не None и не пустое"""
+        with allure.step(f"Проверка на непустое значение: {actual!r}"):
+            # Проверка None
+            assert actual is not None, "Ожидали значение, но получили None"
+
+            # Если объект имеет длину (строка, список, dict): проверка, что она > 0
+            if isinstance(actual, Sized):
+                assert len(actual) > 0, (
+                    f"Ожидали непустое значение, но получили пустое: {actual!r}"
+                )
 
             return self

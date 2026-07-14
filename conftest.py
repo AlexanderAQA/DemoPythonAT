@@ -11,6 +11,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
+from src.utils.api_client_hh import ApiHH
+from src.utils.api_client_weather import ApiWeather
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -31,22 +33,23 @@ def pytest_addoption(parser):
 
 @pytest.fixture(autouse=True)
 def driver(request):
-    logger.debug(f"driver: request\n{request}")
-    global driver
-    # Инициализация хром драйвера
-    chrome_options = Options()
-    chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument("--disable-notifications")
-    # chrome_options.add_argument("--headless=new")
+    # if not request.node.get_closest_marker("api"):
+        logger.debug(f"driver: request\n{request}")
+        global driver
+        # Инициализация хром драйвера
+        chrome_options = Options()
+        chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument("--disable-notifications")
+        # chrome_options.add_argument("--headless=new")
 
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
-    driver.implicitly_wait(4)
-    request.node._driver = driver
-    logger.debug("yield driver")
-    yield driver
-    logger.debug(f"Закрываем вебдрайвер: {driver.current_url}")
-    driver.quit()
+        driver.implicitly_wait(4)
+        request.node._driver = driver
+        logger.debug("yield driver")
+        yield driver
+        logger.debug(f"Закрываем вебдрайвер: {driver.current_url}")
+        driver.quit()
 
 @pytest.fixture()
 def clear_cookies(driver):
@@ -121,7 +124,7 @@ def main_page(driver):
     page = MainPage(driver)
     yield page
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 def api_client():
     return ApiClient()
 
@@ -140,3 +143,10 @@ def cart_page(driver):
     page = CartPage(driver)
     yield page
 
+@pytest.fixture(scope="function")
+def api_client_hh():
+    return ApiHH()
+
+@pytest.fixture(scope="function")
+def api_client_weather():
+    return ApiWeather()

@@ -1,8 +1,7 @@
 import requests
 from src.utils.assertions import CommonAssertions
 import re
-from urllib.parse import quote, urlparse, parse_qs
-
+from urllib.parse import quote
 
 class ApiClient:
     def __init__(self):
