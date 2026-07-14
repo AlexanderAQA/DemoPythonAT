@@ -35,46 +35,77 @@ class TestWeather:
         assert -50 <= temperature <= 60, f"Температура вне пределов: {temperature}°C"
         assert 0 <= humidity <= 100, f"Влажность вне пределов: {humidity}%"
 
-    @pytest.mark.positive
+    @pytest.mark.negative
     @pytest.mark.api
-    @allure.title("Неверные параметры погоды")
+    @allure.title("Неверные параметры широта/долгота")
     def test_get_weather_negative_lat_long(self, api_client_weather):
-        """Проверка, что ответ API соответствует JSON-схеме.
-        Получение погоды"""
-
         # Получаем ответ
         body, status_code = api_client_weather.get_weather_by_params(56*8584, -56.8584,
                                                                      ["temperature_2m", "relative_humidity_2m"], "auto",
                                                                      api_client_weather.base_url)
 
-        # Базовая проверка статуса
-        api_client_weather.assertions.assert_is_equal(400, status_code)
-
-        print(body)
-
         # Ассерты
         (api_client_weather.assertions
+         .assert_is_equal(400, status_code)
          .assert_is_equal({'error': True, 'reason': 'Latitude must be in range of -90 to 90°. Given: 480704.0.'}, body))
+        print(body)
 
-    @pytest.mark.positive
+
+    @pytest.mark.negative
     @pytest.mark.api
-    @allure.title("Неверные параметры погоды")
+    @allure.title("Неверные параметры температурыы")
     def test_get_weather_negative_current(self, api_client_weather):
-        """Проверка, что ответ API соответствует JSON-схеме.
-        Получение погоды"""
-
         # Получаем ответ
         body, status_code = api_client_weather.get_weather_by_params(56.8584, 35.9006,
                                                                      ["temperature", 123], "auto",
                                                                      api_client_weather.base_url)
 
-        # Базовая проверка статуса
-        api_client_weather.assertions.assert_is_equal(400, status_code)
-
-        print(body)
-
         # Ассерты
         (api_client_weather.assertions
+         .assert_is_equal(400, status_code)
          .assert_is_equal({'reason': "Data corrupted at path ''. Cannot initialize SurfacePressureAndHeightVariable"
                                      "<VariableAndPreviousDay, VariableOrSpread<ForecastPressureVariable>, "
                                      "ForecastHeightVariable> from invalid String value 123.", 'error': True}, body))
+        print(body)
+
+
+    @pytest.mark.negative
+    @pytest.mark.api
+    @allure.title("Неверный URL")
+    def test_get_weather_invalid_url(self, api_client_weather):
+
+        invalid_url = f"{api_client_weather.base_url.rstrip('/')}/wrong-path"
+
+        # Получаем ответ
+        body, status_code = api_client_weather.get_weather_by_params(
+            56.8584, 35.9006,
+            ["temperature_2m", "relative_humidity_2m"],
+            "auto",
+            invalid_url
+        )
+
+        # Ассерты
+        (api_client_weather.assertions
+         .assert_is_equal(404, status_code)
+         .assert_is_equal({'reason': 'Not Found', 'error': True}, body))
+        print(body)
+
+
+    @pytest.mark.negative
+    @pytest.mark.api
+    @allure.title("Неверный HTTP-метод (POST вместо GET)")
+    def test_get_weather_invalid_method(self, api_client_weather):
+        # Получаем ответ
+        body, status_code = api_client_weather.get_weather_by_params(
+            56.8584, 35.9006,
+            ["temperature_2m", "relative_humidity_2m"],
+            "auto",
+            api_client_weather.base_url,
+            method='POST'
+        )
+
+        # Ассерты
+        (api_client_weather.assertions
+         .assert_is_equal(415, status_code)
+         .assert_is_equal({'error': True, 'reason': "Can't decode data without a content type"}, body))
+        print(body)
