@@ -8,22 +8,22 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from pages.account_page import AccountPage
-from pages.books_page import BooksPage
-from pages.cart_page import CartPage
-from src.utils.api_client_hh import ApiHH
-from src.utils.api_client_weather import ApiWeather
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from src.utils.api_client_hh import ApiHH
+from src.utils.api_client_weather import ApiWeather
 from src.utils.api_client import ApiClient
 from src.screenshots import Screenshots
 from pages.base_page import BasePage
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
+from pages.account_page import AccountPage
+from pages.books_page import BooksPage
+from pages.cart_page import CartPage
 from src.utils.test_data import generate_random_string
 
 logger = logging.getLogger(__name__)
