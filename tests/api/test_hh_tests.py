@@ -14,7 +14,7 @@ class TestHH:
         # Получаем ответ
         response, status_code = api_client_hh.get_country_hh_user()
 
-        # 🔹Проверяем статус
+        # Проверяем статус
         (api_client_hh.assertions
          .assert_is_equal(200, status_code)
          .assert_is_not_empty(response))
