@@ -26,27 +26,16 @@ class ApiWeather:
 
         return body, response.status_code
 
-    # def get_weather(self):
-    #     params = {
-    #         "latitude": 56.8584,
-    #         "longitude": 35.9006,
-    #         "current": [
-    #             "temperature_2m",
-    #             "relative_humidity_2m"
-    #         ],
-    #         "timezone": "auto",
-    #     }
-    #     responses = self.openmeteo.weather_api(self.base_url, params=params)
-    #
-    #     # Process first location. Add a for-loop for multiple locations or weather models
-    #     response = responses[0]
-    #     print(f"\nКоординаты: {response.Latitude()}°N {response.Longitude()}°E")
-    #     print(f"Elevation: {response.Elevation()} m asl")
-    #     print(f"Timezone: {response.Timezone()}{response.TimezoneAbbreviation()}")
-    #     # print(f"Timezone difference to GMT+0: {response.UtcOffsetSeconds()}s")
-    #     current = response.Current()
-    #     current_temperature_2m = current.Variables(0).Value()
-    #     current_relative_humidity_2m = current.Variables(1).Value()
-    #     print(f"Температура: {current_temperature_2m}")
-    #     print(f"Влажность воздуха: {current_relative_humidity_2m}")
-    #     return current_temperature_2m, current_relative_humidity_2m
+    def get_weather_by_params(self, latitude, longitude, current, timezone, url):
+        """Получение погоды , возвращает (body, status_code)"""
+        params = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "current": current,
+            "timezone": timezone
+        }
+
+        response = requests.get(url, params=params)
+        body = response.json()
+
+        return body, response.status_code
