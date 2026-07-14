@@ -33,7 +33,10 @@ def pytest_addoption(parser):
 
 @pytest.fixture(autouse=True)
 def driver(request):
-    if not request.node.get_closest_marker("api"):
+    if request.node.get_closest_marker("api"):
+        yield None
+        return
+    else:
         logger.debug(f"driver: request\n{request}")
         global driver
         # Инициализация хром драйвера
