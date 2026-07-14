@@ -33,22 +33,23 @@ def pytest_addoption(parser):
 
 @pytest.fixture(autouse=True)
 def driver(request):
-    logger.debug(f"driver: request\n{request}")
-    global driver
-    # Инициализация хром драйвера
-    chrome_options = Options()
-    chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument("--disable-notifications")
-    # chrome_options.add_argument("--headless=new")
+    if not request.node.get_closest_marker("api"):
+        logger.debug(f"driver: request\n{request}")
+        global driver
+        # Инициализация хром драйвера
+        chrome_options = Options()
+        chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument("--disable-notifications")
+        # chrome_options.add_argument("--headless=new")
 
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
-    driver.implicitly_wait(4)
-    request.node._driver = driver
-    logger.debug("yield driver")
-    yield driver
-    logger.debug(f"Закрываем вебдрайвер: {driver.current_url}")
-    driver.quit()
+        driver.implicitly_wait(4)
+        request.node._driver = driver
+        logger.debug("yield driver")
+        yield driver
+        logger.debug(f"Закрываем вебдрайвер: {driver.current_url}")
+        driver.quit()
 
 @pytest.fixture()
 def clear_cookies(driver):
@@ -123,7 +124,7 @@ def main_page(driver):
     page = MainPage(driver)
     yield page
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 def api_client():
     return ApiClient()
 
