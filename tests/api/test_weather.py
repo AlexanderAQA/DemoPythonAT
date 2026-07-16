@@ -110,3 +110,8 @@ class TestWeather:
         (api_client_weather.assertions
          .assert_is_equal(415, status_code)
          .assert_is_equal({'error': True, 'reason': "Can't decode data without a content type"}, body))
+
+    @pytest.mark.positive
+    @pytest.mark.api
+    @allure.title("Почасовые данные погоды")
+    def test_get_weather_hourly(self, api_client_weather):
