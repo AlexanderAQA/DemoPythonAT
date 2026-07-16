@@ -26,7 +26,7 @@ class ApiWeather:
 
         return body, response.status_code
 
-    def get_weather_by_params(self, latitude, longitude, current, timezone, url, method='GET'):
+    def get_weather_by_params(self, latitude, longitude, current, timezone, url, method=requests.get):
         """Получение погоды. Возвращает (body, status_code)"""
         params = {
             "latitude": latitude,
@@ -35,7 +35,7 @@ class ApiWeather:
             "timezone": timezone
         }
 
-        response = requests.request(method.upper(), url, params=params)
+        response = method(url=url, params=params)
         body = response.json()
 
         return body, response.status_code

@@ -1,5 +1,6 @@
 import allure
 import pytest
+import requests
 from jsonschema import validate, ValidationError
 from src.schemas.weather_schema import WEATHER_RESPONSE_SCHEMA
 
@@ -102,7 +103,7 @@ class TestWeather:
             ["temperature_2m", "relative_humidity_2m"],
             "auto",
             api_client_weather.base_url,
-            method='POST'
+            method=requests.post
         )
 
         # Ассерты
