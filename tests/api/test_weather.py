@@ -115,3 +115,113 @@ class TestWeather:
     @pytest.mark.api
     @allure.title("Почасовые данные погоды")
     def test_get_weather_hourly(self, api_client_weather):
+        # Получаем ответ
+        body, status_code = api_client_weather.get_weather_by_hourly()
+
+        # Базовая проверка статуса
+        api_client_weather.assertions.assert_is_equal(200, status_code)
+
+        # Проверка наличия 3 обязательных ключей
+        hourly = body["hourly"]
+        expected_keys = ["temperature_2m", "precipitation", "wind_speed_10m"]
+
+        for key in expected_keys:
+            assert key in hourly, f"Ключ '{key}' отсутствует в hourly"
+
+        # Извлекаем первые значения за час прогноза
+        hourly = body["hourly"]
+        temperature = hourly["temperature_2m"][0]
+        precipitation = hourly["precipitation"][0]
+        wind_speed = hourly["wind_speed_10m"][0]
+
+        # Ассерты
+        (api_client_weather.assertions
+         .assert_is_not_empty(temperature)
+         .assert_is_not_empty(precipitation)
+         .assert_is_not_empty(wind_speed))
+
+        # Проверка диапазонов
+        assert -50 <= temperature <= 60, f"Температура вне пределов: {temperature}°C"
+        assert 0 <= precipitation <= 500, f"Осадки вне пределов: {precipitation} мм"
+        assert 0 <= wind_speed <= 300, f"Ветер вне пределов: {wind_speed} км/ч"
+
+    @pytest.mark.negative
+    @pytest.mark.api
+    @allure.title("Неверные параметры широта/долгота (hourly)")
+    def test_get_weather_hourly_negative_lat_long(self, api_client_weather):
+        # Ответ
+        body, status_code = api_client_weather.get_weather_by_params(
+            56 * 8584, -56.8584,
+            ["temperature_2m", "precipitation", "wind_speed_10m"], "auto",
+            api_client_weather.base_url
+        )
+        expected_error = {'reason': 'Latitude must be in range of -90 to 90°. Given: 480704.0.', 'error': True}
+
+        # Ассерты
+        (api_client_weather.assertions
+         .assert_is_equal(400, status_code)
+         .assert_is_equal(expected_error, body))
+
+
+
+
+    @pytest.mark.negative
+    @pytest.mark.api
+    @allure.title("Неверные ключи hourly параметров")
+    def test_get_weather_hourly_negative_keys(self, api_client_weather):
+        # Ответ
+        body, status_code = api_client_weather.get_weather_by_params(
+            56.8584, 35.9006,
+            ["invalid_temp", "fake_precipitation", 123], "auto",
+            api_client_weather.base_url
+        )
+        expected_error = {'error': True, 'reason': "Data corrupted at path ''. Cannot initialize "
+                                                   "SurfacePressureAndHeightVariable<VariableAndPreviousDay, "
+                                                   "VariableOrSpread<ForecastPressureVariable>, "
+                                                   "ForecastHeightVariable> from invalid String value invalid_temp."}
+
+        # Ассерты
+        (api_client_weather.assertions
+         .assert_is_equal(400, status_code)
+         .assert_is_equal(expected_error, body))
+
+
+
+    @pytest.mark.negative
+    @pytest.mark.api
+    @allure.title("Неверный URL (hourly)")
+    def test_get_weather_hourly_invalid_url(self, api_client_weather):
+        invalid_url = f"{api_client_weather.base_url}/wrong-hourly-path"
+
+        # Ответ
+        body, status_code = api_client_weather.get_weather_by_params(
+            56.8584, 35.9006,
+            ["temperature_2m", "precipitation", "wind_speed_10m"],
+            "auto",
+            invalid_url
+        )
+        expected_error = {'error': True, 'reason': 'Not Found'}
+
+        # Ассерты
+        (api_client_weather.assertions
+         .assert_is_equal(404, status_code)
+         .assert_is_equal(expected_error, body))
+
+
+    @pytest.mark.negative
+    @pytest.mark.api
+    @allure.title("Неверный HTTP-метод (POST вместо GET) hourly")
+    def test_get_weather_hourly_invalid_method(self, api_client_weather):
+        # Ответ
+        body, status_code = api_client_weather.get_weather_by_params(
+            56.8584, 35.9006,
+            ["temperature_2m", "precipitation", "wind_speed_10m"],
+            "auto",
+            api_client_weather.base_url,
+            method=requests.post
+        )
+        expected_error = {'error': True, 'reason': "Can't decode data without a content type"}
+
+        # Проверка кода ошибки
+        (api_client_weather.assertions
+         .assert_is_equal(expected_error, body))

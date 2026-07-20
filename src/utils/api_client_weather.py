@@ -39,3 +39,16 @@ class ApiWeather:
         body = response.json()
 
         return body, response.status_code
+
+    def get_weather_by_hourly(self):
+        """Получение погоды. Возвращает (body, status_code)"""
+        params = {
+            "latitude": 56.8584,
+            "longitude": 35.9006,
+            "hourly": ["temperature_2m", "precipitation", "wind_speed_10m"]
+        }
+
+        response = requests.get(self.base_url, params=params)
+        body = response.json()
+
+        return body, response.status_code
