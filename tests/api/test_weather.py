@@ -17,9 +17,6 @@ class TestWeather:
         # Получаем ответ
         body, status_code = api_client_weather.get_weather_requests()
 
-        # Базовая проверка статуса
-        api_client_weather.assertions.assert_is_equal(200, status_code)
-
         # Валидация структуры ответа по JSON-схеме
         validate(instance=body, schema=WEATHER_RESPONSE_SCHEMA)
 
@@ -29,12 +26,12 @@ class TestWeather:
 
         # Ассерты
         (api_client_weather.assertions
+         .assert_is_equal(200, status_code)
          .assert_is_not_empty(temperature)
-         .assert_is_not_empty(humidity))
+         .assert_is_not_empty(humidity)
+         .assert_in_range(-50, temperature, 60)
+         .assert_in_range(0, humidity, 100))
 
-        # Проверка диапазонов
-        assert -50 <= temperature <= 60, f"Температура вне пределов: {temperature}°C"
-        assert 0 <= humidity <= 100, f"Влажность вне пределов: {humidity}%"
 
     @pytest.mark.negative
     @pytest.mark.api
@@ -118,16 +115,6 @@ class TestWeather:
         # Получаем ответ
         body, status_code = api_client_weather.get_weather_by_hourly()
 
-        # Базовая проверка статуса
-        api_client_weather.assertions.assert_is_equal(200, status_code)
-
-        # Проверка наличия 3 обязательных ключей
-        hourly = body["hourly"]
-        expected_keys = ["temperature_2m", "precipitation", "wind_speed_10m"]
-
-        for key in expected_keys:
-            assert key in hourly, f"Ключ '{key}' отсутствует в hourly"
-
         # Извлекаем первые значения за час прогноза
         hourly = body["hourly"]
         temperature = hourly["temperature_2m"][0]
@@ -136,14 +123,14 @@ class TestWeather:
 
         # Ассерты
         (api_client_weather.assertions
+         .assert_is_equal(200, status_code)
          .assert_is_not_empty(temperature)
          .assert_is_not_empty(precipitation)
-         .assert_is_not_empty(wind_speed))
+         .assert_is_not_empty(wind_speed)
+         .assert_in_range(-50, temperature, 60)
+         .assert_in_range(0, precipitation, 500)
+         .assert_in_range(0, wind_speed, 300))
 
-        # Проверка диапазонов
-        assert -50 <= temperature <= 60, f"Температура вне пределов: {temperature}°C"
-        assert 0 <= precipitation <= 500, f"Осадки вне пределов: {precipitation} мм"
-        assert 0 <= wind_speed <= 300, f"Ветер вне пределов: {wind_speed} км/ч"
 
     @pytest.mark.negative
     @pytest.mark.api
@@ -224,4 +211,5 @@ class TestWeather:
 
         # Проверка кода ошибки
         (api_client_weather.assertions
+         .assert_is_equal(415, status_code)
          .assert_is_equal(expected_error, body))

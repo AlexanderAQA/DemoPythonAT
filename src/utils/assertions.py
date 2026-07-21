@@ -59,3 +59,10 @@ class CommonAssertions:
                 )
 
             return self
+
+    def assert_in_range(self, from_int, actual, to_int, message=""):
+        with allure.step(f"Проверка диапазона"):
+
+            assert from_int <= actual <= to_int, f"Значение вне пределов: {actual} {message}"
+
+        return self
