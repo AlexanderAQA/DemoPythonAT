@@ -1,12 +1,27 @@
 from pages.base_page import BasePage
 import allure
 from locators.books_page_locators import BooksPageLocators
+from selenium.webdriver.support.ui import Select
 
 
 class BooksPage(BasePage):
     """Страница Книги"""
     def __init__(self, driver):
         super().__init__(driver)
+
+    # Словарь вариантов сортировки
+    SORT_OPTIONS = {
+        "default": "https://shop.finarty.ru?sort=p.sort_order&order=ASC",
+        "name_asc": "https://shop.finarty.ru?sort=pd.name&order=ASC",      # А-Я
+        "name_desc": "https://shop.finarty.ru?sort=pd.name&order=DESC",    # Я-А
+        "price_asc": "https://shop.finarty.ru?sort=p.price&order=ASC",     # Цена: низкая → высокая
+        "price_desc": "https://shop.finarty.ru?sort=p.price&order=DESC",   # Цена: высокая → низкая
+        "rating_desc": "https://shop.finarty.ru?sort=rating&order=DESC",   # Рейтинг
+        "model_asc": "https://shop.finarty.ru?sort=p.model&order=ASC",     # Модель А-Я
+        "model_desc": "https://shop.finarty.ru?sort=p.model&order=DESC",   # Модель Я-А
+        "newest": "https://shop.finarty.ru?sort=p.date_added&order=DESC",  # Сначала новые
+        "oldest": "https://shop.finarty.ru?sort=p.date_added&order=ASC",   # Сначала старые
+    }
 
     def click_buy_button(self, book_name):
         with allure.step("Клик по кнопке 'Купить'"):
@@ -157,5 +172,37 @@ class BooksPage(BasePage):
             text = self.wait_for_element(BooksPageLocators.GET_COUNT_OF_BOOKMARKS).text
             actual_list = int(text.split('(')[1].split(')')[0])
             self.asserts.assert_is_equal(expected_count, actual_list)
+
+        return self
+
+    def open_sort_selector(self):
+        with allure.step("Открыть селектор сортировки"):
+            self.click(BooksPageLocators.SORT_SELECTOR)
+
+        return self
+
+
+    def get_book_titles_list(self, limit=10):
+        """Список названий первых нескольких книг"""
+        with allure.step(f"Получение списка из {limit} книг"):
+            # find_elements возвращает список элементов
+            elements = self.driver.find_elements(*BooksPageLocators.COMMON_BOOK_NAMES)[:limit]
+            titles = [el.text.strip() for el in elements if el.text.strip()]
+
+            return titles
+
+    def select_sort_by_name(self, sort_name):
+        """Универсальный выбор сортировки по имени"""
+        with allure.step(f"Выбор сортировки: {sort_name}"):
+            if sort_name not in self.SORT_OPTIONS:
+                raise ValueError(
+                    f"Неизвестный тип сортировки: '{sort_name}'.\n"
+                    f"Доступные: {list(self.SORT_OPTIONS.keys())}"
+                )
+
+            sort_value = self.SORT_OPTIONS[sort_name]
+            sort_element = self.wait_for_element(BooksPageLocators.SORT_SELECTOR)
+            select = Select(sort_element)
+            select.select_by_value(sort_value)
 
         return self
