@@ -3,6 +3,7 @@ import allure
 from locators.account_page_locators import AccountPageLocators
 from pages.base_page import BasePage
 from locators.login_page_locators import LoginPageLocators
+from src.utils.logger import get_logger
 from src.utils.test_data import TestUsers, USER_OLGA
 
 
@@ -11,9 +12,11 @@ class LoginPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
         self.login_url = 'https://shop.finarty.ru/login'
+        self.log = get_logger(__name__)
 
     def open(self):
         """Открываем страницу логина"""
+        self.log.info("Открываем страницу логина")
         with allure.step(f"Открываем страницу логина: {self.login_url}"):
             self.driver.get(self.login_url)
             return self
@@ -59,13 +62,14 @@ class LoginPage(BasePage):
             return self
 
     def click_login_button(self):
-        with allure.step(f"Клик по кнопке `Войти`"):
-            locator = LoginPageLocators.LOGIN_BUTTON
-            self.click(locator)
+        self.log.info(f"Клик по кнопке `Войти`")
+        locator = LoginPageLocators.LOGIN_BUTTON
+        self.click(locator)
 
-            return self
+        return self
 
     def authorization(self, user: TestUsers):
+        self.log.info("Авторизация")
         with allure.step("Авторизация в личном кабинете"):
             self.open_main_page()
             self.accept_cookies()
@@ -73,17 +77,17 @@ class LoginPage(BasePage):
             is_authorized = elements and elements[0].text.strip() != ""
 
             if not is_authorized:
-                with allure.step("Пользователь не авторизован, выполняем вход"):
-                    self.open()
-                    self.open_user_menu()
-                    self.click_authorization()
-                    self.enter_username(user)
-                    self.enter_password(user)
-                    self.click_login_button()
-                    self.wait_for()
+                self.log.info("Пользователь не авторизован, выполняем вход")
+                self.open()
+                self.open_user_menu()
+                self.click_authorization()
+                self.enter_username(user)
+                self.enter_password(user)
+                self.click_login_button()
+                self.wait_for()
             else:
                 user_name = elements[0].text.strip()
-                with allure.step(f"Пользователь '{user_name}' уже авторизован"):
-                    pass
+                self.log.info(f"Пользователь '{user_name}' уже авторизован")
+                pass
 
             return self

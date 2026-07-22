@@ -36,4 +36,4 @@ jobs:
     - name: Test
       run: |
         sleep 10
-        pytest -v -m "api or ui" --debug-mode true
+        pytest -v -m "api or ui"
