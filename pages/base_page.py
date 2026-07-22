@@ -8,7 +8,7 @@ from locators.base_page_locators import BasePageLocators
 import time
 from locators.main_page_locators import MainPageLocators
 from src.utils.assertions import CommonAssertions
-
+from src.utils.logger import get_logger
 
 
 class BasePage:
@@ -17,12 +17,13 @@ class BasePage:
     waitSec = 5
 
     def __init__(self, driver):
-        self.logger = None
+        self.logger = get_logger(__name__)
         self.driver = driver
         self.asserts = CommonAssertions(self)
         self.main_url = 'https://shop.finarty.ru/'
 
     def wait_for_element(self, locator, timeout=waitSec):
+        self.logger.info(f"waiting for element {locator}")
         """
         Явное ожидание появления элемента в DOM.
         :param locator: Кортеж (By.XPATH, "//div")
@@ -38,6 +39,7 @@ class BasePage:
             raise AssertionError(error_msg)
 
     def open_main_page(self):
+        self.logger.info(f"open_main_page")
         url = self.main_url
         with allure.step(f"Открываем главную страницу finarty: {url}"):
             self.driver.get(url)
@@ -45,27 +47,27 @@ class BasePage:
         return self
 
     def click(self, locator):
-        with allure.step(f"Клик по элементу"):
-            try:
-                self.wait_for_element(locator).click()
-            except NoSuchElementException:
-                print(f"Элемент не найден. Локатор: '{locator}'")
-            return self
+        self.logger.info(f"Клик по элементу")
+        try:
+            self.wait_for_element(locator).click()
+        except NoSuchElementException:
+            self.logger.info(f"Элемент не найден. Локатор: '{locator}'")
+        return self
 
     def enter_text(self, locator, text):
-        with allure.step("Очистка поля"):
-            element = self.wait_for_element(locator)
-            element.clear()
-        with allure.step(f"Вводим текст '{text}'"):
-            element.send_keys(text)
+        self.logger.info("enter_text:\nОчистка поля")
+        element = self.wait_for_element(locator)
+        element.clear()
+        element.send_keys(text)
         return self
 
     def get_element_text(self, locator):
+        self.logger.info("get_element_text")
         element = self.wait_for_element(locator)
         return element.get_attribute("value")
 
     def refresh_page(self):
-        print(f"Обновляем страницу")
+        self.logger.info(f"Обновляем страницу")
         self.driver.refresh()
         return self
 
@@ -73,24 +75,26 @@ class BasePage:
         if not isinstance(self.driver, WebDriver):
             raise ValueError("Invalid WebDriver instance passed to ActionChains.")
 
-        print(f"Двойной клик на элемент: '{element}'")
+        self.logger.info(f"Двойной клик на элемент: '{element}'")
         action = ActionChains(self.driver)
         action.double_click(element).perform()
         return self
 
     def right_click(self, element):
-        print(f"Нажатие правой кнопки мыши на элемент: '{element}'")
+        self.logger.info(f"Нажатие правой кнопки мыши на элемент: '{element}'")
         action = ActionChains(self.driver)
         action.context_click(element).perform()
         return self
 
     def assert_value_is_empty(self, element):
+        self.logger.info("assert_value_is_empty")
         with allure.step(f"Проверка что значение веб элемента пустое"):
             value = self.get_element_text(element)
             self.asserts.assert_is_empty(value)
             return self
 
     def click_authorization(self):
+        self.logger.info(f"click_authorization")
         with allure.step(f"Клик по кнопке `Авторизация` в выпадающем меню"):
             self.click(MainPageLocators.AUTH_BUTTON)
 
@@ -120,6 +124,7 @@ class BasePage:
             return self
 
     def scroll_to_element(self, locator):
+        self.logger.info(f"scroll_to_element: {locator}")
         with allure.step(f"Прокрутка к элементу: {locator}"):
             element = self.wait_for_element(locator)
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)

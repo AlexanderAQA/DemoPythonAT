@@ -1,5 +1,7 @@
 import requests
 from src.utils.assertions import CommonAssertions
+from src.utils.logger import get_logger
+
 
 class ApiWeather:
     def __init__(self):
@@ -11,8 +13,10 @@ class ApiWeather:
             "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
             "Connection": "keep-alive",
         }
+        self.log = get_logger(__name__)
 
     def get_weather_requests(self):
+        self.log.info("get_weather_requests")
         """Получение погоды , возвращает (body, status_code)"""
         params = {
             "latitude": 56.8584,
@@ -20,10 +24,12 @@ class ApiWeather:
             "current": ["temperature_2m", "relative_humidity_2m"],
             "timezone": "auto",
         }
+        self.log.debug(f"Параметры запроса:\n{params}")
 
         response = requests.get(self.base_url, params=params)
         body = response.json()
-
+        self.log.info(f"Код ответа: {response.status_code}")
+        self.log.debug(f"Тело ответа:\n{body}")
         return body, response.status_code
 
     def get_weather_by_params(self, latitude, longitude, current, timezone, url, method=requests.get):
