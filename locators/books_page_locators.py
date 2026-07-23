@@ -42,6 +42,15 @@ class BooksPageLocators:
     # Локатор цены книги в карточке
     GET_BOOK_CART_PRICE = (By.XPATH, "//span[@class='price-new']")
 
+    # Локатор селектора сортировки
+    SORT_SELECTOR = (By.ID, "input-sort")
+
+    # Локатор селектора от А до Я
+    NAME_A_Z = (By.XPATH, "//option[@value='https://shop.finarty.ru?sort=pd.name&order=ASC']")
+
+    # Все названия книг на странице (универсальный)
+    COMMON_BOOK_NAMES = (By.CSS_SELECTOR, "#product-list h4 a")
+
     # Кнопка "Купить" в карточке книги
     @staticmethod
     def get_buy_button(book_name: str):
