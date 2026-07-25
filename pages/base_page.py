@@ -101,27 +101,27 @@ class BasePage:
             return self
 
     def accept_cookies(self):
-        with allure.step(f"Принимаем куки"):
-            self.click(MainPageLocators.COOKIE_BUTTON)
+        self.logger.info(f"Принимаем куки")
+        self.click(MainPageLocators.COOKIE_BUTTON)
 
-            return self
+        return self
 
     def assert_element_is_visible(self, locator, timeout: int = 10):
-        with allure.step(f"Присутствие элемента на странице"):
-            try:
-                WebDriverWait(self.driver, timeout).until(
-                EC.visibility_of_element_located(locator)
-                )
-                return True
-            except TimeoutException:
+        self.logger.info(f"Присутствие элемента на странице")
+        try:
+            WebDriverWait(self.driver, timeout).until(
+            EC.visibility_of_element_located(locator)
+            )
+            return True
+        except TimeoutException:
 
-                return False
+            return False
 
     def open_user_menu(self):
-        with allure.step(f"Клик на заголовок `Личный кабинет`"):
-            self.click(MainPageLocators.USER_MENU)
+        self.logger.info(f"Клик на заголовок `Личный кабинет`")
+        self.click(MainPageLocators.USER_MENU)
 
-            return self
+        return self
 
     def scroll_to_element(self, locator):
         self.logger.info(f"scroll_to_element: {locator}")
@@ -131,13 +131,13 @@ class BasePage:
         return self
 
     def click_books_link(self):
-        with allure.step(f"Клик по разделу 'Книги' в верхнем меню"):
-            self.refresh_page()
-            self.click(BasePageLocators.BOOKS_LINK)
+        self.logger.info(f"Клик по разделу 'Книги' в верхнем меню")
+        self.refresh_page()
+        self.click(BasePageLocators.BOOKS_LINK)
 
-            return self
+        return self
 
     def wait_for(self, millis: int = 200):
-        with allure.step(f"Ожидание {millis} мс"):
-            time.sleep(millis / 1000)
+        self.logger.info(f"Ожидание {millis} мс")
+        time.sleep(millis / 1000)
         return self

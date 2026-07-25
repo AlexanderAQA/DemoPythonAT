@@ -2,9 +2,11 @@ import requests
 from src.utils.assertions import CommonAssertions
 import re
 from urllib.parse import quote
+from src.utils.logger import get_logger
 
 class ApiClient:
     def __init__(self):
+        self.logger = get_logger(__name__)
         self.assertions = CommonAssertions(self)
         # Базовый URL магазина
         self.base_url = "https://shop.finarty.ru/"
@@ -21,7 +23,7 @@ class ApiClient:
         }
 
     def add_product_to_cart(self, product_id, quantity=1):
-        """Добавление товара в корзину через API"""
+        self.logger.info("Добавление товара в корзину через API")
         url = f"{self.base_url}?route=checkout/cart.add"
 
         payload = {
@@ -37,7 +39,7 @@ class ApiClient:
             raise ValueError("Невалидный JSON")
 
     def get_account_page(self, customer_token: str):
-        """GET запрос к личному кабинету с токеном"""
+        self.logger.info("GET запрос к личному кабинету с токеном")
         url = f"{self.base_url}account"
 
         params = {"customer_token": customer_token}
@@ -47,7 +49,7 @@ class ApiClient:
         return response.text, response.status_code
 
     def login(self, email: str, password: str):
-        """Авторизация с извлечением токена из redirect URL"""
+        self.logger.info("Авторизация с извлечением токена из redirect URL")
 
         # GET страница логина для того чтобы сайт пустил пользователя
         form_url = f"{self.base_url}?route=account/login"
@@ -96,7 +98,7 @@ class ApiClient:
 
 
     def post_login(self, email: str, password: str, login_token):
-        """Авторизация с извлечением токена из redirect URL"""
+        self.logger.info("Авторизация с извлечением токена из redirect URL")
 
         # страница логина для того чтобы сайт пустил пользователя
         form_url = f"{self.base_url}?route=account/login"
