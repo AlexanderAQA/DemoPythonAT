@@ -1,8 +1,10 @@
 import requests
 from src.utils.assertions import CommonAssertions
+from src.utils.logger import get_logger
 
 class ApiHH:
     def __init__(self):
+        self.logger = get_logger(__name__)
         self.assertions = CommonAssertions(self)
         # Базовый URL
         self.base_url = "https://api.hh.ru"

@@ -1,6 +1,8 @@
 import logging
 import os
 import sys
+from pathlib import Path
+
 import allure
 import pytest
 from datetime import datetime
@@ -28,16 +30,14 @@ from src.utils.test_data import generate_random_string
 
 logger = logging.getLogger(__name__)
 
-def pytest_addoption(parser):
-    parser.addoption("--debug-mode")
-
 @pytest.fixture(autouse=True)
 def driver(request):
     if request.node.get_closest_marker("api"):
+        logger.info("Для API теста не запускаем вебдрайвер")
         yield None
         return
     else:
-        logger.debug(f"driver: request\n{request}")
+        logger.info(f"driver: request\n{request}")
         global driver
         # Инициализация хром драйвера
         chrome_options = Options()
@@ -55,48 +55,58 @@ def driver(request):
 
         driver.implicitly_wait(4)
         request.node._driver = driver
-        logger.debug("yield driver")
+        logger.info("yield driver")
         yield driver
-        logger.debug(f"Закрываем вебдрайвер: {driver.current_url}")
+        logger.info(f"Закрываем вебдрайвер: {driver.current_url}")
         driver.quit()
 
 @pytest.fixture()
 def clear_cookies(driver):
     yield
-    logger.debug("Удаляем cookie браузера")
+    logger.info("Удаляем cookie браузера")
     driver.delete_all_cookies()
 
 
-@pytest.fixture(autouse=True, scope="session")
-def set_logger(request):
-    global logger
-    debug_value = str(request.config.getoption("--debug-mode")).lower()
-    debug_enabled = debug_value in ("true", "yes")
+def configure_logging():
+    logs_dir = Path("logs")
+    logs_dir.mkdir(exist_ok=True)
+
     logger = logging.getLogger()
 
-    if debug_enabled:
-        print("Debug ON")
-        log_level = logging.DEBUG
-    else:
-        print("Debug OFF")
-        log_level = logging.INFO
+    if logger.handlers:
+        return
 
-    logging.basicConfig(
-        level=log_level,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.StreamHandler(sys.stdout)
-        ])
-    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
 
-    for handler in logger.handlers[:]:
-        logger.removeHandler(handler)
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+    )
 
-    console_handler = logging.StreamHandler(sys.stdout)
-    logger.addHandler(console_handler)
+    console = logging.StreamHandler()
+    console.setFormatter(formatter)
 
-    logging.getLogger("urllib3").setLevel(logging.WARNING)
-    logging.getLogger("selenium").setLevel(logging.WARNING)
+    file_handler = logging.FileHandler(logs_dir / "test.log", encoding="utf-8")
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(console)
+    logger.addHandler(file_handler)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_logging():
+    configure_logging()
+
+
+@pytest.fixture(autouse=True)
+def log_test_start_end(request):
+    log = logging.getLogger("pytest")
+
+    log.info("=" * 80)
+    log.info(f"START TEST: {request.node.nodeid}")
+
+    yield
+
+    log.info(f"END TEST: {request.node.nodeid}")
 
 
 @pytest.fixture()

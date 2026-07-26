@@ -1,3 +1,6 @@
+from src.utils.logger import get_logger
+
+
 import allure
 import pytest
 import requests
@@ -7,13 +10,11 @@ from src.schemas.weather_schema import WEATHER_RESPONSE_SCHEMA
 
 class TestWeather:
 
+
     @pytest.mark.positive
     @pytest.mark.api
     @allure.title("Получение погоды")
     def test_get_weather(self, api_client_weather):
-        """Проверка, что ответ API соответствует JSON-схеме.
-        Получение погоды"""
-
         # Получаем ответ
         body, status_code = api_client_weather.get_weather_requests()
 
