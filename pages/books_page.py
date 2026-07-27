@@ -25,14 +25,6 @@ class BooksPage(BasePage):
         "oldest": "https://shop.finarty.ru?sort=p.date_added&order=ASC",   # Сначала старые
     }
 
-    def click_buy_button(self, book_name):
-        self.logger.info(f"Клик по кнопке 'Купить'")
-        self.wait_for()
-        self.driver.switch_to.default_content()
-        self.click(BooksPageLocators.get_buy_button(book_name))
-
-        return self
-
     def click_product_in_cart_button(self):
         self.logger.info(f"Клик по кнопке 'Товар в корзине'")
         element = self.wait_for_element(BooksPageLocators.PRODUCT_IN_CART_BUTTON)
@@ -50,14 +42,6 @@ class BooksPage(BasePage):
     def assert_product_added_alert(self):
         self.logger.info(f"Проверка: уведомление о добавлении товара")
         self.assert_element_is_visible(BooksPageLocators.PRODUCT_SUCCESS_ALERT)
-
-        return self
-
-
-    def scroll_to_book(self, book_name):
-        self.logger.info(f"Прокрутка к кнопке Купить в книге: {book_name}")
-        element = self.wait_for_element(BooksPageLocators.get_buy_button(book_name))
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
 
         return self
 
@@ -192,19 +176,3 @@ class BooksPage(BasePage):
             titles = [el.text.strip() for el in elements if el.text.strip()]
 
             return titles
-
-    def select_sort_by_name(self, sort_name):
-        """Универсальный выбор сортировки по имени"""
-        with allure.step(f"Выбор сортировки: {sort_name}"):
-            if sort_name not in self.SORT_OPTIONS:
-                raise ValueError(
-                    f"Неизвестный тип сортировки: '{sort_name}'.\n"
-                    f"Доступные: {list(self.SORT_OPTIONS.keys())}"
-                )
-
-            sort_value = self.SORT_OPTIONS[sort_name]
-            sort_element = self.wait_for_element(BooksPageLocators.SORT_SELECTOR)
-            select = Select(sort_element)
-            select.select_by_value(sort_value)
-
-        return self

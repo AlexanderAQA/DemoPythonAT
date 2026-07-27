@@ -3,6 +3,7 @@ from selenium.common import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from locators.base_page_locators import BasePageLocators
 import time
@@ -133,11 +134,49 @@ class BasePage:
     def click_books_link(self):
         self.logger.info(f"Клик по разделу 'Книги' в верхнем меню")
         self.refresh_page()
-        self.click(BasePageLocators.BOOKS_LINK)
+        self.click(BasePageLocators.get_tab_link("Книги"))
 
         return self
 
     def wait_for(self, millis: int = 200):
         self.logger.info(f"Ожидание {millis} мс")
         time.sleep(millis / 1000)
+        return self
+
+    def click_sundry_link(self):
+        self.logger.info(f"Клик по разделу 'Всякая всячина' в верхнем меню")
+        self.refresh_page()
+        self.click(BasePageLocators.get_tab_link("Всякая всячина"))
+
+        return self
+
+    def click_buy_button(self, book_name):
+        self.logger.info(f"Клик по кнопке 'Купить'")
+        self.wait_for()
+        self.driver.switch_to.default_content()
+        self.click(BasePageLocators.get_buy_button(book_name))
+
+        return self
+
+    def scroll_to_item(self, item_name):
+        self.logger.info(f"Прокрутка к кнопке Купить в товаре: {item_name}")
+        element = self.wait_for_element(BasePageLocators.get_buy_button(item_name))
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+
+        return self
+
+    def select_option(self, selection_option, locator, options):
+        """Универсальный выбор опции"""
+        with allure.step(f"Выбор сортировки: {selection_option}"):
+            if selection_option not in options:
+                raise ValueError(
+                    f"Неизвестный тип сортировки: '{selection_option}'.\n"
+                    f"Доступные: {list(options.keys())}"
+                )
+
+            sort_value = options[selection_option]
+            sort_element = self.wait_for_element(locator)
+            select = Select(sort_element)
+            select.select_by_value(sort_value)
+
         return self

@@ -1,5 +1,4 @@
 from pages.base_page import BasePage
-import allure
 from locators.account_page_locators import AccountPageLocators
 from src.utils.test_data import TestUsers
 from src.utils.logger import get_logger
