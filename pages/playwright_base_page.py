@@ -16,11 +16,6 @@ class PlaywrightBasePage:
         self.accept_cookie(self.page)
         return self
 
-    def title(self):
-        title = self.page.title()
-        self.logger.info(f"PlaywrightBasePage: title: {title}")
-        return title
-
     def accept_chrome_cookies(self, page):
         self.logger.info("Принимаем куки в хром браузере")
         button = page.get_by_role("button", name="Принять все")
