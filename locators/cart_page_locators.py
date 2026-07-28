@@ -9,10 +9,6 @@ class CartPageLocators:
     # Локатор кнопки "Корзина" в хедере
     CART_LINK = (By.XPATH, "//a[@title='Корзина']")
 
-    SEX_SELECTOR = (By.ID, "input-option-228")
-
-    SIZE_SELECTOR = (By.ID, "input-option-227")
-
     # Локатор книги для добавления в корзину
     @staticmethod
     def get_book_link(book_name: str):

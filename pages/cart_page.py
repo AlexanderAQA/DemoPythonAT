@@ -1,6 +1,5 @@
 import time
 from pages.base_page import BasePage
-import allure
 from locators.cart_page_locators import CartPageLocators
 from src.utils.logger import get_logger
 
