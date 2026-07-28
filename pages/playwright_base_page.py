@@ -10,8 +10,9 @@ class PlaywrightBasePage:
         self.BASE_URL = 'https://shop.finarty.ru'
 
     def open(self, url: str):
-        self.logger.info("PlaywrightBasePage: open")
+        self.logger.info(f"Открываем страницу: '{url}'")
         self.page.goto(url)
+        self.accept_chrome_cookies(self.page)
         self.accept_cookie(self.page)
         return self
 
@@ -20,13 +21,18 @@ class PlaywrightBasePage:
         self.logger.info(f"PlaywrightBasePage: title: {title}")
         return title
 
-    def accept_cookie(self, page):
+    def accept_chrome_cookies(self, page):
         self.logger.info("Принимаем куки в хром браузере")
         button = page.get_by_role("button", name="Принять все")
 
         if button.is_visible():
             button.click()
 
+        return self
+
+    def accept_cookie(self, page):
+        self.logger.info("Принимаем куки на сайте")
+        page.get_by_role("button", name="ОК").click()
         return self
 
     def should_have_title(self, expected_title):

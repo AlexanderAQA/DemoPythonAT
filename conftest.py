@@ -13,8 +13,6 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
-from pages.courses_page import CoursesPage
-
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
@@ -30,6 +28,7 @@ from pages.main_page import MainPage
 from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
+from pages.courses_page import CoursesPage
 from src.utils.test_data import generate_random_string
 from pages.sundry_page import SundryPage
 
@@ -45,8 +44,12 @@ def playwright():
 
 @pytest.fixture()
 def browser(playwright):
-    logger.info("\nИнициализация playwright браузера")
-    browser = playwright.chromium.launch(headless=False)
+    logger.info("\n======================Инициализация playwright браузера======================\n")
+    if os.getenv("CI") == "true":
+        headless = True
+    else:
+        headless = False
+    browser = playwright.chromium.launch(headless=headless)
     yield browser
     browser.close()
 

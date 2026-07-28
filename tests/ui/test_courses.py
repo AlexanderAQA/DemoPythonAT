@@ -12,4 +12,7 @@ class TestCoursesPage:
         (courses_page
          .open_page()
          .should_have_partial_url(courses_page.COURSES_PATH)
-         .should_have_title("Курсы в интернет-магазине Finarty"))
+         .should_have_title("Курсы в интернет-магазине Finarty")
+         .should_have_h1_title("Курсы")
+         .assert_items_count(4)
+         .assert_course_items())
