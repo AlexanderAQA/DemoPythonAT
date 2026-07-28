@@ -5,13 +5,15 @@ from pathlib import Path
 
 import allure
 import pytest
+from playwright.sync_api import Page
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from playwright.sync_api import sync_playwright
 
-
+from pages.courses_page import CoursesPage
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -33,7 +35,33 @@ from pages.sundry_page import SundryPage
 
 logger = logging.getLogger(__name__)
 
-@pytest.fixture(autouse=True)
+
+@pytest.fixture(scope="session")
+def playwright():
+    logger.info("\nplaywright")
+    with sync_playwright() as p:
+        yield p
+
+
+@pytest.fixture()
+def browser(playwright):
+    logger.info("\nИнициализация playwright браузера")
+    browser = playwright.chromium.launch(headless=False)
+    yield browser
+    browser.close()
+
+
+@pytest.fixture()
+def page(browser):
+    logger.info("Инициализация page в playwright")
+    context = browser.new_context()
+    page = context.new_page()
+
+    yield page
+
+    context.close()
+
+@pytest.fixture()
 def driver(request):
     if request.node.get_closest_marker("api"):
         logger.info("Для API теста не запускаем вебдрайвер")
@@ -133,7 +161,7 @@ def pytest_configure(config):
     allure_dir = os.path.join(project_root, "allure-results")
     config.option.allure_report_dir = allure_dir
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function")
 def base_page(driver):
     return BasePage(driver)
 
@@ -158,11 +186,13 @@ def account_page(driver):
 
 @pytest.fixture(scope="function", autouse=False)
 def books_page(driver):
+    logger.info("Инициализация экземпляра страницы Книги")
     page = BooksPage(driver)
     yield page
 
 @pytest.fixture(scope="function", autouse=False)
 def cart_page(driver):
+    logger.info("Инициализация экземпляра страницы Корзина")
     page = CartPage(driver)
     yield page
 
@@ -178,3 +208,8 @@ def api_client_weather():
 def sundry_page(driver):
     page = SundryPage(driver)
     yield page
+
+@pytest.fixture
+def courses_page(page: Page):
+    logger.info("Инициализация экземпляра страницы Курсы")
+    return CoursesPage(page)
