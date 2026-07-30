@@ -14,12 +14,12 @@ class SundryPage(BasePage):
         self.logger = get_logger(__name__)
         super().__init__(driver)
 
-    SEX_OPTIONS ={
+    SEX_OPTIONS = {
         "male": "26",
         "female": "27"
     }
 
-    SIZE_OPTIONS ={
+    SIZE_OPTIONS = {
         "S": "18",
         "M": "23",
         "L": "24",
@@ -29,13 +29,13 @@ class SundryPage(BasePage):
     }
 
     def click_sex_selector(self):
-        self.logger.info(f"Клик по селектору")
+        self.logger.info(f"Клик по селектору пола")
         self.click(SundryPageLocators.SEX_SELECTOR)
 
         return self
 
     def click_size_selector(self):
-        self.logger.info(f"Клик по селектору")
+        self.logger.info(f"Клик по селектору размера")
         self.click(SundryPageLocators.SIZE_SELECTOR)
 
         return self
@@ -60,6 +60,9 @@ class SundryPage(BasePage):
 
         return self
 
+    def random_choice(self, options):
+        return random.choice(list(options.keys()))
+
     def select_random_sex(self):
         """Случайный выбор пола"""
         return self.select_sex(random.choice(list(self.SEX_OPTIONS.keys())))
@@ -79,10 +82,9 @@ class SundryPage(BasePage):
         return self
 
     def click_add_to_cart(self):
-        self.logger.info("Клик по кнопке 'Купить' и переход в корзину из уведомления о добавлении")
-        self.click(SundryPageLocators.ADD_TO_CART_BUTTON)
-        self.wait_for_element(SundryPageLocators.PRODUCT_SUCCESS_ALERT)
-        self.click(SundryPageLocators.CART_LINK_IN_ALERT)
-        self.wait_for_element((By.ID, "checkout-total"))
+        with allure.step("Добавление товаров и переход в корзину из уведомления о добавлении"):
+            self.click(SundryPageLocators.ADD_TO_CART_BUTTON)
+            self.wait_for_element(SundryPageLocators.PRODUCT_SUCCESS_ALERT)
+            self.click(SundryPageLocators.CART_LINK_IN_ALERT)
 
         return self

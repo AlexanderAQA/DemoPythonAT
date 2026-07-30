@@ -32,7 +32,7 @@ class OldLoginPage(BasePage):
 
     def old_get_username_field_value(self):
         """Получаем значение введенное в поле 'username'"""
-        return self.get_element_text(self.username_input)
+        return self.get_element_value(self.username_input)
 
     def old_enter_password(self, password):
         """Вводим пароль"""
@@ -55,7 +55,7 @@ class OldLoginPage(BasePage):
 
     def old_get_error_message(self):
         """Получаем текст ошибки"""
-        return self.get_element_text(self.error_message)
+        return self.get_element_value(self.error_message)
 
     def old_click_login_field(self):
         locator = BasePageLocators.login_field

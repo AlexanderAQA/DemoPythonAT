@@ -11,7 +11,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-from pages.sundry_page import SundryPage
+
 
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +29,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from src.utils.test_data import generate_random_string
+from pages.sundry_page import SundryPage
 
 logger = logging.getLogger(__name__)
 

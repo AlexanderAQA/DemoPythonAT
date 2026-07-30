@@ -66,6 +66,11 @@ class BasePage:
     def get_element_text(self, locator):
         self.logger.info("get_element_text")
         element = self.wait_for_element(locator)
+        return element.get_attribute("text")
+
+    def get_element_value(self, locator):
+        self.logger.info("get_element_text")
+        element = self.wait_for_element(locator)
         return element.get_attribute("value")
 
     def refresh_page(self):
@@ -91,7 +96,7 @@ class BasePage:
     def assert_value_is_empty(self, element):
         self.logger.info("assert_value_is_empty")
         with allure.step(f"Проверка что значение веб элемента пустое"):
-            value = self.get_element_text(element)
+            value = self.get_element_value(element)
             self.asserts.assert_is_empty(value)
             return self
 
@@ -133,9 +138,9 @@ class BasePage:
         return self
 
     def click_books_link(self):
-        self.logger.info(f"Клик по разделу 'Книги' в верхнем меню")
-        self.refresh_page()
-        self.click(BasePageLocators.get_tab_link("Книги"))
+        with allure.step(f"Переход в раздел 'Книги' в верхнем меню"):
+            self.refresh_page()
+            self.click(BasePageLocators.get_tab_link("Книги"))
 
         return self
 
@@ -183,15 +188,15 @@ class BasePage:
         return self
 
 
-def work_with_price(value, quantity=1, mode='calc'):
-    """Универсальная функция для работы с ценами (рубли)"""
-    if mode == 'clean':
-        return int(re.sub(r'[^\d]', '', str(value)))
-    num_value = int(value)
+    def work_with_price(self, value, quantity=1, mode='calc'):
+        """Универсальная функция для работы с ценами (рубли)"""
+        if mode == 'clean':
+            return int(re.sub(r'[^\d]', '', str(value)))
+        num_value = int(value)
 
-    if mode == 'format':
-        total = num_value
-    else:
-        total = num_value * quantity
+        if mode == 'format':
+            total = num_value
+        else:
+            total = num_value * quantity
 
-    return f"{total:,} ₽".replace(",", " ")
+        return f"{total:,} ₽".replace(",", " ")

@@ -24,6 +24,7 @@ class CartPageLocators:
 
         return locator
 
+
     # Локатор общей цены в корзине
     @staticmethod
     def get_cart_total_price(price: str):
@@ -31,3 +32,14 @@ class CartPageLocators:
                              f"/td[@class='text-end' and normalize-space()='{price}']")
         return locator
 
+    # Локатор размера в корзине
+    @staticmethod
+    def get_cart_size(size: str):
+        locator = (By.XPATH, f"//small[contains(text(), 'Размер: {size}')]")
+        return locator
+
+    # Локатор пола в корзине
+    @staticmethod
+    def get_cart_sex(sex: str):
+        locator = (By.XPATH, f"//small[contains(text(), 'Пол: {sex}')]")
+        return locator

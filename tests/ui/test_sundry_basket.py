@@ -1,7 +1,6 @@
 import allure
 import pytest
 import random
-from pages.base_page import work_with_price
 
 
 @allure.epic("Всякая всячина")
@@ -14,7 +13,9 @@ class TestBasketPage:
         item_name = "Футболка «1001 секунда об экономике. От Я до А»-1 (черная)"
         unit_price = 2800
         random_qty = random.randint(1, 5)
-        expected_total = work_with_price(unit_price, random_qty)
+        expected_total = main_page.work_with_price(unit_price, random_qty)
+        random_sex = sundry_page.random_choice(sundry_page.SEX_OPTIONS)
+        random_size = sundry_page.random_choice(sundry_page.SIZE_OPTIONS)
 
         (main_page
          .open_main_page()
@@ -26,11 +27,13 @@ class TestBasketPage:
          .click_buy_button(item_name))
 
         (sundry_page
-         .select_random_sex()
-         .select_random_size()
+         .select_sex(random_sex)
+         .select_size(random_size)
          .set_quantity(random_qty)
          .click_add_to_cart())
 
         (cart_page
          .assert_quantity(random_qty)
+         .check_size(random_size)
+         .check_sex(random_sex)
          .check_price(expected_total))
