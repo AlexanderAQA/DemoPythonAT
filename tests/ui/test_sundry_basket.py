@@ -1,6 +1,7 @@
 import allure
 import pytest
 import random
+from src.utils.test_data import SUNDRY_TSHIRT_ECONOMICS
 
 
 @allure.epic("Всякая всячина")
@@ -10,12 +11,14 @@ class TestBasketPage:
     @allure.title("Товары в корзине из раздела Всякая всячина")
     @allure.link("https://testit.example.com/tc-1")
     def test_sundry_basket(self, main_page, sundry_page, cart_page):
-        item_name = "Футболка «1001 секунда об экономике. От Я до А»-1 (черная)"
-        unit_price = 2800
+        product = SUNDRY_TSHIRT_ECONOMICS
+        # product = random.choice(SUNDRY_PRODUCTS)
+
         random_qty = random.randint(1, 5)
-        expected_total = main_page.work_with_price(unit_price, random_qty)
-        random_sex = sundry_page.random_choice(sundry_page.SEX_OPTIONS)
-        random_size = sundry_page.random_choice(sundry_page.SIZE_OPTIONS)
+        expected_total = main_page.work_with_price(product.price, random_qty)
+
+        selected_sex = product.sex or sundry_page.random_choice(sundry_page.SEX_OPTIONS)
+        selected_size = product.size or sundry_page.random_choice(sundry_page.SIZE_OPTIONS)
 
         (main_page
          .open_main_page()
@@ -23,17 +26,17 @@ class TestBasketPage:
          .click_sundry_link())
 
         (sundry_page
-         .scroll_to_item(item_name)
-         .click_buy_button(item_name))
+         .scroll_to_item(product.name)
+         .click_buy_button(product.name))
 
         (sundry_page
-         .select_sex(random_sex)
-         .select_size(random_size)
+         .select_sex(selected_sex)
+         .select_size(selected_size)
          .set_quantity(random_qty)
          .click_add_to_cart())
 
         (cart_page
          .assert_quantity(random_qty)
-         .check_size(random_size)
-         .check_sex(random_sex)
+         .check_size(selected_size)
+         .check_sex(selected_sex)
          .check_price(expected_total))

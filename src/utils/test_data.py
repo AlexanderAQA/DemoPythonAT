@@ -54,3 +54,51 @@ class TestBooks:
 BOOK_1 = TestBooks("Клякса в небе и фифти-фифти","860 ₽", "ФК0176")
 BOOK_2 = TestBooks("1000 лет одиночества", "690 ₽","ФК0119")
 BOOK_3 = TestBooks("Обратный отсчет","390 ₽", "ФК0192")
+
+@dataclass
+class Product:
+    """Класс для описания товара на сайте"""
+    name: str
+    price: int
+    article: str
+    size: str | None = None
+    sex: str | None = None
+
+SUNDRY_TSHIRT_ECONOMICS = Product(
+    name="Футболка «1001 секунда об экономике. От Я до А»-1 (черная)",
+    price=2800,
+    article="ФК0164"
+)
+
+# @dataclass
+# class Product:
+#     """Класс для описания товара на сайте"""
+#     name: str
+#     price: int
+#     article: str
+#     size: str | None = None
+#     sex: str | None = None
+#
+# TSHIRT_ECONOMICS_BLACK = Product(
+#     name="Футболка «1001 секунда об экономике. От Я до А»-1 (черная)",
+#     price=2800,
+#     article="ФК0164"
+# )
+#
+# TSHIRT_WALL_STREET_WHITE = Product(
+#     name="Футболка Wall Street (белая)",
+#     price=2800,
+#     article="ФК0137"
+# )
+#
+# TSHIRT_VERTICAL_BLACK = Product(
+#     name="Футболка «1001 секунда об экономике» (вертикаль, черная)",
+#     price=3100,
+#     article="ФК0142"
+# )
+#
+# SUNDRY_PRODUCTS = [
+#     TSHIRT_ECONOMICS_BLACK,
+#     TSHIRT_WALL_STREET_WHITE,
+#     TSHIRT_VERTICAL_BLACK,
+# ]
