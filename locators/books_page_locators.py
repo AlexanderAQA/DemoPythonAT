@@ -51,14 +51,6 @@ class BooksPageLocators:
     # Все названия книг на странице (универсальный)
     COMMON_BOOK_NAMES = (By.CSS_SELECTOR, "#product-list h4 a")
 
-    # Кнопка "Купить" в карточке книги
-    @staticmethod
-    def get_buy_button(book_name: str):
-        locator = (By.XPATH, f"//div[contains(@class, 'product-thumb')][.//a[contains(text(),'{book_name}')]]"
-                             f"//button[@class='cart-add-button']")
-
-        return locator
-
     # Локатор названия книги на странице "Книги"
     @staticmethod
     def get_book_name(book_name: str):

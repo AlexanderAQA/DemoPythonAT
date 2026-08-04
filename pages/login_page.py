@@ -28,7 +28,7 @@ class LoginPage(BasePage):
 
     def get_username_field_value(self):
         """Получаем значение введенное в поле 'username'"""
-        return self.get_element_text(LoginPageLocators.LOGIN_FIELD)
+        return self.get_element_value(LoginPageLocators.LOGIN_FIELD)
 
     def enter_password(self, user: TestUsers):
         """Вводим пароль"""
@@ -46,7 +46,7 @@ class LoginPage(BasePage):
 
     def get_error_message(self):
         """Получаем текст ошибки"""
-        return self.get_element_text(LoginPageLocators.error_message)
+        return self.get_element_value(LoginPageLocators.error_message)
 
     def click_login_field(self):
         self.logger.info(f"Клик по полю ввода E-Mail на странице авторизации")

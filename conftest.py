@@ -11,6 +11,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
+
+
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
@@ -27,6 +29,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from src.utils.test_data import generate_random_string
+from pages.sundry_page import SundryPage
 
 logger = logging.getLogger(__name__)
 
@@ -170,3 +173,8 @@ def api_client_hh():
 @pytest.fixture(scope="function")
 def api_client_weather():
     return ApiWeather()
+
+@pytest.fixture(scope="function", autouse=False)
+def sundry_page(driver):
+    page = SundryPage(driver)
+    yield page

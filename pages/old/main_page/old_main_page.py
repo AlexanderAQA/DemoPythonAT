@@ -25,7 +25,7 @@ class OldMainPage(BasePage):
 
     def get_logged_in_username(self):
         """Получаем имя авторизованного пользователя"""
-        return BasePage.get_element_text(self, self.actual_username)
+        return BasePage.get_element_value(self, self.actual_username)
 
     def click_authorization(self):
         locator = MainPageLocators.AUTH_BUTTON

@@ -1,6 +1,5 @@
 import time
 from pages.base_page import BasePage
-import allure
 from locators.cart_page_locators import CartPageLocators
 from src.utils.logger import get_logger
 
@@ -40,5 +39,17 @@ class CartPage(BasePage):
     def check_price(self, price: str):
         self.logger.info(f"Сверка цены товара и стоимости в корзине")
         self.assert_element_is_visible(CartPageLocators.get_cart_total_price(price))
+
+        return self
+
+    def check_size(self, size: str):
+        self.logger.info(f"Сверка размера товара в корзине")
+        self.assert_element_is_visible(CartPageLocators.get_cart_size(size))
+
+        return self
+
+    def check_sex(self, sex: str):
+        self.logger.info(f"Сверка пола товара в корзине")
+        self.assert_element_is_visible(CartPageLocators.get_cart_sex(sex))
 
         return self
