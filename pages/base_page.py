@@ -158,7 +158,7 @@ class BasePage:
 
     def click_buy_button(self, book_name):
         self.logger.info(f"Клик по кнопке 'Купить'")
-        self.wait_for()
+        self.wait_for(500)
         self.driver.switch_to.default_content()
         self.click(BasePageLocators.get_buy_button(book_name))
 

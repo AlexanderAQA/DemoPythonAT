@@ -2,6 +2,7 @@ import os
 import random
 import string
 from dataclasses import dataclass
+from pages.sundry_page import SundryPage
 
 # Абсолютный путь к тестовым данным
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -61,44 +62,35 @@ class Product:
     name: str
     price: int
     article: str
-    size: str | None = None
-    sex: str | None = None
+    size: str = None
+    sex: str = None
 
-SUNDRY_TSHIRT_ECONOMICS = Product(
+TSHIRT_ECONOMICS_BLACK = Product(
     name="Футболка «1001 секунда об экономике. От Я до А»-1 (черная)",
     price=2800,
-    article="ФК0164"
+    article="ФК0164",
+    size= SundryPage.SIZE_OPTIONS["M"],
+    sex= SundryPage.SEX_OPTIONS["male"]
 )
 
-# @dataclass
-# class Product:
-#     """Класс для описания товара на сайте"""
-#     name: str
-#     price: int
-#     article: str
-#     size: str | None = None
-#     sex: str | None = None
-#
-# TSHIRT_ECONOMICS_BLACK = Product(
-#     name="Футболка «1001 секунда об экономике. От Я до А»-1 (черная)",
-#     price=2800,
-#     article="ФК0164"
-# )
-#
-# TSHIRT_WALL_STREET_WHITE = Product(
-#     name="Футболка Wall Street (белая)",
-#     price=2800,
-#     article="ФК0137"
-# )
-#
-# TSHIRT_VERTICAL_BLACK = Product(
-#     name="Футболка «1001 секунда об экономике» (вертикаль, черная)",
-#     price=3100,
-#     article="ФК0142"
-# )
-#
-# SUNDRY_PRODUCTS = [
-#     TSHIRT_ECONOMICS_BLACK,
-#     TSHIRT_WALL_STREET_WHITE,
-#     TSHIRT_VERTICAL_BLACK,
-# ]
+TSHIRT_WALL_STREET_WHITE = Product(
+    name="Футболка Wall Street (белая)",
+    price=2800,
+    article="ФК0137",
+    size= SundryPage.SIZE_OPTIONS["L"],
+    sex= SundryPage.SEX_OPTIONS["male"]
+)
+
+TSHIRT_VERTICAL_BLACK = Product(
+    name="Футболка «1001 секунда об экономике» (вертикаль, черная)",
+    price=3100,
+    article="ФК0142",
+    size= SundryPage.SIZE_OPTIONS["XL"],
+    sex= SundryPage.SEX_OPTIONS["female"]
+)
+
+SUNDRY_PRODUCTS = [
+    TSHIRT_ECONOMICS_BLACK,
+    TSHIRT_WALL_STREET_WHITE,
+    TSHIRT_VERTICAL_BLACK,
+]

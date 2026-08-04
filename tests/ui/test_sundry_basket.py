@@ -1,7 +1,7 @@
 import allure
 import pytest
 import random
-from src.utils.test_data import SUNDRY_TSHIRT_ECONOMICS
+from src.utils.test_data import SUNDRY_PRODUCTS
 
 
 @allure.epic("Всякая всячина")
@@ -11,14 +11,13 @@ class TestBasketPage:
     @allure.title("Товары в корзине из раздела Всякая всячина")
     @allure.link("https://testit.example.com/tc-1")
     def test_sundry_basket(self, main_page, sundry_page, cart_page):
-        product = SUNDRY_TSHIRT_ECONOMICS
-        # product = random.choice(SUNDRY_PRODUCTS)
+        product = random.choice(SUNDRY_PRODUCTS)
 
         random_qty = random.randint(1, 5)
         expected_total = main_page.work_with_price(product.price, random_qty)
 
-        selected_sex = product.sex or sundry_page.random_choice(sundry_page.SEX_OPTIONS)
-        selected_size = product.size or sundry_page.random_choice(sundry_page.SIZE_OPTIONS)
+        selected_sex = random.choice(list(sundry_page.SEX_OPTIONS.keys()))
+        selected_size = random.choice(list(sundry_page.SIZE_OPTIONS.keys()))
 
         (main_page
          .open_main_page()
