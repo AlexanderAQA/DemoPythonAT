@@ -1,6 +1,7 @@
 from playwright.sync_api import expect
-
 from pages.playwright_base_page import PlaywrightBasePage
+
+import random
 
 
 class CoursesPage(PlaywrightBasePage):
@@ -54,3 +55,16 @@ class CoursesPage(PlaywrightBasePage):
 
         return self
 
+    def open_random_course(self):
+        self.logger.info("Клик на рандомную карточку курса и переход на страницу")
+        cards = self.page.locator(".product-thumb")
+        count = cards.count()
+        assert count > 0, "На странице нет карточек курсов!"
+
+        random_index = random.randint(0, count - 1)
+        self.logger.info(f"Клик на случайную карточку №{random_index + 1}")
+
+        cards.nth(random_index).locator("a").first.click()
+
+        self.page.wait_for_load_state("domcontentloaded")
+        return self

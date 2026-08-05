@@ -29,6 +29,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from pages.courses_page import CoursesPage
+from pages.playwright_product_page import ProductPage
 from src.utils.test_data import generate_random_string
 from pages.sundry_page import SundryPage
 
@@ -216,3 +217,14 @@ def sundry_page(driver):
 def courses_page(page: Page):
     logger.info("Инициализация экземпляра страницы Курсы")
     return CoursesPage(page)
+
+from pages.playwright_product_page import ProductPage
+@pytest.fixture
+def playwright_product_page(page):
+    return ProductPage(page)
+
+from pages.playwright_cart_page import CartPage
+@pytest.fixture
+def playwright_cart_page(page):
+    return CartPage(page)
+
