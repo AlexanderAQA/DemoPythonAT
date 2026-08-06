@@ -1,5 +1,6 @@
 from playwright.sync_api import expect
 from pages.playwright_base_page import PlaywrightBasePage
+from src.utils.assertions import CommonAssertions
 
 
 class CartPage(PlaywrightBasePage):
@@ -21,10 +22,10 @@ class CartPage(PlaywrightBasePage):
         cart_item.wait_for(state="visible", timeout=10000)
 
         item_text = cart_item.inner_text()
-        assert product_data["name"] in item_text
-        assert product_data["article"] in item_text
+        self.asserts.assert_text_match(product_data["name"], item_text)
+        self.asserts.assert_text_match(product_data["article"], item_text)
 
-        qty_locator = cart_item.locator("input[name^='quantity'], input.form-control").first
+        qty_locator = self.page.locator('input[name="quantity"]')
         expect(qty_locator).to_have_value(str(product_data["quantity"]))
 
         total_price = product_data["price"] * product_data["quantity"]

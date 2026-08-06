@@ -3,6 +3,7 @@ import random
 import string
 from dataclasses import dataclass
 from pages.sundry_page import SundryPage
+import re
 
 # Абсолютный путь к тестовым данным
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -37,6 +38,19 @@ def get_login_list():
 def generate_random_string(str_length=7):
     rand_str = ''.join(random.choice(string.ascii_letters) for _ in range(str_length))
     return rand_str
+
+def work_with_price(value, quantity=1, mode='calc'):
+    """Универсальная функция для работы с ценами (рубли)"""
+    if mode == 'clean':
+        return int(re.sub(r'[^\d]', '', str(value)))
+    num_value = int(value)
+
+    if mode == 'format':
+        total = num_value
+    else:
+        total = num_value * quantity
+
+    return f"{total:,} ₽".replace(",", " ")
 
 @dataclass
 class TestUsers:
@@ -92,5 +106,26 @@ TSHIRT_VERTICAL_BLACK = Product(
 SUNDRY_PRODUCTS = [
     TSHIRT_ECONOMICS_BLACK,
     TSHIRT_WALL_STREET_WHITE,
-    TSHIRT_VERTICAL_BLACK,
+    TSHIRT_VERTICAL_BLACK
+]
+
+COURSE_THREE_PILLARS_2_1 = Product(
+    name="Три кита инвестиций» (2+1). Курс Алексея Бачерова в новом формате",
+    price=19900,
+    article="ФК0144",
+)
+COURSE_THREE_PILLARS_2_2 = Product(
+    name="Три кита инвестиций» (2+2). Курс Алексея Бачерова в новом формате",
+    price=28900,
+    article="ФК0145",
+)
+COURSE_SYNTHETIC_BONDS = Product(
+    name="Синтетические облигации. Авторский вебинар Алексея Хмелевского (Доступ к записи вебинара)",
+    price=2400,
+    article="ФК0111",
+)
+COURSES = [
+COURSE_THREE_PILLARS_2_1,
+COURSE_THREE_PILLARS_2_2,
+COURSE_SYNTHETIC_BONDS
 ]

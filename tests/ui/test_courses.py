@@ -2,7 +2,7 @@ import allure
 import pytest
 import random
 
-from pages import playwright_product_page, playwright_cart_page
+from src.utils.test_data import COURSES, work_with_price
 
 
 @allure.epic("Раздел 'Курсы'")
@@ -20,20 +20,21 @@ class TestCoursesPage:
          .assert_items_count(4)
          .assert_course_items())
 
-    def test_add_random_course_to_cart(self, courses_page, playwright_product_page, playwright_cart_page):
-        (courses_page
-         .open_page()
-         .should_have_h1_title("Курсы")
-         .open_random_course())
-
-        product = playwright_product_page.get_product_info()
+    def test_add_random_course_to_cart(self, courses_page, playwright_cart_page):
+        product = random.choice(COURSES)
 
         random_qty = random.randint(1, 5)
-        product["quantity"] = random_qty
-        playwright_product_page.set_quantity_by_clicks(random_qty)
+        expected_total = work_with_price(product.price, random_qty)
 
-        playwright_product_page.click_buy()
+
+        (courses_page
+         .open_page()
+         .open_product(product.name))
+
+        product_info = courses_page.get_product_info()
 
         (playwright_cart_page
+         .set_quantity_by_clicks(random_qty)
+         .click_buy()
          .open_cart_from_alert()
-         .verify_product_in_cart(product))
+         .verify_product_in_cart(product_info))

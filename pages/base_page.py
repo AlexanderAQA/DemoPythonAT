@@ -10,7 +10,6 @@ import time
 from locators.main_page_locators import MainPageLocators
 from src.utils.assertions import CommonAssertions
 from src.utils.logger import get_logger
-import re
 
 
 class BasePage:
@@ -186,17 +185,3 @@ class BasePage:
             select.select_by_value(sort_value)
 
         return self
-
-
-    def work_with_price(self, value, quantity=1, mode='calc'):
-        """Универсальная функция для работы с ценами (рубли)"""
-        if mode == 'clean':
-            return int(re.sub(r'[^\d]', '', str(value)))
-        num_value = int(value)
-
-        if mode == 'format':
-            total = num_value
-        else:
-            total = num_value * quantity
-
-        return f"{total:,} ₽".replace(",", " ")
