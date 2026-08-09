@@ -24,17 +24,19 @@ class TestCoursesPage:
         product = random.choice(COURSES)
 
         random_qty = random.randint(1, 5)
-        expected_total = work_with_price(product.price, random_qty)
-
 
         (courses_page
          .open_page()
          .open_product(product.name))
 
         product_info = courses_page.get_product_info()
+        product_info["quantity"] = random_qty
 
         (playwright_cart_page
          .set_quantity_by_clicks(random_qty)
          .click_buy()
          .open_cart_from_alert()
-         .verify_product_in_cart(product_info))
+         .verify_product_name(product_info)
+         .verify_product_article(product_info)
+         .verify_product_quantity(product_info)
+         .verify_product_price(product_info))
