@@ -1,9 +1,11 @@
 import os
 import random
 import string
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pages.sundry_page import SundryPage
 import re
+from typing import List, Dict, Tuple
+
 
 # Абсолютный путь к тестовым данным
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -54,11 +56,22 @@ def work_with_price(value, quantity=1, mode='calc'):
 
 @dataclass
 class TestUsers:
-    login: str
-    password: str
-    name: str
+    login: str = ""
+    password: str = ""
+    name: str = ""
+    email: str = ""
+    phone: str = ""
+    address: str = ""
+
 
 USER_OLGA = TestUsers("helgaautotests@gmail.com", "Helgaautotests26", "Ольга")
+
+USER_DATA = TestUsers(
+    name="Helga",
+    email="helga@gmail.com",
+    phone="+79000001111",
+    address="Тестовый адрес",
+)
 
 @dataclass
 class TestBooks:
@@ -129,3 +142,22 @@ COURSE_THREE_PILLARS_2_1,
 COURSE_THREE_PILLARS_2_2,
 COURSE_SYNTHETIC_BONDS
 ]
+
+@dataclass
+class WebElementPractice:
+    """Класс для хранения тестовых данных формы Web Element Practice"""
+
+    country_values: List[str] = field(default_factory=lambda: [
+        "usa", "canada", "uk", "germany", "france",
+        "australia", "japan", "china", "brazil", "india"
+    ])
+
+    available_days: List[str] = field(default_factory=lambda: [
+        "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+    ])
+
+    genders: Dict[str, Tuple[str, str]] = field(default_factory=lambda: {
+        "male": ("#male", "Male"),
+        "female": ("#female", "Female"),
+    })
+

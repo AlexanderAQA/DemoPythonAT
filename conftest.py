@@ -13,6 +13,8 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
+from src.utils.assertions import CommonAssertions
+
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
@@ -29,7 +31,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from pages.courses_page import CoursesPage
-from src.utils.test_data import generate_random_string
+from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA
 from pages.sundry_page import SundryPage
 
 logger = logging.getLogger(__name__)
@@ -221,4 +223,27 @@ from pages.playwright_cart_page import CartPage
 @pytest.fixture
 def playwright_cart_page(page):
     return CartPage(page)
+
+from pages.web_element_practice_page import WebElementPracticePage
+@pytest.fixture
+def web_element_practice_page(page):
+    logger.info("Инициализация экземпляра страницы WebElementPractice")
+    return WebElementPracticePage(page)
+
+@pytest.fixture
+def common_assertions(page):
+    logger.info("Инициализация CommonAssertions")
+    return CommonAssertions(page)
+
+
+@pytest.fixture
+def test_user_data(generate_string):
+    logger.info("Подготовка тестовых данных пользователя")
+    email_part, domain_part = USER_DATA.email.split("@")
+    return {
+        "name": f"{USER_DATA.name}_{generate_string}",
+        "email": f"{email_part}_{generate_string}@{domain_part}",
+        "phone": USER_DATA.phone,
+        "address": USER_DATA.address
+    }
 
