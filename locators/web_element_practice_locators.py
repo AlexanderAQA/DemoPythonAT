@@ -1,4 +1,5 @@
 class WebElementPracticeLocators:
+    """Локаторы учебной страницы"""
 
     NAME_FIELD = "#name"
     PHONE_FIELD = "#phone"
@@ -12,3 +13,15 @@ class WebElementPracticeLocators:
     DAY_FRIDAY = "#friday"
     DAY_SATURDAY = "#saturday"
     COUNTRY_DROPDOWN = "#country"
+
+    @staticmethod
+    def get_gender_button(gender: str):
+        locator = f"#{gender}"
+
+        return locator
+
+    @staticmethod
+    def get_day_button(day: str):
+        locator = f"#{day}"
+
+        return locator

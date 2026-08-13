@@ -1,6 +1,7 @@
 import allure
 import pytest
 from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
+from src.utils.test_data import days
 
 
 class TestWebElementPractice:
@@ -8,6 +9,10 @@ class TestWebElementPractice:
     @pytest.mark.ui
     @allure.title("Заполнение формы данными")
     def test_fill_form_with_test_users(self, web_element_practice_page, common_assertions, test_user_data):
+        # product = random.choice(COURSES)
+        # gender = random.choice(list(genders.keys()))
+        random_days = web_element_practice_page.get_random_days(days)
+
         practice_page = web_element_practice_page
         assertions = common_assertions
         test_user = test_user_data
@@ -21,7 +26,7 @@ class TestWebElementPractice:
          .fill_name_field(test_user["name"])
          .fill_email_field(test_user["email"])
          .fill_phone_field(test_user["phone"])
-         .select_random_days())
+         .select_days(random_days))
 
         selected_gender, gender_locator = practice_page.select_gender("random")
         expected_country = practice_page.select_random_country()

@@ -143,21 +143,8 @@ COURSE_THREE_PILLARS_2_2,
 COURSE_SYNTHETIC_BONDS
 ]
 
-@dataclass
-class WebElementPractice:
-    """Класс для хранения тестовых данных формы Web Element Practice"""
+countries = ["usa", "canada", "uk", "germany", "france", "australia", "japan", "china", "brazil", "india"]
+days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+genders = ["male", "female"]
 
-    country_values: List[str] = field(default_factory=lambda: [
-        "usa", "canada", "uk", "germany", "france",
-        "australia", "japan", "china", "brazil", "india"
-    ])
-
-    available_days: List[str] = field(default_factory=lambda: [
-        "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-    ])
-
-    genders: Dict[str, Tuple[str, str]] = field(default_factory=lambda: {
-        "male": ("#male", "Male"),
-        "female": ("#female", "Female"),
-    })
 

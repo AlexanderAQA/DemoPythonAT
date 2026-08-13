@@ -1,16 +1,12 @@
 from pages.playwright_base_page import PlaywrightBasePage
 from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
 import random
-from src.utils.test_data import WebElementPractice
+from src.utils.test_data import countries, days, genders
 from playwright.sync_api import expect
 
 
 class WebElementPracticePage(PlaywrightBasePage):
     WEB_ELEMENT_URL = 'https://testautomationpractice.blogspot.com/'
-
-    def __init__(self, page, test_data: WebElementPractice = None):
-        super().__init__(page)
-        self.test_data = test_data if test_data is not None else WebElementPractice()
 
     def open_practice_page(self):
         self.logger.info(f"Открываем страницу {self.WEB_ELEMENT_URL}")
@@ -50,31 +46,32 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.page.locator(Practice.ADDRESS_FIELD).fill(address)
         return self
 
-    def select_gender(self, gender="random"):
+    def select_gender(self, gender):
         self.logger.info(f"Выбираем пол: {gender}")
-        genders = self.test_data.genders
+        self.page.locator(Practice.get_gender_button(gender)).check()
 
-        if gender.lower() == "random":
-            gender = random.choice(list(genders.keys()))
-
-        locator, gender_name = genders[gender.lower()]
-        self.page.locator(locator).check()
-        self.logger.info(f"Выбран пол: {gender_name}")
-
-        return gender, locator
-
-    def select_random_days(self):
-        self.logger.info("Выбираем дни недели")
-        days_locators = [f"#{day}" for day in self.test_data.available_days]
-
-        num_of_days = random.randint(1, min(3, len(days_locators)))
-        selected_days = random.sample(days_locators, num_of_days)
-
-        for day in selected_days:
-            self.page.locator(day).check(force=True)
-
-        self.logger.info(f"Выбраны дни: {selected_days}")
         return self
+
+    # def select_random_days(self):
+    #     self.logger.info("Выбираем рандомное количество дней")
+    #     random_qty = random.randint(1, 7)
+    #     self.logger.info(f"Будет выбрано дней: {random_qty}")
+    #
+    #     for i in range(random_qty):
+    #         self.select_days(i)
+    #     return self
+
+    def get_random_days(self, days):
+        random_qty = random.randint(1, 7)
+        return random.sample(days, random_qty)
+
+    def select_days(self, days):
+        self.logger.info("Выбираем дни недели")
+        for i in range(len(days)):
+            self.page.locator(Practice.get_day_button(days[i])).check()
+
+        return self
+
 
     def select_random_country(self):
         self.logger.info("Выбираем страну")
