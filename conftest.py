@@ -31,7 +31,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from pages.courses_page import CoursesPage
-from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA
+from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, generate_web_element_user
 from pages.sundry_page import SundryPage
 
 logger = logging.getLogger(__name__)
@@ -236,14 +236,15 @@ def common_assertions(page):
     return CommonAssertions(page)
 
 
-@pytest.fixture
-def test_user_data(generate_string):
-    logger.info("Подготовка тестовых данных пользователя")
-    email_part, domain_part = USER_DATA.email.split("@")
+@pytest.fixture()
+def test_user_data():
+    """Генерирует тестовые данные пользователя через Faker"""
+    logger.info("Подготовка тестовых данных пользователя через Faker")
+    user = generate_web_element_user()
     return {
-        "name": f"{USER_DATA.name}_{generate_string}",
-        "email": f"{email_part}_{generate_string}@{domain_part}",
-        "phone": USER_DATA.phone,
-        "address": USER_DATA.address
+        "name": user.name,
+        "email": user.email,
+        "phone": user.phone,
+        "address": user.address,
     }
 

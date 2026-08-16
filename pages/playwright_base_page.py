@@ -93,3 +93,7 @@ class PlaywrightBasePage:
         self.page.get_by_text(name).click()
 
         return self
+
+    def get_field_value(self, locator):
+        """Возвращает значение текстового поля по локатору"""
+        return self.page.locator(locator).input_value()

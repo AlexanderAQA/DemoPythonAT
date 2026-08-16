@@ -13,6 +13,7 @@ class WebElementPracticeLocators:
     DAY_FRIDAY = "#friday"
     DAY_SATURDAY = "#saturday"
     COUNTRY_DROPDOWN = "#country"
+    SUBMIT_BUTTON = "button.submit-btn"
 
     @staticmethod
     def get_gender_button(gender: str):

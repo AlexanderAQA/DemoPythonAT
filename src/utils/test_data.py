@@ -2,9 +2,10 @@ import os
 import random
 import string
 from dataclasses import dataclass, field
+from faker import Faker
 from pages.sundry_page import SundryPage
 import re
-from typing import List, Dict, Tuple
+fake = Faker()
 
 
 # Абсолютный путь к тестовым данным
@@ -143,8 +144,28 @@ COURSE_THREE_PILLARS_2_2,
 COURSE_SYNTHETIC_BONDS
 ]
 
+@dataclass
+class WebElementPracticeUser:
+    name: str
+    email: str
+    phone: str
+    address: str
+
+def generate_web_element_user() -> WebElementPracticeUser:
+    """Генерирует случайного пользователя """
+    return WebElementPracticeUser(
+        name=fake.name()[:13],
+        email=fake.email()[:25],
+        phone=fake.phone_number()[:10],
+        address=fake.address().replace('\n', ', ')[:30]
+    )
+
 countries = ["usa", "canada", "uk", "germany", "france", "australia", "japan", "china", "brazil", "india"]
 days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 genders = ["male", "female"]
 
+def get_random_days(days_list: list) -> list:
+    """Возвращает случайный набор дней"""
+    random_qty = random.randint(1, len(days_list))
+    return random.sample(days_list, random_qty)
 
