@@ -12,8 +12,10 @@ class WebElementPracticePage(PlaywrightBasePage):
         return self
 
     def close_google_popup(self):
+        """Закрывает всплывающее окно выбора языка Google"""
         try:
-            close_button = self.page.locator("button[aria-label='Close']")
+            from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
+            close_button = self.page.locator(Practice.CLOSE_GOOGLE_POPUP)
             close_button.wait_for(state="visible", timeout=2000)
             self.logger.info("Закрываем всплывающее окно Google")
             close_button.click()
@@ -46,7 +48,7 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.logger.info(f"Выбираем пол: {gender}")
         gender_locator = Practice.get_gender_button(gender)
         self.page.locator(gender_locator).check()
-        return gender, gender_locator
+        return self
 
     def select_days(self, days_list: list):
         self.logger.info(f"Выбираем дни недели: {days_list}")
@@ -68,12 +70,12 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.page.locator(Practice.SUBMIT_BUTTON).click()
         return self
 
-    def assert_is_checked(self, locator, element_name="Элемент"):
-        self.logger.info(f"Проверяем, что {element_name} отмечен")
+    def assert_is_checked(self, locator):
+        self.logger.info(f"Проверяем, что элемент '{locator}' отмечен")
         expect(self.page.locator(locator)).to_be_checked()
         return self
 
-    def assert_is_visible(self, locator, element_name="Элемент"):
-        self.logger.info(f"Проверяем, что {element_name} виден")
+    def assert_is_visible(self, locator):
+        self.logger.info(f"Проверяем, что элемент '{locator}' виден")
         expect(self.page.locator(locator)).to_be_visible()
         return self

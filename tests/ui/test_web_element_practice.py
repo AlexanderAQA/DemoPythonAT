@@ -33,16 +33,17 @@ class TestWebElementPractice:
          .fill_phone_field(test_user["phone"])
          .fill_address_field(test_user["address"]))
 
-        selected_gender, gender_locator = practice_page.select_gender(random_gender)
-        practice_page.select_days(random_days)
-        practice_page.select_country(random_country)
+        (practice_page
+         .select_gender(random_gender)
+         .select_days(random_days)
+         .select_country(random_country))
 
         assertions.assert_is_equal(test_user["name"], practice_page.get_field_value(Practice.NAME_FIELD))
         assertions.assert_is_equal(test_user["email"], practice_page.get_field_value(Practice.EMAIL_FIELD))
         assertions.assert_is_equal(test_user["phone"], practice_page.get_field_value(Practice.PHONE_FIELD))
         assertions.assert_is_equal(test_user["address"], practice_page.get_field_value(Practice.ADDRESS_FIELD))
 
-        practice_page.assert_is_checked(gender_locator)
+        practice_page.assert_is_checked(Practice.get_gender_button(random_gender))
 
         for day in random_days:
             practice_page.assert_is_checked(Practice.get_day_button(day))
