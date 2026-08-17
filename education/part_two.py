@@ -57,6 +57,17 @@ is_raining = False
 if temperature > 18 and not is_raining:
     print("Можно идти гулять!")
 
+temperature = 22
+is_raining = False
+time_free = 0.9
+
+# or - логическое ИЛИ
+# and - логическое И
+if temperature > 18 or time_free > 1:
+    print("Можно идти гулять!")
+else:
+    print("Остаемся дома")
+
 
 # ---------------------------------------------------------------------
 # 3. ЦИКЛ FOR
@@ -64,8 +75,8 @@ if temperature > 18 and not is_raining:
 fruits = ["яблоко", "банан", "апельсин"]
 
 print("Перебор списка:")
-for fruit in fruits:
-    print("Фрукт:", fruit)
+for f in fruits:
+    print("Фрукт:", f)
 
 
 # ---------------------------------------------------------------------
@@ -91,6 +102,10 @@ print("\n\nФорматы:")
 print("range(stop)")
 print("range(start, stop)")
 print("range(start, stop, step)")
+
+# выполняет действие внутри цикла 5 раз
+for i in range(5):
+    print("Тест")
 
 
 # ---------------------------------------------------------------------
@@ -118,7 +133,7 @@ for number in range(1, 11):
 
 
 # ---------------------------------------------------------------------
-# 7. CONTINUE
+# 7. CONTINUE - пропуск
 # ---------------------------------------------------------------------
 
 
@@ -154,14 +169,18 @@ for number in range(1, 21):
 
 login = "student"
 password = "python123"
+ip_adress = "1231231223123"
 
-if login == "student":
-    if password == "python123":
-        print("Вход выполнен успешно.")
+if ip_adress == "123123123123":
+    if login == "student":
+        if password == "python123":
+            print("Вход выполнен успешно.")
+        else:
+            print("Неверный пароль.")
     else:
-        print("Неверный пароль.")
+        print("Пользователь не найден.")
 else:
-    print("Пользователь не найден.")
+    print("Вы заходите из необычного места. Проверьте ВПН")
 
 
 # ---------------------------------------------------------------------
