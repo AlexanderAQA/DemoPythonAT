@@ -97,3 +97,9 @@ class PlaywrightBasePage:
     def get_field_value(self, locator):
         """Возвращает значение текстового поля по локатору"""
         return self.page.locator(locator).input_value()
+
+    def check_text_result(self, text):
+        self.logger.info("Проверка текста в уведомлении при отправке")
+        result = self.page.get_by_text(text)
+        expect(result).to_be_visible()
+        return self

@@ -15,6 +15,7 @@ class WebElementPracticeLocators:
     COUNTRY_DROPDOWN = "#country"
     SUBMIT_BUTTON = "button.submit-btn"
     CLOSE_GOOGLE_POPUP = "button[aria-label='Close']"
+    RESULT_MESSAGE = "#result.result"
 
     @staticmethod
     def get_gender_button(gender: str):

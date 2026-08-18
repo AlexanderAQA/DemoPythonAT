@@ -14,7 +14,6 @@ class WebElementPracticePage(PlaywrightBasePage):
     def close_google_popup(self):
         """Закрывает всплывающее окно выбора языка Google"""
         try:
-            from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
             close_button = self.page.locator(Practice.CLOSE_GOOGLE_POPUP)
             close_button.wait_for(state="visible", timeout=2000)
             self.logger.info("Закрываем всплывающее окно Google")
@@ -59,7 +58,7 @@ class WebElementPracticePage(PlaywrightBasePage):
     def select_country(self, country: str):
         self.logger.info(f"Выбираем страну: {country}")
         self.page.locator(Practice.COUNTRY_DROPDOWN).select_option(value=country)
-        return country
+        return self
 
     def get_selected_country_value(self):
         return self.get_field_value(Practice.COUNTRY_DROPDOWN)
@@ -79,3 +78,4 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.logger.info(f"Проверяем, что элемент '{locator}' виден")
         expect(self.page.locator(locator)).to_be_visible()
         return self
+

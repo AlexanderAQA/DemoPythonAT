@@ -13,13 +13,12 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
-from src.utils.assertions import CommonAssertions
-
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from pages.web_element_practice_page import WebElementPracticePage
 from src.utils.api_client_hh import ApiHH
 from src.utils.api_client_weather import ApiWeather
 from src.utils.api_client import ApiClient
@@ -224,20 +223,13 @@ from pages.playwright_cart_page import CartPage
 def playwright_cart_page(page):
     return CartPage(page)
 
-from pages.web_element_practice_page import WebElementPracticePage
 @pytest.fixture
 def web_element_practice_page(page):
     logger.info("Инициализация экземпляра страницы WebElementPractice")
     return WebElementPracticePage(page)
 
-@pytest.fixture
-def common_assertions(page):
-    logger.info("Инициализация CommonAssertions")
-    return CommonAssertions(page)
-
-
 @pytest.fixture()
-def test_user_data():
+def generate_user():
     """Генерирует тестовые данные пользователя через Faker"""
     logger.info("Подготовка тестовых данных пользователя через Faker")
     user = generate_web_element_user()
