@@ -273,8 +273,10 @@ elif score >= 75:
     grade = 4
 elif score >= 60:
     grade = 3
-else:
+elif score >0
     grade = 2
+else
+    print ("Отрицательное значение")
 print(f"Результат: {grade}")
 
 Задача 2. Сумма чётных чисел
@@ -283,7 +285,7 @@ print(f"Результат: {grade}")
 
 total = 0
 for num in range(2, 101, 2): 
- total += num
+    total += num
 print(total)
 
 #range(2, 101, 2) — генерирует числа: 2, 4, 6, …, 100;
@@ -305,7 +307,7 @@ print("Старт")
 Найдите первое число, которое делится одновременно на 7 и на 9.
 После нахождения остановите цикл с помощью break.
 
-for i in range(1,100):
+for i in range(1,101):
     if i % 7 == 0 and i % 9 == 0:
      print(i)
      break
@@ -316,9 +318,9 @@ for i in range(1,100):
 Не выводите числа, которые делятся на 5.
 Используйте continue.
 
-for i in range(1,51):
+for i in range(1,51)
     if i% 5 == 0:
-     continue
+    continue
     print(i)
 
 Задача 6. Игра "Угадай число" — базовая версия
