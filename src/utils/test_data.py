@@ -163,9 +163,21 @@ def generate_web_element_user() -> WebElementPracticeUser:
 countries = ["usa", "canada", "uk", "germany", "france", "australia", "japan", "china", "brazil", "india"]
 days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 genders = ["male", "female"]
+colors = ["red", "blue", "green", "yellow", "white"]
+animals = ["cat", "cheetah", "deer", "dog", "elephant", "fox", "giraffe", "lion", "rabbit", "zebra"]
 
 def get_random_days(days_list: list) -> list:
     """Возвращает случайный набор дней"""
     random_qty = random.randint(1, len(days_list))
     return random.sample(days_list, random_qty)
+
+def get_random_colors(colors_list: list) -> list:
+    """Возвращает случайный набор цветов"""
+    random_qty = random.randint(1, min(3, len(colors_list)))
+    return random.sample(colors_list, random_qty)
+
+def get_random_animal(animals_list: list) -> str:
+    """Возвращает случайное животное"""
+    return random.choice(animals_list)
+
 

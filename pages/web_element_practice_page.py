@@ -1,6 +1,7 @@
 from pages.playwright_base_page import PlaywrightBasePage
 from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
 from playwright.sync_api import expect
+from datetime import datetime, timedelta
 
 
 class WebElementPracticePage(PlaywrightBasePage):
@@ -79,3 +80,90 @@ class WebElementPracticePage(PlaywrightBasePage):
         expect(self.page.locator(locator)).to_be_visible()
         return self
 
+    def select_colors(self, colors_list: list):
+        self.logger.info(f"Выбор цветов: {colors_list}")
+        self.page.locator(Practice.COLORS_LISTBOX).select_option(value=colors_list)
+        return self
+
+    def assert_colors_selected(self, colors_list: list):
+        self.logger.info(f"Проверка, что цвета {colors_list} выбраны")
+        for color in colors_list:
+            selected_option = self.page.locator(f"{Practice.COLORS_LISTBOX} option[value='{color}']:checked")
+            expect(selected_option).to_have_count(1)
+        return self
+
+    def select_animal(self, animal: str):
+        self.logger.info(f"Выбор животного: {animal}")
+        self.page.locator(Practice.ANIMALS_LISTBOX).select_option(value=animal)
+        return self
+
+    def assert_animal_selected(self, animal: str):
+        self.logger.info(f"Проверка, что животное {animal} выбрано")
+        selected_option = self.page.locator(f"{Practice.ANIMALS_LISTBOX} option[value='{animal}']:checked")
+        expect(selected_option).to_have_count(1)
+        return self
+
+    def select_date_from_calendar(self, input_locator: str, target_date: datetime):
+        self.logger.info(f"Выбор даты через календарь: {target_date.strftime('%m/%d/%Y')}")
+
+        self.page.locator(input_locator).click()
+        self.page.wait_for_timeout(500)
+
+        current_month_text, current_year_text = self.get_current_calendar_date()
+        self.logger.info(f"Текущий месяц в календаре: {current_month_text} {current_year_text}")
+
+        current_date = datetime.strptime(f"{current_month_text} {current_year_text}", "%B %Y")
+        target_month_year = datetime(target_date.year, target_date.month, 1)
+
+        while current_date < target_month_year:
+            self.page.locator(Practice.CALENDAR_NEXT_MONTH).click()
+            self.page.wait_for_timeout(200)
+            current_month_text, current_year_text = self.get_current_calendar_date()
+            current_date = datetime.strptime(f"{current_month_text} {current_year_text}", "%B %Y")
+
+        while current_date > target_month_year:
+            self.page.locator(Practice.CALENDAR_PREV_MONTH).click()
+            self.page.wait_for_timeout(200)
+            current_month_text, current_year_text = self.get_current_calendar_date()
+            current_date = datetime.strptime(f"{current_month_text} {current_year_text}", "%B %Y")
+
+        day_str = str(target_date.day)
+        self.page.locator(f"td[data-handler='selectDay'] a[data-date='{day_str}']").click()
+
+        self.page.locator("body").click(position={"x": 10, "y": 10})
+        self.page.wait_for_timeout(300)
+
+        return self
+
+    def get_current_calendar_date(self) -> tuple[str, str]:
+        """
+        Определяет текущий месяц и год в открытом календаре"""
+        month_locator = self.page.locator(Practice.CALENDAR_MONTH_TITLE).first
+        year_locator = self.page.locator(Practice.CALENDAR_YEAR_TITLE).first
+        tag_name = month_locator.evaluate("el => el.tagName.toLowerCase()")
+
+        if tag_name == "select":
+            month_text = month_locator.locator("option[selected]").text_content().strip()
+            year_text = year_locator.locator("option[selected]").text_content().strip()
+        else:
+            month_text = month_locator.text_content().strip()
+            year_text = year_locator.text_content().strip()
+
+        month_mapping = {
+            "Jan": "January", "Feb": "February", "Mar": "March",
+            "Apr": "April", "May": "May", "Jun": "June",
+            "Jul": "July", "Aug": "August", "Sep": "September",
+            "Oct": "October", "Nov": "November", "Dec": "December"
+        }
+
+        if month_text in month_mapping:
+            month_text = month_mapping[month_text]
+
+        return month_text, year_text
+
+    def fill_native_date(self, input_locator: str, target_date: datetime):
+        """Для заполнения input type=date в формате YYYY-MM-DD"""
+        date_str = target_date.strftime("%Y-%m-%d")
+        self.logger.info(f"Заполнить дату: {date_str}")
+        self.page.locator(input_locator).fill(date_str)
+        return self

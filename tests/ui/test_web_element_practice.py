@@ -2,7 +2,9 @@ import allure
 import pytest
 import random
 from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
-from src.utils.test_data import days, genders, countries, get_random_days
+from src.utils.test_data import (days, genders, countries, get_random_days, get_random_colors, get_random_animal,
+                                 colors, animals)
+from datetime import datetime, timedelta
 
 
 class TestWebElementPractice:
@@ -16,6 +18,13 @@ class TestWebElementPractice:
         random_days = get_random_days(days)
         random_gender = random.choice(genders)
         random_country = random.choice(countries)
+        random_colors = get_random_colors(colors)
+        random_animal = get_random_animal(animals)
+
+        future_date_1 = datetime.now() + timedelta(days=random.randint(10, 60))
+        future_date_2 = datetime.now() + timedelta(days=random.randint(10, 60))
+        start_date = datetime.now() + timedelta(days=random.randint(5, 20))
+        end_date = start_date + timedelta(days=random.randint(10, 30))
 
         (practice_page
          .open_practice_page()
@@ -24,13 +33,21 @@ class TestWebElementPractice:
          .assert_is_visible(Practice.EMAIL_FIELD)
          .assert_is_visible(Practice.PHONE_FIELD)
          .assert_is_visible(Practice.ADDRESS_FIELD)
-         .assert_is_visible(Practice.COUNTRY_DROPDOWN))
+         .assert_is_visible(Practice.COUNTRY_DROPDOWN)
+         .assert_is_visible(Practice.COLORS_LISTBOX)
+         .assert_is_visible(Practice.ANIMALS_LISTBOX))
 
         (practice_page
          .fill_name_field(test_user["name"])
          .fill_email_field(test_user["email"])
          .fill_phone_field(test_user["phone"])
-         .fill_address_field(test_user["address"]))
+         .fill_address_field(test_user["address"])
+         .select_colors(random_colors)
+         .select_animal(random_animal)
+         .select_date_from_calendar(Practice.DATE_PICKER_1, future_date_1)
+         .select_date_from_calendar(Practice.DATE_PICKER_2, future_date_2)
+         .fill_native_date(Practice.DATE_PICKER_3_START, start_date)
+         .fill_native_date(Practice.DATE_PICKER_3_END, end_date))
 
         (practice_page
          .select_gender(random_gender)
@@ -48,6 +65,15 @@ class TestWebElementPractice:
         actual_country = practice_page.get_selected_country_value()
         (practice_page
             .asserts.assert_is_equal(random_country, actual_country))
+
+        (practice_page
+         .assert_colors_selected(random_colors)
+         .assert_animal_selected(random_animal))
+
+        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_1))
+        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_2))
+        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_3_START))
+        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_3_END))
 
         (practice_page
           .click_submit()

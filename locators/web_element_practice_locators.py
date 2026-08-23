@@ -16,6 +16,16 @@ class WebElementPracticeLocators:
     SUBMIT_BUTTON = "button.submit-btn"
     CLOSE_GOOGLE_POPUP = "button[aria-label='Close']"
     RESULT_MESSAGE = "#result.result"
+    COLORS_LISTBOX = "#colors"
+    ANIMALS_LISTBOX = "#animals"
+    DATE_PICKER_1 = "#datepicker"
+    DATE_PICKER_2 = "#txtDate"
+    DATE_PICKER_3_START = "input[placeholder='Start Date']"
+    DATE_PICKER_3_END = "input[placeholder='End Date']"
+    CALENDAR_NEXT_MONTH = ".ui-datepicker-next"
+    CALENDAR_PREV_MONTH = ".ui-datepicker-prev"
+    CALENDAR_MONTH_TITLE = ".ui-datepicker-month"
+    CALENDAR_YEAR_TITLE = ".ui-datepicker-year"
 
     @staticmethod
     def get_gender_button(gender: str):
