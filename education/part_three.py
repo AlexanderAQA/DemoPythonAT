@@ -102,6 +102,7 @@ print("Последний элемент:", numbers[-1])
 numbers.append(60)
 print("После append:", numbers)
 
+
 numbers.insert(1, 15)
 print("После insert:", numbers)
 
@@ -617,6 +618,10 @@ multiply_numbers(5, 10)
 """
 # Писать задание сюда
 
+def multiply_numbers(a, b):
+    return a * b
+print("Результат:",multiply_numbers(5, 10))
+
 """
 ЗАДАНИЕ 2
 ----------
@@ -628,7 +633,13 @@ numbers = [10, 5, 20, 10, 30, 5, 40]
 2. Найдите сумму всех уникальных значений.
 """
 # Писать задание сюда
+numbers = [10, 5, 20, 10, 30, 5, 40]
+unique_numbers = list(set(numbers))
+print(unique_numbers)
 
+numbers = [10, 5, 20, 10, 30, 5, 40]
+sum_unique = sum(set(numbers))
+print(sum_unique)
 
 """
 ЗАДАНИЕ 3
@@ -649,6 +660,18 @@ student = {
 Выведите все пары ключ: значение.
 """
 # Писать задание сюда
+student = {
+    "name": "Ваше имя",
+    "age": 20,
+    "skills": ["Python", "Git"]
+}
+
+student ["Город"] = "Москва"
+student ["Email"] = "Gyry@mail.ru"
+student ["Пол"] = "Муж"
+
+print(student)
+
 
 """
 ЗАДАНИЕ 4
@@ -664,6 +687,20 @@ student = {
 """
 # Писать задание сюда
 
+with open("tasks.txt.", "w", encoding="utf-8") as file:
+    file.write("Выучить функции\n")
+    file.write("Выучить коллекции\n")
+    file.write("Выучить списки\n")
+    file.write("Выучить кортежи\n")
+    file.write("Выучить файлы\n")
+with open("tasks.txt.", "r", encoding="utf-8") as file:
+    content = file.read()
+print("\nСодержимое файла:")
+print(content)
+with open("tasks.txt.", "a", encoding="utf-8") as file:
+    file.write("Выучить след тему\n")
+print("\nСодержимое файла:")
+print(content)
 
 """
 ЗАДАНИЕ 5
@@ -748,6 +785,8 @@ tasks = []
 * попросить пользователя ввести название задачи;
 * создать новую задачу;
 * добавить её в список `tasks`.
+
+
 
 ### 2. `show_tasks()`
 
