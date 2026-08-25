@@ -40,7 +40,7 @@ class WebElementPracticePage(PlaywrightBasePage):
         return self
 
     def fill_address_field(self, address):
-        self.logger.info("Заполняем поле Address")   # <-- было "Email", стало "Address"
+        self.logger.info("Заполняем поле Address")
         self.page.locator(Practice.ADDRESS_FIELD).fill(address)
         return self
 
@@ -113,25 +113,23 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.logger.info(f"Текущий месяц в календаре: {current_month_text} {current_year_text}")
 
         current_date = datetime.strptime(f"{current_month_text} {current_year_text}", "%B %Y")
-        target_month_year = datetime(target_date.year, target_date.month, 1)
 
-        while current_date < target_month_year:
-            self.page.locator(Practice.CALENDAR_NEXT_MONTH).click()
-            self.page.wait_for_timeout(200)
-            current_month_text, current_year_text = self.get_current_calendar_date()
-            current_date = datetime.strptime(f"{current_month_text} {current_year_text}", "%B %Y")
+        month_diff = (
+                (target_date.year - current_date.year) * 12
+                + target_date.month - current_date.month
+        )
 
-        while current_date > target_month_year:
-            self.page.locator(Practice.CALENDAR_PREV_MONTH).click()
-            self.page.wait_for_timeout(200)
-            current_month_text, current_year_text = self.get_current_calendar_date()
-            current_date = datetime.strptime(f"{current_month_text} {current_year_text}", "%B %Y")
+        month_locator = (
+            Practice.CALENDAR_NEXT_MONTH
+            if month_diff > 0
+            else Practice.CALENDAR_PREV_MONTH
+        )
+
+        for _ in range(abs(month_diff)):
+            self.page.locator(month_locator).click()
 
         day_str = str(target_date.day)
         self.page.locator(f"td[data-handler='selectDay'] a[data-date='{day_str}']").click()
-
-        self.page.locator("body").click(position={"x": 10, "y": 10})
-        self.page.wait_for_timeout(300)
 
         return self
 

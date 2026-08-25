@@ -25,6 +25,10 @@ class TestWebElementPractice:
         future_date_2 = datetime.now() + timedelta(days=random.randint(10, 60))
         start_date = datetime.now() + timedelta(days=random.randint(5, 20))
         end_date = start_date + timedelta(days=random.randint(10, 30))
+        formated_date_1 = future_date_1.strftime("%m/%d/%Y")
+        formated_date_2 = future_date_2.strftime("%d/%m/%Y")
+        formated_start_date = start_date.strftime("%Y-%m-%d")
+        formated_end_date = end_date.strftime("%Y-%m-%d")
 
         (practice_page
          .open_practice_page()
@@ -67,14 +71,13 @@ class TestWebElementPractice:
             .asserts.assert_is_equal(random_country, actual_country))
 
         (practice_page
-         .assert_colors_selected(random_colors)
-         .assert_animal_selected(random_animal))
-
-        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_1))
-        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_2))
-        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_3_START))
-        practice_page.asserts.assert_is_not_empty(practice_page.get_field_value(Practice.DATE_PICKER_3_END))
+            .assert_colors_selected(random_colors)
+            .assert_animal_selected(random_animal)
+            .asserts.assert_is_equal(formated_date_1, practice_page.get_field_value(Practice.DATE_PICKER_1))
+            .assert_is_equal(formated_date_2, practice_page.get_field_value(Practice.DATE_PICKER_2))
+            .assert_is_equal(formated_start_date, practice_page.get_field_value(Practice.DATE_PICKER_3_START))
+            .assert_is_equal(formated_end_date, practice_page.get_field_value(Practice.DATE_PICKER_3_END)))
 
         (practice_page
-          .click_submit()
-          .check_text_result("You selected"))
+            .click_submit()
+            .check_text_result("You selected"))

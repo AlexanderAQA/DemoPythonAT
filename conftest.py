@@ -233,10 +233,6 @@ def generate_user():
     """Генерирует тестовые данные пользователя через Faker"""
     logger.info("Подготовка тестовых данных пользователя через Faker")
     user = generate_web_element_user()
-    return {
-        "name": user.name,
-        "email": user.email,
-        "phone": user.phone,
-        "address": user.address,
-    }
+    return user
+
 
