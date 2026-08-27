@@ -18,6 +18,7 @@ project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from pages.web_element_practice_page import WebElementPracticePage
 from src.utils.api_client_hh import ApiHH
 from src.utils.api_client_weather import ApiWeather
 from src.utils.api_client import ApiClient
@@ -29,7 +30,7 @@ from pages.account_page import AccountPage
 from pages.books_page import BooksPage
 from pages.cart_page import CartPage
 from pages.courses_page import CoursesPage
-from src.utils.test_data import generate_random_string
+from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, generate_web_element_user
 from pages.sundry_page import SundryPage
 
 logger = logging.getLogger(__name__)
@@ -221,4 +222,17 @@ from pages.playwright_cart_page import CartPage
 @pytest.fixture
 def playwright_cart_page(page):
     return CartPage(page)
+
+@pytest.fixture
+def web_element_practice_page(page):
+    logger.info("Инициализация экземпляра страницы WebElementPractice")
+    return WebElementPracticePage(page)
+
+@pytest.fixture()
+def generate_user():
+    """Генерирует тестовые данные пользователя через Faker"""
+    logger.info("Подготовка тестовых данных пользователя через Faker")
+    user = generate_web_element_user()
+    return user
+
 

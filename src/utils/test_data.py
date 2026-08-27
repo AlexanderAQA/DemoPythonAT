@@ -1,9 +1,12 @@
 import os
 import random
 import string
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from faker import Faker
 from pages.sundry_page import SundryPage
 import re
+fake = Faker()
+
 
 # Абсолютный путь к тестовым данным
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -54,11 +57,22 @@ def work_with_price(value, quantity=1, mode='calc'):
 
 @dataclass
 class TestUsers:
-    login: str
-    password: str
-    name: str
+    login: str = ""
+    password: str = ""
+    name: str = ""
+    email: str = ""
+    phone: str = ""
+    address: str = ""
+
 
 USER_OLGA = TestUsers("helgaautotests@gmail.com", "Helgaautotests26", "Ольга")
+
+USER_DATA = TestUsers(
+    name="Helga",
+    email="helga@gmail.com",
+    phone="+79000001111",
+    address="Тестовый адрес",
+)
 
 @dataclass
 class TestBooks:
@@ -129,3 +143,41 @@ COURSE_THREE_PILLARS_2_1,
 COURSE_THREE_PILLARS_2_2,
 COURSE_SYNTHETIC_BONDS
 ]
+
+@dataclass
+class WebElementPracticeUser:
+    name: str
+    email: str
+    phone: str
+    address: str
+
+def generate_web_element_user() -> WebElementPracticeUser:
+    """Генерирует случайного пользователя """
+    return WebElementPracticeUser(
+        name=fake.name()[:13],
+        email=fake.email()[:25],
+        phone=fake.phone_number()[:10],
+        address=fake.address().replace('\n', ', ')[:30]
+    )
+
+countries = ["usa", "canada", "uk", "germany", "france", "australia", "japan", "china", "brazil", "india"]
+days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+genders = ["male", "female"]
+colors = ["red", "blue", "green", "yellow", "white"]
+animals = ["cat", "cheetah", "deer", "dog", "elephant", "fox", "giraffe", "lion", "rabbit", "zebra"]
+
+def get_random_days(days_list: list) -> list:
+    """Возвращает случайный набор дней"""
+    random_qty = random.randint(1, len(days_list))
+    return random.sample(days_list, random_qty)
+
+def get_random_colors(colors_list: list) -> list:
+    """Возвращает случайный набор цветов"""
+    random_qty = random.randint(1, min(3, len(colors_list)))
+    return random.sample(colors_list, random_qty)
+
+def get_random_animal(animals_list: list) -> str:
+    """Возвращает случайное животное"""
+    return random.choice(animals_list)
+
+
