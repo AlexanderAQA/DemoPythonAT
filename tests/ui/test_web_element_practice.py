@@ -3,7 +3,7 @@ import pytest
 import random
 from locators.web_element_practice_locators import WebElementPracticeLocators as Practice
 from src.utils.test_data import (days, genders, countries, get_random_days, get_random_colors, get_random_animal,
-                                 colors, animals)
+                                 colors, animals, negative_users)
 from datetime import datetime, timedelta
 
 

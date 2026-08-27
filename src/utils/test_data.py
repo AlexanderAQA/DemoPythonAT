@@ -146,10 +146,10 @@ COURSE_SYNTHETIC_BONDS
 
 @dataclass
 class WebElementPracticeUser:
-    name: str
-    email: str
-    phone: str
-    address: str
+    name: ""
+    email: ""
+    phone: ""
+    address: ""
 
 def generate_web_element_user() -> WebElementPracticeUser:
     """Генерирует случайного пользователя """
@@ -180,4 +180,9 @@ def get_random_animal(animals_list: list) -> str:
     """Возвращает случайное животное"""
     return random.choice(animals_list)
 
+USER_1 = WebElementPracticeUser(54635, 84545, 789785, 545454545454545454)
+USER_2 = WebElementPracticeUser("^%$%^%&$&", "*&(*(*&&(&)))", "(*(%::?:*?*", ")*№)(***)(")
+USER_3 = WebElementPracticeUser("", "", "", "")
+USER_4 = WebElementPracticeUser("4646(*:%:%","6898:%?(*?(", ":(*?*(*)789", "665478(*??*::%?")
 
+negative_users = [USER_1, USER_2, USER_3, USER_4]
