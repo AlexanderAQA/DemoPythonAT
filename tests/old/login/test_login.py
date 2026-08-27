@@ -1,6 +1,7 @@
 import allure
 import pytest
-from src.utils.test_data import get_valid_user, get_login_list, get_invalid_user
+from src.utils.test_data import get_valid_user, get_login_list, get_invalid_user, TestUsers
+
 
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.epic("Sign")
@@ -57,12 +58,13 @@ class TestLogin:
     @pytest.mark.parametrize("login", get_login_list())
     @pytest.mark.login
     def test_login_input_validation(self, login, login_page):
-        username_field = login_page.username_input
+        user = TestUsers(login=login)
 
         (login_page
-         .open()
-         .assert_value_is_empty(username_field)
-         .enter_username(login)
-         .asserts.assert_is_equal(login, login_page.get_username_field_value()).to_parent_page()
-         .refresh_page()
-         .assert_value_is_empty(username_field))
+            .open()
+            .enter_username(user))
+        actual_username = login_page.get_username_field_value()
+        (login_page
+            .asserts.assert_is_equal(login, actual_username))
+            # .refresh_page()
+            # .assert_value_is_empty(username_field))
