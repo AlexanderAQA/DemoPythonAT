@@ -75,6 +75,21 @@ add_item()
 # Подсказка:
 # Используй цикл for и enumerate().
 #
+shopping_list = []
+def add_item():
+    item = input("Введите название товара: ")
+    shopping_list.append(item)
+    print(f"Товар добавлен: {item}")
+add_item()
+
+def show_items():
+    if not shopping_list:
+        print("Список покупок пуст.")
+    else:
+        for number, item  in enumerate(shopping_list, start=1):
+            print(f"{number}. {item}")
+show_items()
+
 #
 # Затем создай функцию delete_item().
 #
@@ -144,7 +159,18 @@ add_item()
 #     "phone": "89001234567"
 # }
 #
-#
+contacts = []
+def add_contact():
+    name_people = input("Enter your name: ")
+    mobile = input("Enter your telephone: ")
+    contact = ({
+        "name": name_people,
+        "phone": mobile
+ })
+    contacts.append(contact)
+add_contact()
+print(contacts)
+
 # Создай функцию show_contacts().
 #
 # Она должна вывести:
@@ -152,6 +178,11 @@ add_item()
 # 1. Иван — 89001234567
 # 2. Анна — 89998887766
 #
+contacts = [{"name": "Иван", "phone": 89001234567},{"name": "Анна", "phone": 89998887766}]
+def show_contacts():
+    for contact in contacts:
+        print(f"{contact['name']} - {contact['phone']}")
+show_contacts()
 # ============================================================
 
 
@@ -187,6 +218,20 @@ add_item()
 #
 # ============================================================
 
+contacts = [{"name": "Иван", "phone": 89001234567},{"name": "Анна", "phone": 89998887766}]
+def show_contacts():
+    for contact in contacts:
+        print(f"{contact['name']} - {contact['phone']}")
+show_contacts()
+
+def search_contact():
+    name_people = input("Enter your name: ")
+    for contact in contacts:
+        if contact['name'] == name_people:
+            print(f"{contact['name']} - {contact['phone']}")
+            return
+        print("Контакт не найден")
+search_contact()
 
 # ============================================================
 # ЗАДАЧА 5. ОЦЕНКИ СТУДЕНТОВ
@@ -233,6 +278,24 @@ add_item()
 #
 # ============================================================
 
+students = []
+
+def add_student():
+    name = input("Введите имя: ")
+    while True:
+        try:
+            grade_input = int(input("Введите оценку: "))
+            student = {
+                "name": name,
+                "grade": grade_input
+            }
+            students.append(student)
+            break
+
+        except ValueError:
+            print("Ошибка: оценка должна быть числом.")
+add_student()
+print(students)
 
 # ============================================================
 # ЗАДАЧА 6. СРЕДНЯЯ ОЦЕНКА
@@ -292,6 +355,7 @@ add_item()
 # Сколько добавить? 500
 # Баланс: 500
 #
+
 # Затем:
 #
 # Сколько добавить? 300
@@ -303,6 +367,16 @@ add_item()
 #
 # ============================================================
 
+balance = 0
+def add_money():
+    global balance
+    amount = float(input("Сколько добавить? "))
+    balance += amount
+    print("Баланс:", balance)
+
+
+add_money()
+add_money()
 
 # ============================================================
 # ЗАДАЧА 8. СНЯТИЕ ДЕНЕГ
@@ -342,6 +416,23 @@ add_item()
 #
 # ============================================================
 
+def withdraw_money():
+    global balance
+    try:
+        amount = float(input("Сколько денег снять? "))
+        if amount  < 0 :
+            print("Сумма не может быть отрицательной.")
+            return
+        if amount  > balance:
+            print("Недостаточно средств.")
+        else:
+            balance -= amount
+            print(f"Баланс:, {balance}")
+    except ValueError:
+        print("Ошибка: введите число.")
+
+add_money()
+withdraw_money()
 
 # ============================================================
 # ЗАДАЧА 9. УЧЁТ РАСХОДОВ
@@ -382,6 +473,17 @@ add_item()
 #
 # ============================================================
 
+expenses = []
+def add_expense():
+    rate = input("Ввести название расхода: ")
+    amount = float(input("Ввести сумму: "))
+    expense = ({
+    "title": rate,
+     "amount": amount
+ })
+    expenses.append(expense)
+add_expense()
+print(expenses)
 
 # ============================================================
 # ЗАДАЧА 10. ОБЩАЯ СУММА РАСХОДОВ
@@ -411,6 +513,28 @@ add_item()
 #
 # ============================================================
 
+expenses = []
+def add_expense():
+    rate = input("Ввести название расхода: ")
+    amount = float(input("Ввести сумму: "))
+    expense = ({
+    "title": rate,
+     "amount": amount
+ })
+    expenses.append(expense)
+add_expense()
+add_expense()
+print (expenses)
+
+
+def show_total():
+    total = 0
+    for expense in expenses:
+        total += expense["amount"]
+        print(expense["title"], expense["amount"])
+    print(f"Всего потрачено: {total}")
+
+show_total()
 
 # ============================================================
 # ЗАДАЧА 11. СПИСОК КНИГ
@@ -435,6 +559,17 @@ add_item()
 # 2. Создать словарь.
 # 3. Добавить его в books.
 #
+books = []
+
+def add_book():
+    name_book = input("Ввести название книги: ")
+    book = ( {
+     "title": name_book,
+     "read": False
+ })
+    books.append(book)
+add_book()
+print(books)
 #
 # Создай функцию show_books().
 #
@@ -453,6 +588,23 @@ add_item()
 #
 # ============================================================
 
+books = []
+
+def add_book():
+    name_book = input("Ввести название книги: ")
+    book = ( {
+     "title": name_book,
+     "read": False
+ })
+    books.append(book)
+
+def show_books():
+    for i, book in enumerate(books, 1):
+        status = "Прочитана" if book["read"] else "Не прочитана"
+        print(f"{i}. {book['title']} — {status}")
+add_book()
+add_book()
+show_books()
 
 # ============================================================
 # ЗАДАЧА 12. ОТМЕТИТЬ КНИГУ ПРОЧИТАННОЙ
@@ -516,7 +668,24 @@ add_item()
 # 4. Создать словарь.
 # 5. Добавить фильм в список.
 #
+movies = []
+
+
+def add_movie():
+    film = input("Ввести название фильма: ")
+    stock = int(input("Ввести рейтинг от 1 до 10.: "))
+    movie = ({
+        "title": film,
+        "rating": stock
+    })
+    movies.append(movie)
+
+
+add_movie()
+add_movie()
+print(movies)
 #
+
 # Создай show_movies().
 #
 # Она должна вывести:
@@ -527,6 +696,26 @@ add_item()
 #
 # ============================================================
 
+movies = []
+
+def add_movie():
+    film = input("Ввести название фильма: ")
+    stock = int (input("Ввести рейтинг от 1 до 10.: "))
+    movie = ({
+     "title": film,
+     "rating": stock
+ })
+    movies.append(movie)
+
+print(movies)
+
+def show_movies():
+    for i,movie in enumerate(movies, 1):
+        print(f"{i}. {movie['title']} - {movie['rating']}/10")
+add_movie()
+add_movie()
+add_movie()
+show_movies()
 
 # ============================================================
 # ЗАДАЧА 14. ЛУЧШИЕ ФИЛЬМЫ
@@ -559,6 +748,32 @@ add_item()
 #
 # ============================================================
 
+movies = []
+
+def add_movie():
+    film = input("Ввести название фильма: ")
+    stock = int (input("Ввести рейтинг от 1 до 10.: "))
+    movie = ({
+     "title": film,
+     "rating": stock
+ })
+    movies.append(movie)
+
+print(movies)
+
+def show_movies():
+    for i,movie in enumerate(movies, 1):
+        print(f"{i}. {movie['title']} - {movie['rating']}/10")
+
+def show_best_movies():
+    for movie in movies:
+        if movie["rating"] >= 8:
+            print(f"{movie['title']} - {movie['rating']}/10")
+
+add_movie()
+add_movie()
+add_movie()
+add_movie()
 
 # ============================================================
 # ЗАДАЧА 15. ИНВЕНТАРЬ ИГРЫ
@@ -585,6 +800,21 @@ add_item()
 # 4. Создать словарь.
 # 5. Добавить предмет в inventory.
 #
+inventory = []
+
+def add_item():
+    object = input("Ввести название предмета: ")
+    Quantity_g = int(input("Ввести количество: "))
+    item = ({
+     "name": object,
+     "quantity": Quantity_g
+ })
+    inventory.append(item)
+add_item()
+add_item()
+add_item()
+print(inventory)
+
 # Создай show_inventory().
 #
 # Она должна вывести:
@@ -595,6 +825,25 @@ add_item()
 #
 # ============================================================
 
+inventory = []
+
+def add_item():
+    object = input("Ввести название предмета: ")
+    Quantity_g = int(input("Ввести количество: "))
+    item = ({
+     "name": object,
+     "quantity": Quantity_g
+ })
+    inventory.append(item)
+
+
+def show_inventory():
+    for i, item in enumerate(inventory, start=1):
+        print(f"{i}. {item['name']} - {item['quantity']} шт.")
+add_item()
+add_item()
+add_item()
+show_inventory()
 
 # ============================================================
 # ЗАДАЧА 16. УДАЛЕНИЕ ПРЕДМЕТОВ ИЗ ИНВЕНТАРЯ
@@ -632,6 +881,58 @@ add_item()
 #
 # ============================================================
 
+inventory = []
+
+def add_item():
+    object = input("Ввести название предмета: ")
+    Quantity_g = int(input("Ввести количество: "))
+    item = ({
+     "name": object,
+     "quantity": Quantity_g
+ })
+    inventory.append(item)
+
+
+def show_inventory():
+    for i, item in enumerate(inventory, start=1):
+        print(f"{i}. {item['name']} - {item['quantity']} шт.")
+
+
+
+def remove_item():
+    show_inventory()
+    if not inventory:
+        return
+    while True:
+        try:
+            index = int(input("Введите номер предмета, который нужно убрать: ")) - 1
+            if index < 0 or index >= len(inventory):
+                print("Неверный номер. Попробуйте ещё раз.")
+                continue
+            break
+        except ValueError:
+            print("Введите целое число.")
+    while True:
+        try:
+            amount = int(input("Сколько убрать: "))
+            if amount < 0:
+                print("Нельзя убрать отрицательное число.")
+                continue
+            break
+        except ValueError:
+            print("Введите целое число.")
+    if amount > inventory[index]["quantity"]:
+        print("Недостаточно предметов.")
+    else:
+        inventory[index]["quantity"] -= amount
+        print(f"После удаления осталось: {inventory[index]['quantity']} шт.")
+        # Если количество стало 0, удаляем предмет из списка
+        if inventory[index]["quantity"] == 0:
+            del inventory[index]
+add_item()
+add_item()
+add_item()
+remove_item()
 
 # ============================================================
 # ЗАДАЧА 17. СОХРАНЕНИЕ ИНВЕНТАРЯ В JSON
