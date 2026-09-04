@@ -186,3 +186,21 @@ USER_3 = WebElementPracticeUser("", "", "", "")
 USER_4 = WebElementPracticeUser("4646(*:%:%","6898:%?(*?(", ":(*?*(*)789", "665478(*??*::%?")
 
 negative_users = [USER_1, USER_2, USER_3, USER_4]
+
+@dataclass
+class OtzovikUser:
+    login: str = ""
+    password: str = ""
+    email: str = ""
+
+otzovik_negative_cases = [
+    # Пустые поля
+    (OtzovikUser(login="", email="test@mail.ru", password="StrongrtertPass123"), "Логин должен быть"),
+    (OtzovikUser(login="fdjdghj", email="", password="StrongejgyPass123"), "Введите свой реальный email"),
+    (OtzovikUser(login="kyuzsc", email="test@mail.ru", password=""),  "Пароль должен состоять минимум из 6"),
+
+    # Некорректный email (без @ или без домена)
+    (OtzovikUser(login="qwdfv", email="notanemail", password="Un1qdfgdguePassw0rd"), "Введите свой реальный email"),
+    (OtzovikUser(login="lkoix", email="test@", password="Un1quejhhgjPassw0rd"), "Введите свой реальный email"),
+    (OtzovikUser(login="uyiuy", email="@mail.ru", password="Passfghhh123"), "Введите свой реальный email"),
+]

@@ -13,6 +13,8 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
+from pages.otzovik_registration_page import OtzovikRegistrationPage
+
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
@@ -150,16 +152,34 @@ def generate_string():
         return generate_random_string(7)
 
 
+# def pytest_exception_interact(node, report):
+#     if report.failed:
+#         driver = getattr(node, "_driver", None)
+#         if driver:
+#             # Сохраняем скриншот
+#             screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime('%H-%M-%S-%d-%m-%Y')}_"
+#                                                                 f"{node.name}.png")
+#             os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
+#             driver.save_screenshot(screenshot_path)
+#             print(f"Скриншот сохранён: {screenshot_path}")
+
+import re  # <-- ДОЛЖЕН БЫТЬ ЗДЕСЬ, в начале файла conftest.py
+
+
 def pytest_exception_interact(node, report):
     if report.failed:
         driver = getattr(node, "_driver", None)
         if driver:
-            # Сохраняем скриншот
-            screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime('%H-%M-%S-%d-%m-%Y')}_"
-                                                                f"{node.name}.png")
-            os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
-            driver.save_screenshot(screenshot_path)
-            print(f"Скриншот сохранён: {screenshot_path}")
+            safe_name = re.sub(r'[^\w\-]', '_', node.name)
+            timestamp = datetime.now().strftime('%H-%M-%S-%d-%m-%Y')
+            screenshot_path = os.path.join(Screenshots.dirname, f"{timestamp}_{safe_name}.png")
+            try:
+                os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
+                driver.save_screenshot(screenshot_path)
+                print(f"Скриншот сохранён: {screenshot_path}")
+            except Exception as e:
+                print(f"Не удалось сохранить скриншот: {e}")
+
 
 def pytest_configure(config):
     allure_dir = os.path.join(project_root, "allure-results")
@@ -218,7 +238,6 @@ def courses_page(page: Page):
     logger.info("Инициализация экземпляра страницы Курсы")
     return CoursesPage(page)
 
-from pages.playwright_cart_page import CartPage
 @pytest.fixture
 def playwright_cart_page(page):
     return CartPage(page)
@@ -235,4 +254,8 @@ def generate_user():
     user = generate_web_element_user()
     return user
 
+@pytest.fixture(scope="function")
+def otzovik_registration_page(driver):
+    page = OtzovikRegistrationPage(driver)
+    return page
 

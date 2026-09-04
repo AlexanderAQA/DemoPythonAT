@@ -1,17 +1,19 @@
-import allure
 import pytest
-from src.utils.test_data import negative_users
-
+import allure
+from src.utils.test_data import otzovik_negative_cases
 
 @pytest.mark.ui
-@allure.title("Заполнение формы, проверки и нажатие Submit")
-@pytest.mark.parametrize("user", negative_users)
-def test_fields_validation(self, practice_page, user):
-    (practice_page
-     .open_practice_page()
-     .close_google_popup()
-     .fill_name_field(user.name)
-     .fill_email_field(user.email)
-     .fill_phone_field(user.phone)
-     .fill_address_field(user.address)
-     .assert_is_equal
+class TestOtzovikRegistration:
+
+    @allure.title("Регистрация на Отзовике, негативные кейсы")
+    @pytest.mark.parametrize("user, expected_error", otzovik_negative_cases)
+    def test_otzovik_registration(self, otzovik_registration_page, user, expected_error):
+        (otzovik_registration_page
+         .open_registration_page()
+         .fill_login_field(user.login)
+         .fill_password_field(user.password)
+         .fill_email_field(user.email)
+         .accept_agreement()
+         .click_submit()
+         .assert_error_message_contains(expected_error)
+        )
