@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 from pathlib import Path
+import re
 
 import allure
 import pytest
@@ -150,20 +151,6 @@ def log_test_start_end(request):
 def generate_string():
     with allure.step("Генерируем случайную строку"):
         return generate_random_string(7)
-
-
-# def pytest_exception_interact(node, report):
-#     if report.failed:
-#         driver = getattr(node, "_driver", None)
-#         if driver:
-#             # Сохраняем скриншот
-#             screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime('%H-%M-%S-%d-%m-%Y')}_"
-#                                                                 f"{node.name}.png")
-#             os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
-#             driver.save_screenshot(screenshot_path)
-#             print(f"Скриншот сохранён: {screenshot_path}")
-
-import re  # <-- ДОЛЖЕН БЫТЬ ЗДЕСЬ, в начале файла conftest.py
 
 
 def pytest_exception_interact(node, report):

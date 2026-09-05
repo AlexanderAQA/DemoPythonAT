@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from faker import Faker
 from pages.sundry_page import SundryPage
 import re
+from typing import Any
 fake = Faker()
 
 
@@ -146,10 +147,10 @@ COURSE_SYNTHETIC_BONDS
 
 @dataclass
 class WebElementPracticeUser:
-    name: ""
-    email: ""
-    phone: ""
-    address: ""
+    name: Any
+    email: Any
+    phone: Any
+    address: Any
 
 def generate_web_element_user() -> WebElementPracticeUser:
     """Генерирует случайного пользователя """
