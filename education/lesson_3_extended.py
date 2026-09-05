@@ -11,7 +11,8 @@
 # Темы постепенно усложняются:
 # list -> dict -> if -> for -> functions -> try/except -> JSON
 # ============================================================
-
+from idlelib import tree
+from turtledemo.penrose import star
 
 # ============================================================
 # ЗАДАЧА 1. СПИСОК ПОКУПОК
@@ -86,7 +87,7 @@ def show_items():
     if not shopping_list:
         print("Список покупок пуст.")
     else:
-        for number, item  in enumerate(shopping_list, start=1):
+        for number, item in enumerate(shopping_list, start=1):
             print(f"{number}. {item}")
 show_items()
 
@@ -161,12 +162,12 @@ show_items()
 #
 contacts = []
 def add_contact():
-    name_people = input("Enter your name: ")
-    mobile = input("Enter your telephone: ")
-    contact = ({
+    name_people = input("Ввести имя: ")
+    mobile = input("Ввести номер телефона: ")
+    contact = {
         "name": name_people,
         "phone": mobile
- })
+ }
     contacts.append(contact)
 add_contact()
 print(contacts)
@@ -180,8 +181,8 @@ print(contacts)
 #
 contacts = [{"name": "Иван", "phone": 89001234567},{"name": "Анна", "phone": 89998887766}]
 def show_contacts():
-    for contact in contacts:
-        print(f"{contact['name']} - {contact['phone']}")
+    for i, contact in enumerate(contacts, start=1):
+        print(f"{i}.{contact['name']} - {contact['phone']}")
 show_contacts()
 # ============================================================
 
@@ -226,10 +227,13 @@ show_contacts()
 
 def search_contact():
     name_people = input("Enter your name: ")
+    have = False
     for contact in contacts:
         if contact['name'] == name_people:
+            have = True
             print(f"{contact['name']} - {contact['phone']}")
             return
+    if have == False:
         print("Контакт не найден")
 search_contact()
 
@@ -370,7 +374,7 @@ print(students)
 balance = 0
 def add_money():
     global balance
-    amount = float(input("Сколько добавить? "))
+    amount = int(input("Сколько добавить? "))
     balance += amount
     print("Баланс:", balance)
 
@@ -419,7 +423,7 @@ add_money()
 def withdraw_money():
     global balance
     try:
-        amount = float(input("Сколько денег снять? "))
+        amount = int(input("Сколько денег снять? "))
         if amount  < 0 :
             print("Сумма не может быть отрицательной.")
             return
@@ -427,7 +431,7 @@ def withdraw_money():
             print("Недостаточно средств.")
         else:
             balance -= amount
-            print(f"Баланс:, {balance}")
+            print(f"Баланс: {balance}")
     except ValueError:
         print("Ошибка: введите число.")
 
@@ -476,11 +480,11 @@ withdraw_money()
 expenses = []
 def add_expense():
     rate = input("Ввести название расхода: ")
-    amount = float(input("Ввести сумму: "))
-    expense = ({
+    amount = int(input("Ввести сумму: "))
+    expense = {
     "title": rate,
      "amount": amount
- })
+ }
     expenses.append(expense)
 add_expense()
 print(expenses)
@@ -526,7 +530,6 @@ add_expense()
 add_expense()
 print (expenses)
 
-
 def show_total():
     total = 0
     for expense in expenses:
@@ -563,10 +566,10 @@ books = []
 
 def add_book():
     name_book = input("Ввести название книги: ")
-    book = ( {
+    book = {
      "title": name_book,
      "read": False
- })
+ }
     books.append(book)
 add_book()
 print(books)
@@ -673,13 +676,12 @@ movies = []
 
 def add_movie():
     film = input("Ввести название фильма: ")
-    stock = int(input("Ввести рейтинг от 1 до 10.: "))
-    movie = ({
+    rating = int(input("Ввести рейтинг от 1 до 10.: "))
+    movie = {
         "title": film,
-        "rating": stock
-    })
+        "rating": rating
+    }
     movies.append(movie)
-
 
 add_movie()
 add_movie()
@@ -710,7 +712,7 @@ def add_movie():
 print(movies)
 
 def show_movies():
-    for i,movie in enumerate(movies, 1):
+    for i, movie in enumerate(movies, 1):
         print(f"{i}. {movie['title']} - {movie['rating']}/10")
 add_movie()
 add_movie()
@@ -774,6 +776,7 @@ add_movie()
 add_movie()
 add_movie()
 add_movie()
+show_best_movies()
 
 # ============================================================
 # ЗАДАЧА 15. ИНВЕНТАРЬ ИГРЫ

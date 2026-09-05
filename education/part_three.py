@@ -521,6 +521,8 @@ def show_students():
     for index, student in enumerate(students, start=1):
         print(
             f"{index}. "
+            
+            
             f"{student['name']}, "
             f"{student['age']} лет, "
             f"курс: {student['course']}"
