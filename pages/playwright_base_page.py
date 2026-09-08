@@ -30,7 +30,10 @@ class PlaywrightBasePage:
 
     def accept_cookie(self, page):
         self.logger.info("Принимаем куки на сайте")
-        page.get_by_role("button", name="ОК").click()
+        cookie_btn = page.get_by_role("button", name="ОК")
+        if cookie_btn.is_visible():
+            cookie_btn.click()
+
         return self
 
     def should_have_title(self, expected_title):

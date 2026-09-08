@@ -241,8 +241,8 @@ def generate_user():
     user = generate_web_element_user()
     return user
 
-@pytest.fixture(scope="function")
-def otzovik_registration_page(driver):
-    page = OtzovikRegistrationPage(driver)
+@pytest.fixture
+def otzovik_registration_page(page):
+    page = OtzovikRegistrationPage(page)
     return page
 
