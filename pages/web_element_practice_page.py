@@ -34,6 +34,15 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.page.locator(Practice.EMAIL_FIELD).fill(email)
         return self
 
+    def assert_field_is_invalid(self, locator: str):
+        """Проверяет, что поле не проходит встроенную HTML-валидацию."""
+        self.logger.info(f"Проверяем, что поле '{locator}' невалидно")
+        is_valid = self.page.locator(locator).evaluate(
+            "element => element.checkValidity()"
+        )
+        assert not is_valid, f"Поле '{locator}' должно быть невалидным"
+        return self
+
     def fill_phone_field(self, phone):
         self.logger.info("Заполняем поле Phone")
         self.page.locator(Practice.PHONE_FIELD).fill(phone)
