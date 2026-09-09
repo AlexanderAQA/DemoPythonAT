@@ -22,6 +22,8 @@ class TestCoursesPage:
          .assert_is_not_empty(response)
          .assert_is_equal(404, response.status))
 
+        courses_page.should_have_text("Запрашиваемая страница не найдена!")
+
     @pytest.mark.ui
     @allure.title("Переход в раздел 'Курсы'")
     @allure.link("https://testit.example.com/tc-2281")

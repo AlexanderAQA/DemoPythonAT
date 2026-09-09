@@ -52,6 +52,12 @@ class PlaywrightBasePage:
         )
         return self
 
+    def should_have_text(self, expected_text: str):
+        """Проверяет, что указанный текст отображается на странице."""
+        self.logger.info(f"Проверяем отображение текста: '{expected_text}'")
+        expect(self.page.get_by_text(expected_text)).to_be_visible()
+        return self
+
     def get_product_info(self) -> dict:
         self.logger.info("Собираем информацию о товаре")
 
