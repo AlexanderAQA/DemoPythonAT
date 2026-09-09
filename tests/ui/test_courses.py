@@ -9,6 +9,20 @@ from src.utils.test_data import COURSES, work_with_price
 class TestCoursesPage:
 
     @pytest.mark.ui
+    @pytest.mark.negative
+    @allure.title("Несуществующая страница курса возвращает 404")
+    def test_nonexistent_course_page_returns_404(self, courses_page):
+        nonexistent_course_url = (
+            f"{courses_page.BASE_URL}{courses_page.COURSES_PATH}"
+            "/course-does-not-exist"
+        )
+        response = courses_page.open_with_response(nonexistent_course_url)
+
+        (courses_page.asserts
+         .assert_is_not_empty(response)
+         .assert_is_equal(404, response.status))
+
+    @pytest.mark.ui
     @allure.title("Переход в раздел 'Курсы'")
     @allure.link("https://testit.example.com/tc-2281")
     def test_open_courses_page(self, courses_page):

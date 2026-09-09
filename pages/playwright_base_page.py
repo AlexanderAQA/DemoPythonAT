@@ -19,6 +19,11 @@ class PlaywrightBasePage:
         self.accept_cookie(self.page)
         return self
 
+    def open_with_response(self, url: str):
+        """Открывает URL и возвращает ответ на основной запрос страницы."""
+        self.logger.info(f"Открываем страницу и получаем ответ: '{url}'")
+        return self.page.goto(url)
+
     def accept_chrome_cookies(self, page):
         self.logger.info("Принимаем куки в хром браузере")
         button = page.get_by_role("button", name="Принять все")
