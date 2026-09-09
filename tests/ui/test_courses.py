@@ -18,7 +18,8 @@ class TestCoursesPage:
         )
         response = courses_page.open_with_response(nonexistent_course_url)
 
-        (courses_page.should_have_text("Запрашиваемая страница не найдена!")
+        (courses_page
+         .should_have_text("Запрашиваемая страница не найдена!")
          .asserts
          .assert_is_not_empty(response)
          .assert_is_equal(404, response.status))
