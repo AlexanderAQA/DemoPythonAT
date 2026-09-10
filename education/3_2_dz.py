@@ -18,7 +18,7 @@ from education.lesson_3_2 import product
 name = "Николай"
 age = 36
 city = "Москва"
-print(f"Меня зовут {name}, мне {age}, я живу в {city}.")
+print(f"Меня зовут {name}, мне {age} лет, я живу в {city}.")
 """
 Задача 2 — Покупка в магазине
 
@@ -191,6 +191,7 @@ transport,5
 Напиши функции, которые:
 
 1. Читает CSV и выводит кортеж из 2 значений
+1.1  считать с файла .csv значения и вернуть их простым списком
 2. Создаёт list из словарей:
 [
     {"category": "food", "amount": 15},
@@ -212,3 +213,26 @@ transport,5
 """
 
 # Решение
+
+import csv
+
+#with open("expenses2.csv", "w", encoding="utf-8") as file:
+    #file.write("category,amount\n")
+    #file.write("food,15\n")
+    #file.write("transport,5\n")
+    #file.write("food,20\n")
+    #file.write("entertainment,30\n")
+#     file.write("transport,5\n")
+#
+# print("expenses2.csv создан.")
+#
+# with open("expenses2.csv", "r", encoding="utf-8") as file:
+#     content = file.read()
+#
+# print(content)
+
+with open("expenses2.csv", "r", encoding="utf-8") as file:
+    reader = csv.reader(file)
+    next(reader)
+    rows = list(reader)
+print(rows)

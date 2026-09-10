@@ -76,12 +76,7 @@ add_item()
 # Подсказка:
 # Используй цикл for и enumerate().
 #
-shopping_list = []
-def add_item():
-    item = input("Введите название товара: ")
-    shopping_list.append(item)
-    print(f"Товар добавлен: {item}")
-add_item()
+shopping_list = ["Яблоко", "Хлеб", "Молоко"]
 
 def show_items():
     if not shopping_list:
@@ -220,10 +215,7 @@ show_contacts()
 # ============================================================
 
 contacts = [{"name": "Иван", "phone": 89001234567},{"name": "Анна", "phone": 89998887766}]
-def show_contacts():
-    for contact in contacts:
-        print(f"{contact['name']} - {contact['phone']}")
-show_contacts()
+
 
 def search_contact():
     name_people = input("Enter your name: ")
@@ -479,10 +471,10 @@ withdraw_money()
 
 expenses = []
 def add_expense():
-    rate = input("Ввести название расхода: ")
+    title = input("Ввести название расхода: ")
     amount = int(input("Ввести сумму: "))
     expense = {
-    "title": rate,
+    "title": title,
      "amount": amount
  }
     expenses.append(expense)
@@ -517,18 +509,8 @@ print(expenses)
 #
 # ============================================================
 
-expenses = []
-def add_expense():
-    rate = input("Ввести название расхода: ")
-    amount = float(input("Ввести сумму: "))
-    expense = ({
-    "title": rate,
-     "amount": amount
- })
-    expenses.append(expense)
-add_expense()
-add_expense()
-print (expenses)
+expenses = [{'title': 'Машина', 'amount': 1500}]
+
 
 def show_total():
     total = 0
@@ -571,6 +553,7 @@ def add_book():
      "read": False
  }
     books.append(book)
+
 add_book()
 print(books)
 #
@@ -806,13 +789,14 @@ show_best_movies()
 inventory = []
 
 def add_item():
-    object = input("Ввести название предмета: ")
+    item_name = input("Ввести название предмета: ")
     Quantity_g = int(input("Ввести количество: "))
-    item = ({
+    item = {
      "name": object,
      "quantity": Quantity_g
- })
+ }
     inventory.append(item)
+
 add_item()
 add_item()
 add_item()
@@ -828,9 +812,10 @@ print(inventory)
 #
 # ============================================================
 
-inventory = []
+inventory = [["item_name", "quantity"]
+["меч"]]
 
-def add_item():
+def add_item():"
     object = input("Ввести название предмета: ")
     Quantity_g = int(input("Ввести количество: "))
     item = ({
@@ -839,10 +824,10 @@ def add_item():
  })
     inventory.append(item)
 
-
 def show_inventory():
     for i, item in enumerate(inventory, start=1):
         print(f"{i}. {item['name']} - {item['quantity']} шт.")
+
 add_item()
 add_item()
 add_item()

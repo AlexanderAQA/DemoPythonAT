@@ -109,40 +109,41 @@ class Fruits:
         self.name = name
         self.weight = weight
         self.color = color
+
+
     def introduce(self):
         return f"Название: {self.name}\n Вес: {self.weight}\n Цвет: {self.color}"
 
+
     def print_info(self):
-        pass
+        print(f"Название: {self.name}")
+        print(f"Вес: {self.weight}")
+        print(f"Цвет: {self.color}")
 
 
-fruit1 = Fruits("Apple", 5, "Red")
-fruit2 = Fruits("Banana", 3, "Yellow")
-fruit3 = Fruits("Watermelon", 10, "Green")
-print(fruit1.introduce())
-print(fruit2.introduce())
-print(fruit3.introduce())
+apple = Fruits("Apple", 5, "Red")
+banana = Fruits("Banana", 3, "Yellow")
+watermelon = Fruits("Watermelon", 10, "Green")
+
+print(apple.introduce())
+print(banana.introduce())
+print(watermelon.introduce())
 
 class Berries(Fruits):
     def __init__(self, name, weight, color, size):
         super().__init__(name, weight, color)
         self.size = size
-    def print_info(self):
-        print(f"Название: {self.name}")
-        print(f"Вес: {self.weight}")
-        print(f"Цвет: {self.color}")
+
 
     def print_berries_info(self):
-        print(f"Название: {self.name}")
-        print(f"Вес: {self.weight}")
-        print(f"Цвет: {self.color}")
+        self.print_info()
         print(f"Размер: {self.size}")
         print("-" * 20)
 
 print ("Информация о фруктах: ")
-fruit1.print_info()
-fruit2.print_info()
-fruit3.print_info()
+apple.print_info()
+banana.print_info()
+watermelon.print_info()
 
 print("Информация о ягодах: ")
 raspberry = Berries("raspberry", 5 , "Red", "Small" )
