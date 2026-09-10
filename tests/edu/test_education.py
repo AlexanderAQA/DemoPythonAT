@@ -1,13 +1,13 @@
 import pytest
 
 
-def add (a, b):
+def add(a, b):
     return a + b
 
 @pytest.mark.edu
 def test_add():
     result = add(2, 3)
-    assert result == 5
+    assert result == 4
 
 # Что автоматизировать в первую очередь:
 # регресс и смоук-тесты
@@ -20,3 +20,17 @@ def test_add():
 # Разовые, исследовательские тестирование
 
 # На каждый тест кейс должен быть минимум 1 автотест
+
+# Основа теста: Arrange-Act-Assert
+
+
+#######################################
+# ДЗ
+def say_hello(text: str):
+    return text
+
+def empty_text():
+    return '            '
+
+# Напиши 2 теста (пример с 7 строки) для функций say_hello и empty_text. Проверь, что ожидаемое и фактическое значение
+# строки совпадают
