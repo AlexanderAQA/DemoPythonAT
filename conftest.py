@@ -14,8 +14,6 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
-from pages.otzovik_registration_page import OtzovikRegistrationPage
-
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
@@ -35,6 +33,7 @@ from pages.cart_page import CartPage
 from pages.courses_page import CoursesPage
 from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, generate_web_element_user
 from pages.sundry_page import SundryPage
+from pages.otzovik_registration_page import OtzovikRegistrationPage
 
 logger = logging.getLogger(__name__)
 
