@@ -23,7 +23,7 @@ class TestBasketPage:
         price = books_page.get_price_from_book(book_name)
 
         (books_page
-          .scroll_to_book(book_name)
+          .scroll_to_item(book_name)
           .click_buy_button(book_name)
           .assert_product_added_alert()
           .click_product_in_cart_button()

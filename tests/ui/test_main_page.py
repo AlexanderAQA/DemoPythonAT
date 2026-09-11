@@ -40,7 +40,7 @@ class TestMainPage:
 
         # Выбираем сортировку по имени
         (books_page
-         .select_sort_by_name("name_asc"))
+         .select_sort_by_name(books_page.SORT_OPTIONS["name_asc"]))
 
         # Проверка названий первых нескольких книг (10)
         titles = books_page.get_book_titles_list(limit=10)
