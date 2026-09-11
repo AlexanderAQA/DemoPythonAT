@@ -1,11 +1,15 @@
 import allure
-from selenium.webdriver.support import expected_conditions as EC
-from locators.otzovik_registration_locators import OtzovikLocators
 from pages.playwright_base_page import PlaywrightBasePage
-
 
 class OtzovikRegistrationPage(PlaywrightBasePage):
     otzovik_page = "https://otzovik.com/signup.php"
+
+    LOGIN_INPUT = 'input[name="newlogin"]'
+    PASSWORD_INPUT = "#id_pwd"
+    EMAIL_INPUT = "#id_mail"
+    AGREEMENT_CHECKBOX = "span.check-label:has-text('Я принимаю')"
+    SUBMIT_BUTTON = "button.submit.button2023.button-blue:has-text('Зарегистрироваться')"
+    ERROR_MESSAGE = "div.auth-error.not-empty"
 
     @allure.step("Открытие страницы регистрации Отзовик")
     def open_registration_page(self):
@@ -16,21 +20,21 @@ class OtzovikRegistrationPage(PlaywrightBasePage):
     @allure.step("Заполнение поля Логин: {login}")
     def fill_login_field(self, login):
         self.logger.info(f"Вводим логин: {login}")
-        self.page.locator('input[name="newlogin"]').fill(login)
+        self.page.locator(self.LOGIN_INPUT).fill(login)
 
         return self
 
     @allure.step("Заполнение поля Пароль: {password}")
     def fill_password_field(self, password):
         self.logger.info(f"Вводим пароль (длина: {len(password)} символов)")
-        self.page.locator(OtzovikLocators.PASSWORD_INPUT).fill(password)
+        self.page.locator(self.PASSWORD_INPUT).fill(password)
 
         return self
 
     @allure.step("Заполнение поля E-mail: {email}")
     def fill_email_field(self, email):
         self.logger.info(f"Вводим E-mail: {email}")
-        self.page.locator(OtzovikLocators.EMAIL_INPUT).fill(email)
+        self.page.locator(self.EMAIL_INPUT).fill(email)
 
         return self
 
@@ -51,7 +55,7 @@ class OtzovikRegistrationPage(PlaywrightBasePage):
     @allure.step("Нажатие кнопки Зарегистрироваться")
     def click_submit(self):
         self.logger.info("Нажимаем кнопку 'Зарегистрироваться'")
-        self.page.locator(OtzovikLocators.SUBMIT_BUTTON).click()
+        self.page.locator(self.SUBMIT_BUTTON).click()
 
         return self
 

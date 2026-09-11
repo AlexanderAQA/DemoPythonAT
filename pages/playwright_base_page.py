@@ -6,11 +6,17 @@ from src.utils.logger import get_logger
 
 
 class PlaywrightBasePage:
+
+    PLUS_BUTTON = "span.bt_plus"
+    QTY_INPUT = "input.quantity"
+    BUY_BUTTON = "#button-cart"
+
     def __init__(self, page: Page):
         self.page = page
         self.logger = get_logger(__name__)
         self.BASE_URL = 'https://shop.finarty.ru'
         self.asserts = CommonAssertions(self)
+
 
     def open(self, url: str):
         self.logger.info(f"Открываем страницу: '{url}'")
@@ -74,21 +80,21 @@ class PlaywrightBasePage:
     def set_quantity_by_clicks(self, target_quantity: int):
         self.logger.info(f"Выбор количества: {target_quantity} кликом по +")
 
-        plus_button = self.page.locator("span.bt_plus")
+        plus_button = self.page.locator(self.PLUS_BUTTON)
         clicks_needed = target_quantity - 1
 
         for _ in range(clicks_needed):
             plus_button.click()
             self.page.wait_for_timeout(200)  # для паузы между кликами
 
-        qty_input = self.page.locator("input.quantity")
+        qty_input = self.page.locator(self.QTY_INPUT)
         expect(qty_input).to_have_value(str(target_quantity))
 
         return self
 
     def click_buy(self):
         self.logger.info("Нажимаем кнопку 'Купить'")
-        self.page.locator("#button-cart").click()
+        self.page.locator(self.BUY_BUTTON).click()
         return self
 
     def open_product(self, name):
