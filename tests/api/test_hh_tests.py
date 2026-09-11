@@ -6,7 +6,7 @@ from src.schemas.hh_areas_schema import HH_AREAS_SCHEMA
 class TestHH:
 
     @pytest.mark.positive
-    @pytest.mark.api
+    # @pytest.mark.api
     @allure.title("Получения страны из справочника")
     def test_get_country_schema(self, api_client_hh):
         """Проверка, что ответ API соответствует ожидаемой JSON-схеме"""
