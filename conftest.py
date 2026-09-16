@@ -34,6 +34,7 @@ from pages.courses_page import CoursesPage
 from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, generate_web_element_user
 from pages.sundry_page import SundryPage
 from pages.otzovik_registration_page import OtzovikRegistrationPage
+from pages.otzovik_authorization_page import OtzovikAuthorizationPage
 
 logger = logging.getLogger(__name__)
 
@@ -244,5 +245,10 @@ def generate_user():
 @pytest.fixture
 def otzovik_registration_page(page):
     page = OtzovikRegistrationPage(page)
+    return page
+
+@pytest.fixture
+def otzovik_authorization_page(page):
+    page = OtzovikAuthorizationPage(page)
     return page
 
