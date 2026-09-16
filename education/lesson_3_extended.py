@@ -574,20 +574,13 @@ print(books)
 #
 # ============================================================
 
-books = []
-
-def add_book():
-    name_book = input("Ввести название книги: ")
-    book = ( {
-     "title": name_book,
-     "read": False
- })
-    books.append(book)
+books = [{"title":"Гарри потер", "read":False }]
 
 def show_books():
     for i, book in enumerate(books, 1):
         status = "Прочитана" if book["read"] else "Не прочитана"
         print(f"{i}. {book['title']} — {status}")
+
 add_book()
 add_book()
 show_books()
@@ -681,19 +674,7 @@ print(movies)
 #
 # ============================================================
 
-movies = []
-
-def add_movie():
-    film = input("Ввести название фильма: ")
-    stock = int (input("Ввести рейтинг от 1 до 10.: "))
-    movie = ({
-     "title": film,
-     "rating": stock
- })
-    movies.append(movie)
-
-print(movies)
-
+movies = [{"film":"Интерстеллар","stock":9"},{"film":"Матрица,"stock":10"},{"film":"Титаник,"stock":7}]
 def show_movies():
     for i, movie in enumerate(movies, 1):
         print(f"{i}. {movie['title']} - {movie['rating']}/10")
@@ -733,19 +714,7 @@ show_movies()
 #
 # ============================================================
 
-movies = []
-
-def add_movie():
-    film = input("Ввести название фильма: ")
-    stock = int (input("Ввести рейтинг от 1 до 10.: "))
-    movie = ({
-     "title": film,
-     "rating": stock
- })
-    movies.append(movie)
-
-print(movies)
-
+movies = [{"title":"Интерстеллар","rating":9"},{"title":"Матрица,"rating":10"},{"title":"Аватар,"rating":8}]
 def show_movies():
     for i,movie in enumerate(movies, 1):
         print(f"{i}. {movie['title']} - {movie['rating']}/10")
@@ -869,18 +838,7 @@ show_inventory()
 #
 # ============================================================
 
-inventory = []
-
-def add_item():
-    object = input("Ввести название предмета: ")
-    Quantity_g = int(input("Ввести количество: "))
-    item = ({
-     "name": object,
-     "quantity": Quantity_g
- })
-    inventory.append(item)
-
-
+inventory = [{"name":"Мяч","quantity":"4"},{"name":"Ракетка","quantity":"2"}]
 def show_inventory():
     for i, item in enumerate(inventory, start=1):
         print(f"{i}. {item['name']} - {item['quantity']} шт.")
