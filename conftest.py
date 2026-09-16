@@ -29,7 +29,7 @@ from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.account_page import AccountPage
 from pages.books_page import BooksPage
-from pages.cart_page import CartPage
+from pages.cart_page import CartPage as SeleniumCartPage
 from pages.courses_page import CoursesPage
 from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, generate_web_element_user
 from pages.sundry_page import SundryPage
@@ -203,7 +203,7 @@ def books_page(driver):
 @pytest.fixture(scope="function", autouse=False)
 def cart_page(driver):
     logger.info("Инициализация экземпляра страницы Корзина")
-    page = CartPage(driver)
+    page = SeleniumCartPage(driver)
     yield page
 
 @pytest.fixture(scope="function")
@@ -224,9 +224,10 @@ def courses_page(page: Page):
     logger.info("Инициализация экземпляра страницы Курсы")
     return CoursesPage(page)
 
+from pages.playwright_cart_page  import CartPage as PlaywrightCartPage
 @pytest.fixture
 def playwright_cart_page(page):
-    return CartPage(page)
+    return PlaywrightCartPage(page)
 
 @pytest.fixture
 def web_element_practice_page(page):

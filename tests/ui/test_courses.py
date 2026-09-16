@@ -22,19 +22,18 @@ class TestCoursesPage:
 
     def test_add_random_course_to_cart(self, courses_page, playwright_cart_page):
         product = random.choice(COURSES)
-
         random_qty = random.randint(1, 5)
 
         (courses_page
          .open_page()
-         .open_product(product.name))
+         .open_product(product.name)
+         .set_quantity_by_clicks(random_qty)
+         .click_buy())
 
         product_info = courses_page.get_product_info()
         product_info["quantity"] = random_qty
 
         (playwright_cart_page
-         .set_quantity_by_clicks(random_qty)
-         .click_buy()
          .open_cart_from_alert()
          .verify_product_name(product_info)
          .verify_product_article(product_info)

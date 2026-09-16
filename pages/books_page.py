@@ -3,7 +3,6 @@ import allure
 from locators.books_page_locators import BooksPageLocators
 from src.utils.logger import get_logger
 
-
 class BooksPage(BasePage):
     """Страница Книги"""
     def __init__(self, driver):
@@ -172,8 +171,6 @@ class BooksPage(BasePage):
         self.select_option(option, BooksPageLocators.SORT_SELECTOR)
 
         return self
-
-
 
     def get_book_titles_list(self, limit=10):
         """Список названий первых нескольких книг"""
