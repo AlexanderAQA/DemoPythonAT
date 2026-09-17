@@ -31,9 +31,12 @@
 
 **Из командной строки с выбором тестов:**<br>
 ```pytest -m <метка> -v```<br>
-Например: ```pytest -m positive -v```<br>
+Например: ```pytest -v -m ui ```<br>
 **Из командной строки сразу ВСЕ тесты:**<br>
 ```pytest -v```<br>
+Другой пример. Запуск конкретного теста по его названию с генерацией allure-отчета:<br>
+```pytest -v -k 'test_valid_login' --alluredir=allure-results --clean-alluredir```
+
 
 **Генерация отчетов:**<br>
 ```allure serve allure-results```<br>
