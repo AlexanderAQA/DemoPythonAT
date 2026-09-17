@@ -71,7 +71,8 @@ def calculate_admin_price_bad(price):
 #
 # Улучшенный вариант:
 
-TAX_RATE = 0.20
+# Налог НДС
+TAX_RATE = 0.22
 
 
 def add_tax(price):
@@ -351,7 +352,7 @@ def is_valid_password(password):
 
 # Лучше:
 
-MIN_PASSWORD_LENGTH = 8
+MIN_PASSWORD_LENGTH = 12
 
 
 def is_valid_password(password):
