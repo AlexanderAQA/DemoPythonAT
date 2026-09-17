@@ -218,7 +218,7 @@ contacts = [{"name": "Иван", "phone": 89001234567},{"name": "Анна", "pho
 
 
 def search_contact():
-    name_people = input("Enter your name: ")
+    name_people = input("Ввести имя: ")
     have = False
     for contact in contacts:
         if contact['name'] == name_people:
