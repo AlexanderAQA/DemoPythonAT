@@ -205,3 +205,11 @@ otzovik_negative_cases = [
     (OtzovikUser(login="lkoix", email="test@", password="Un1quejhhgjPassw0rd"), "Введите свой реальный email"),
     (OtzovikUser(login="uyiuy", email="@mail.ru", password="Passfghhh123"), "Введите свой реальный email"),
 ]
+def generate_otzovik_user() -> OtzovikUser:
+    """Генерирует случайного фейкового пользователя для авторизации Отзовика"""
+    return OtzovikUser(
+        login=fake.user_name()[:20],
+        password=fake.password(length=10),
+        email=fake.email()[:30]
+    )
+
