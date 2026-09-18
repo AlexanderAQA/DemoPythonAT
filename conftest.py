@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 from pathlib import Path
+import re
 
 import allure
 import pytest
@@ -28,10 +29,11 @@ from pages.login_page import LoginPage
 from pages.main_page import MainPage
 from pages.account_page import AccountPage
 from pages.books_page import BooksPage
-from pages.cart_page import CartPage
+from pages.cart_page import CartPage as SeleniumCartPage
 from pages.courses_page import CoursesPage
 from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, generate_web_element_user
 from pages.sundry_page import SundryPage
+from pages.otzovik_registration_page import OtzovikRegistrationPage
 
 logger = logging.getLogger(__name__)
 
@@ -154,12 +156,16 @@ def pytest_exception_interact(node, report):
     if report.failed:
         driver = getattr(node, "_driver", None)
         if driver:
-            # Сохраняем скриншот
-            screenshot_path = os.path.join(Screenshots.dirname, f"{datetime.now().strftime('%H-%M-%S-%d-%m-%Y')}_"
-                                                                f"{node.name}.png")
-            os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
-            driver.save_screenshot(screenshot_path)
-            print(f"Скриншот сохранён: {screenshot_path}")
+            safe_name = re.sub(r'[^\w\-]', '_', node.name)
+            timestamp = datetime.now().strftime('%H-%M-%S-%d-%m-%Y')
+            screenshot_path = os.path.join(Screenshots.dirname, f"{timestamp}_{safe_name}.png")
+            try:
+                os.makedirs(os.path.dirname(screenshot_path), exist_ok=True)
+                driver.save_screenshot(screenshot_path)
+                print(f"Скриншот сохранён: {screenshot_path}")
+            except Exception as e:
+                print(f"Не удалось сохранить скриншот: {e}")
+
 
 def pytest_configure(config):
     allure_dir = os.path.join(project_root, "allure-results")
@@ -197,7 +203,7 @@ def books_page(driver):
 @pytest.fixture(scope="function", autouse=False)
 def cart_page(driver):
     logger.info("Инициализация экземпляра страницы Корзина")
-    page = CartPage(driver)
+    page = SeleniumCartPage(driver)
     yield page
 
 @pytest.fixture(scope="function")
@@ -218,10 +224,10 @@ def courses_page(page: Page):
     logger.info("Инициализация экземпляра страницы Курсы")
     return CoursesPage(page)
 
-from pages.playwright_cart_page import CartPage
+from pages.playwright_cart_page  import CartPage as PlaywrightCartPage
 @pytest.fixture
 def playwright_cart_page(page):
-    return CartPage(page)
+    return PlaywrightCartPage(page)
 
 @pytest.fixture
 def web_element_practice_page(page):
@@ -235,4 +241,8 @@ def generate_user():
     user = generate_web_element_user()
     return user
 
+@pytest.fixture
+def otzovik_registration_page(page):
+    page = OtzovikRegistrationPage(page)
+    return page
 

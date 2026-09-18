@@ -1,9 +1,7 @@
 from pages.base_page import BasePage
 import allure
 from locators.books_page_locators import BooksPageLocators
-from selenium.webdriver.support.ui import Select
 from src.utils.logger import get_logger
-
 
 class BooksPage(BasePage):
     """Страница Книги"""
@@ -167,6 +165,12 @@ class BooksPage(BasePage):
 
         return self
 
+    def select_sort_by_name(self, option):
+        """Выбор сортировки"""
+        self.open_sort_selector()
+        self.select_option(option, BooksPageLocators.SORT_SELECTOR)
+
+        return self
 
     def get_book_titles_list(self, limit=10):
         """Список названий первых нескольких книг"""

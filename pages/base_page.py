@@ -170,18 +170,11 @@ class BasePage:
 
         return self
 
-    def select_option(self, selection_option, locator, options):
+    def select_option(self, selection_option, locator):
         """Универсальный выбор опции"""
         with allure.step(f"Выбор сортировки: {selection_option}"):
-            if selection_option not in options:
-                raise ValueError(
-                    f"Неизвестный тип сортировки: '{selection_option}'.\n"
-                    f"Доступные: {list(options.keys())}"
-                )
-
-            sort_value = options[selection_option]
             sort_element = self.wait_for_element(locator)
             select = Select(sort_element)
-            select.select_by_value(sort_value)
+            select.select_by_value(selection_option)
 
         return self

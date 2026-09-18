@@ -59,9 +59,10 @@ class TestWeather:
                                                                      ["temperature", 123], "auto",
                                                                      api_client_weather.base_url)
 
-        expected_error = {'reason': "Data corrupted at path ''. Cannot initialize SurfacePressureAndHeightVariable"
-                                     "<VariableAndPreviousDay, VariableOrSpread<ForecastPressureVariable>, "
-                                     "ForecastHeightVariable> from invalid String value 123.", 'error': True}
+        expected_error = {'error': True, 'reason': 'Invalid value: Cannot initialize '
+                                                   'SurfacePressureAndHeightVariable<VariableAndPreviousDay, '
+                                                   'VariableOrSpread<ForecastPressureVariable>, ForecastHeightVariable>'
+                                                   ' from invalid String value 123'}
         # Ассерты
         (api_client_weather.assertions
          .assert_is_equal(400, status_code)
@@ -163,10 +164,10 @@ class TestWeather:
             ["invalid_temp", "fake_precipitation", 123], "auto",
             api_client_weather.base_url
         )
-        expected_error = {'error': True, 'reason': "Data corrupted at path ''. Cannot initialize "
+        expected_error = {'error': True, 'reason': "Invalid value: Cannot initialize "
                                                    "SurfacePressureAndHeightVariable<VariableAndPreviousDay, "
                                                    "VariableOrSpread<ForecastPressureVariable>, "
-                                                   "ForecastHeightVariable> from invalid String value invalid_temp."}
+                                                   "ForecastHeightVariable> from invalid String value invalid_temp"}
 
         # Ассерты
         (api_client_weather.assertions

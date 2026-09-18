@@ -32,7 +32,7 @@ class ApiClient:
         }
 
         response = self.session.post(url, headers=self.headers, data=payload)
-
+        self.logger.info(f"Статус: {response.status_code}")
         try:
             return response.json(), response.status_code
         except ValueError:
@@ -45,7 +45,7 @@ class ApiClient:
         params = {"customer_token": customer_token}
 
         response = self.session.get(url, headers=self.headers, params=params)
-
+        self.logger.info(f"Статус: {response.status_code}")
         return response.text, response.status_code
 
     def login(self, email: str, password: str):
@@ -77,7 +77,7 @@ class ApiClient:
         }
 
         response = self.session.post(login_url, headers=headers, data=payload)
-
+        self.logger.info(f"Статус: {response.status_code}")
         # 4. Писк customer_token в ответе из redirect URL
         customer_token = None
 
@@ -119,5 +119,5 @@ class ApiClient:
         }
 
         response = self.session.post(login_url, headers=headers, data=payload, allow_redirects=False)
-
+        self.logger.info(f"Статус: {response.status_code}")
         return response.json(), response.status_code

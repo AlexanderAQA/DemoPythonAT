@@ -17,7 +17,7 @@ class TestBooksCardPage:
         book = random.choice(self.books_list)
 
         (books_page
-            .scroll_to_book(book.name)
+            .scroll_to_item(book.name)
             .click_book_by_name(book.name)
             .assert_book_cart_name_displayed(book.name)
             .assert_book_cart_price_displayed(book.price)
