@@ -418,7 +418,7 @@ def make_report_bad(users):
                 if u["country"] == "SE":
                     result.append({
                         "name": u["name"],
-                        "status": "adult",
+                        "isAdult": "adult",
                         "country": "Sweden",
                     })
 
