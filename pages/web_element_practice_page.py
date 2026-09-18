@@ -1,9 +1,11 @@
+import allure
+
 from pages.playwright_base_page import PlaywrightBasePage
 from playwright.sync_api import expect
 from datetime import datetime
 
 class WebElementPracticePage(PlaywrightBasePage):
-    WEB_ELEMENT_URL = 'https://testautomationself.blogspot.com/'
+    WEB_ELEMENT_URL = 'https://testautomationpractice.blogspot.com/'
     
     NAME_FIELD = "#name"
     PHONE_FIELD = "#phone"
@@ -44,7 +46,7 @@ class WebElementPracticePage(PlaywrightBasePage):
         return locator
 
 
-    def open_self_page(self):
+    def open_practice_page(self):
         self.logger.info(f"Открываем страницу {self.WEB_ELEMENT_URL}")
         self.page.goto(self.WEB_ELEMENT_URL)
         return self
@@ -112,11 +114,6 @@ class WebElementPracticePage(PlaywrightBasePage):
         expect(self.page.locator(locator)).to_be_checked()
         return self
 
-    def assert_is_visible(self, locator):
-        self.logger.info(f"Проверяем, что элемент '{locator}' виден")
-        expect(self.page.locator(locator)).to_be_visible()
-        return self
-
     def select_colors(self, colors_list: list):
         self.logger.info(f"Выбор цветов: {colors_list}")
         self.page.locator(self.COLORS_LISTBOX).select_option(value=colors_list)
@@ -138,6 +135,22 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.logger.info(f"Проверка, что животное {animal} выбрано")
         selected_option = self.page.locator(f"{self.ANIMALS_LISTBOX} option[value='{animal}']:checked")
         expect(selected_option).to_have_count(1)
+        return self
+
+    def select_future_date_1(self, future_date_1):
+        self.select_date_from_calendar(self.DATE_PICKER_1, future_date_1)
+        return self
+
+    def select_future_date_2(self, future_date_2):
+        self.select_date_from_calendar(self.DATE_PICKER_2, future_date_2)
+        return self
+
+    def select_end_date(self, end_date):
+        self.fill_native_date(self.DATE_PICKER_3_END, end_date)
+        return self
+
+    def select_start_date(self, start_date):
+        self.fill_native_date(self.DATE_PICKER_3_START, start_date)
         return self
 
     def select_date_from_calendar(self, input_locator: str, target_date: datetime):
@@ -202,3 +215,57 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.logger.info(f"Заполнить дату: {date_str}")
         self.page.locator(input_locator).fill(date_str)
         return self
+
+    @allure.step("Проверка наличия полей и кнопок")
+    def assert_form(self):
+        self.logger.info(f"Проверка наличия полей и кнопок")
+        self.assert_is_visible(self.NAME_FIELD)
+        self.assert_is_visible(self.EMAIL_FIELD)
+        self.assert_is_visible(self.PHONE_FIELD)
+        self.assert_is_visible(self.ADDRESS_FIELD)
+        self.assert_is_visible(self.COUNTRY_DROPDOWN)
+        self.assert_is_visible(self.COLORS_LISTBOX)
+        self.assert_is_visible(self.ANIMALS_LISTBOX)
+
+        return self
+
+    def assert_test_user_name(self, user_name):
+        self.asserts.assert_is_equal(user_name, self.get_field_value(self.NAME_FIELD))
+        return self
+
+    def assert_test_user_email(self, user_email):
+        self.asserts.assert_is_equal(user_email, self.get_field_value(self.EMAIL_FIELD))
+        return self
+
+    def assert_test_user_phone(self, phone):
+        self.asserts.assert_is_equal(phone, self.get_field_value(self.PHONE_FIELD))
+        return self
+
+    def assert_test_address(self, address):
+        self.asserts.assert_is_equal(address, self.get_field_value(self.ADDRESS_FIELD))
+        return self
+
+    def assert_check_gender(self, gender):
+        self.assert_is_checked(self.get_gender_button(gender))
+        return self
+
+    def assert_check_day(self, day):
+        self.assert_is_checked(self.get_day_button(day))
+        return self
+
+    def assert_check_date_1(self, date):
+        self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_1))
+        return self
+
+    def assert_check_date_2(self, date):
+        self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_2))
+        return self
+
+    def assert_check_start_date(self, date):
+        self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_START))
+        return self
+
+    def assert_check_end_date(self, date):
+        self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_END))
+        return self
+

@@ -112,3 +112,8 @@ class PlaywrightBasePage:
         result = self.page.get_by_text(text)
         expect(result).to_be_visible()
         return self
+
+    def assert_is_visible(self, locator):
+        self.logger.info(f"Проверяем, что элемент '{locator}' виден")
+        expect(self.page.locator(locator)).to_be_visible()
+        return self
