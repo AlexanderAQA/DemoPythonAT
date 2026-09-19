@@ -714,7 +714,15 @@ show_movies()
 #
 # ============================================================
 
-movies = [{"title":"Интерстеллар","rating":9"},{"title":"Матрица,"rating":10"},{"title":"Аватар,"rating":8}]
+class Аватар:
+    pass
+
+
+movies = [
+    {"title": "Интерстеллар","rating": 9},
+    {"title": "Матрица","rating": 10},
+    "{"title": "Аватар","rating": 8}
+    ]
 def show_movies():
     for i,movie in enumerate(movies, 1):
         print(f"{i}. {movie['title']} - {movie['rating']}/10")
