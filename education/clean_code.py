@@ -425,6 +425,20 @@ def make_report_bad(users):
     print("Report created:", len(result))
     return result
 
+# использование более компактного вида
+
+def make_report(users):
+    result = [
+        {
+            "name": u["name"],
+            "isAdult": "adult",
+            "country": "Sweden",
+        }
+        for u in users
+        if u["active"] and u["age"] >= 18 and u["country"] == "SE"
+    ]
+    print("Report created:", len(result))
+    return result
 
 # Один из возможных вариантов:
 
