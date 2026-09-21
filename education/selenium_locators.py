@@ -17,6 +17,8 @@ driver.find_element(By.ID, "email")
 
 # XPath
 driver.find_element(By.XPATH, "//input[@id='email']")
+locator = By.XPATH, "//label[text()='Name:']"
+locator = (By.ID, "name")
 
 
 # ============================================================
