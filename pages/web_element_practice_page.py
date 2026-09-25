@@ -32,6 +32,7 @@ class WebElementPracticePage(PlaywrightBasePage):
     CALENDAR_PREV_MONTH = ".ui-datepicker-prev"
     CALENDAR_MONTH_TITLE = ".ui-datepicker-month"
     CALENDAR_YEAR_TITLE = ".ui-datepicker-year"
+    POPUP_WINDOWS = "#button#PopUp"
 
     @staticmethod
     def get_gender_button(gender: str):
@@ -269,3 +270,6 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_END))
         return self
 
+    def open_popup(self):
+        self.page.get_by_role("button", name="Popup Windows").click()
+        return self

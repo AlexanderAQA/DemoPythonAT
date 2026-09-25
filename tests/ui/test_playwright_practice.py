@@ -1,6 +1,9 @@
 import allure
 import pytest
 
+from conftest import web_element_practice_page
+
+
 @pytest.mark.ui
 class TestPlaywrightPractice:
 
@@ -95,3 +98,11 @@ class TestPlaywrightPractice:
 
         (playwright_practice_page
          .asserts.assert_text_match("You pressed Cancel!", result_text))
+
+    @pytest.mark.ui
+    @allure.title("Работа с PopUp")
+    def test_open_popup(self, web_element_practice_page):
+        (web_element_practice_page
+         .open_practice_page()
+         .open_popup()
+         .time.sleep())
