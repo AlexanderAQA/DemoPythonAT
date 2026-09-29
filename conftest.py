@@ -35,6 +35,7 @@ from src.utils.test_data import generate_random_string, USER_OLGA, USER_DATA, ge
 from pages.sundry_page import SundryPage
 from pages.otzovik_registration_page import OtzovikRegistrationPage
 from pages.otzovik_authorization_page import OtzovikAuthorizationPage
+from pages.playwright_practice_page import PlaywrightPracticePage
 
 logger = logging.getLogger(__name__)
 
@@ -251,4 +252,10 @@ def otzovik_registration_page(page):
 def otzovik_authorization_page(page):
     page = OtzovikAuthorizationPage(page)
     return page
+
+@pytest.fixture
+def playwright_practice_page(page):
+    page = PlaywrightPracticePage(page)
+    return page
+
 
