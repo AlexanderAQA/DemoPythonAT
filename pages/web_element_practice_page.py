@@ -1,12 +1,11 @@
 import allure
-
 from pages.playwright_base_page import PlaywrightBasePage
 from playwright.sync_api import expect
 from datetime import datetime
 
 class WebElementPracticePage(PlaywrightBasePage):
     WEB_ELEMENT_URL = 'https://testautomationpractice.blogspot.com/'
-    
+
     NAME_FIELD = "#name"
     PHONE_FIELD = "#phone"
     EMAIL_FIELD = "#email"
@@ -32,6 +31,12 @@ class WebElementPracticePage(PlaywrightBasePage):
     CALENDAR_PREV_MONTH = ".ui-datepicker-prev"
     CALENDAR_MONTH_TITLE = ".ui-datepicker-month"
     CALENDAR_YEAR_TITLE = ".ui-datepicker-year"
+    NEW_TAB_BUTTON = "button:has-text('New Tab')"
+    POPUP_WINDOWS_BUTTON = "#PopUp"
+    POINT_ME_BUTTON = "button.dropbtn"
+    ONLINE_TRAINING_LINK_TEXT = "a:has-text('Online Training')"
+    PLAYWRIGHT_GET_STARTED_LINK = "a.getStarted_Sjon[href='/docs/intro']"
+    DROPDOWN_MENU_LINKS = ".dropdown-content a"
     POPUP_WINDOWS = "#button#PopUp"
 
     @staticmethod
@@ -45,7 +50,6 @@ class WebElementPracticePage(PlaywrightBasePage):
         locator = f"#{day}"
 
         return locator
-
 
     def open_practice_page(self):
         self.logger.info(f"Открываем страницу {self.WEB_ELEMENT_URL}")
@@ -271,5 +275,35 @@ class WebElementPracticePage(PlaywrightBasePage):
         return self
 
     def open_popup(self):
-        self.page.get_by_role("button", name="Popup Windows").click()
+        self.allure_and_logger("Кликает на кнопку Popup Windows и переключается на новое окно")
+        with self.page.context.expect_page() as popup_info:
+            self.page.get_by_role("button", name="Popup Windows").click()
+        self.page = popup_info.value
+        return self
+
+    def click_new_tab(self):
+        self.allure_and_logger("Кликает на кнопку New Tab и переключается на новую вкладку")
+        with self.page.context.expect_page() as new_page_info:
+            self.page.locator(self.NEW_TAB_BUTTON).click()
+
+        self.page = new_page_info.value
+        return self
+
+    def get_text_from_new_tab(self):
+        self.allure_and_logger("Получаем текст проверочной ссылки на новой вкладке `pavantestingtools`")
+        return self.page.locator(self.ONLINE_TRAINING_LINK_TEXT).text_content().strip()
+
+    def get_playwright_get_started_text(self):
+        self.allure_and_logger("Получает текст ссылки Get started на странице Playwright")
+        return self.page.locator(self.PLAYWRIGHT_GET_STARTED_LINK).text_content().strip()
+
+    def hover_point_me(self):
+        self.allure_and_logger("Наводит курсор на кнопку Point Me")
+        self.page.locator(self.POINT_ME_BUTTON).hover()
+        return self
+
+    def assert_dropdown_links_count(self, expected_count: int):
+        self.allure_and_logger(f"Проверяет количество ссылок в выпадающем меню: {expected_count}")
+        links = self.page.locator(self.DROPDOWN_MENU_LINKS)
+        expect(links).to_have_count(expected_count)
         return self

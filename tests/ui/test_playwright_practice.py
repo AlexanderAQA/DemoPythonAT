@@ -1,6 +1,5 @@
 import allure
 import pytest
-
 from conftest import web_element_practice_page
 
 
@@ -100,9 +99,44 @@ class TestPlaywrightPractice:
          .asserts.assert_text_match("You pressed Cancel!", result_text))
 
     @pytest.mark.ui
-    @allure.title("Работа с PopUp")
-    def test_open_popup(self, web_element_practice_page):
+    @allure.title("Проверка открытия новой вкладки при клике на New Tab")
+    def test_new_tab(self, web_element_practice_page):
+        expected_path = "pavantestingtools.com"
+        expected_text = "Online Training"
+
         (web_element_practice_page
          .open_practice_page()
+         .close_google_popup()
+         .click_new_tab()
+         .should_have_partial_url(expected_path))
+
+        actual_text = web_element_practice_page.get_text_from_new_tab()
+
+        (web_element_practice_page.
+         asserts.assert_is_equal(expected_text, actual_text))
+
+    @pytest.mark.ui
+    @allure.title("Проверка открытия Playwright сайта через кнопку Popup Windows")
+    def test_popup_windows(self, web_element_practice_page):
+        expected_path = "playwright.dev"
+        expected_text = "Get started"
+
+        (web_element_practice_page
+         .open_practice_page()
+         .close_google_popup()
          .open_popup()
-         .time.sleep())
+         .should_have_partial_url(expected_path))
+
+        actual_text = web_element_practice_page.get_playwright_get_started_text()
+
+        (web_element_practice_page
+         .asserts.assert_is_equal(expected_text, actual_text))
+
+    @pytest.mark.ui
+    @allure.title("Проверка появления 2 ссылок при наведении на Point Me")
+    def test_point_me_hover(self, web_element_practice_page):
+        (web_element_practice_page
+         .open_practice_page()
+         .close_google_popup()
+         .hover_point_me()
+         .assert_dropdown_links_count(2))
