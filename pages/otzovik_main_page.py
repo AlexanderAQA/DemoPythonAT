@@ -8,10 +8,11 @@ class OtzovikMainPage(BasePage):
     """Главная https://otzovik.com/"""
 
     SEARCH_FIELD = (By.ID, "header-search-input")
-    SEARCH_BUTTON = (By.XPATH, "input[@class='header-search-btn']")
+    SEARCH_BUTTON = (By.XPATH, "//input[@class='header-search-btn']")
     REVIEW_TAB = (By.XPATH, "//a[text()='Отзывы ']")
     NEGATIVE_TAB = (By.XPATH, "//a[text()='Негатив']")
     POSITIVE_TAB = (By.XPATH, "//a[text()='Позитив']")
+    PROMOTION_TAB = (By.XPATH, "//a[@href='/promo/']")
 
 
     def __init__(self, driver):
@@ -30,6 +31,7 @@ class OtzovikMainPage(BasePage):
 
     def search_by_button(self, name):
         self.enter_text(self.SEARCH_FIELD, name)
+        self.driver.switch_to.default_content()
         self.click(OtzovikMainPage.SEARCH_BUTTON)
         return self
 
@@ -50,6 +52,10 @@ class OtzovikMainPage(BasePage):
         return self
 
     def check_headline(self, headline_name):
-        self.assert_element_is_visible((By.XPATH,f"//a[text()='{headline_name}')]"))
+        self.assert_element_is_visible((By.XPATH,f"//span[text()='{headline_name}')]"))
+        return self
+
+    def open_tab_promotions(self):
+        self.click(self.PROMOTION_TAB)
         return self
 
