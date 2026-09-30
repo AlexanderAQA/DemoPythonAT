@@ -12,3 +12,7 @@ class MainPageLocators:
 
     # Кнопка "ОК" принять cookies
     COOKIE_BUTTON = (By.XPATH, "//button[contains(@value,'cookie.confirm&agree')]")
+
+    # Банер с предупреждением
+    PROMOTION_BANNER = (By.XPATH, "//*[@id='content']/*[contains(.,'Заказы, сделанные с 16 по 23 сентября')]")
+
