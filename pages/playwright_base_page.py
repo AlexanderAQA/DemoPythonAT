@@ -32,6 +32,11 @@ class PlaywrightBasePage:
         self.accept_cookie(self.page)
         return self
 
+    def open_with_response(self, url: str):
+        """Открывает URL и возвращает ответ на основной запрос страницы."""
+        self.logger.info(f"Открываем страницу и получаем ответ: '{url}'")
+        return self.page.goto(url)
+
     def accept_chrome_cookies(self, page):
         self.logger.info("Принимаем куки в хром браузере")
         button = page.get_by_role("button", name="Принять все")
@@ -62,6 +67,19 @@ class PlaywrightBasePage:
             re.compile(fr".*{path_url}")
         )
         return self
+
+    def should_have_text(self, expected_text: str):
+        """Проверяет, что указанный текст отображается на странице."""
+        self.logger.info(f"Проверяем отображение текста: '{expected_text}'")
+        text_elements = self.page.get_by_text(expected_text, exact=True)
+
+        for index in range(text_elements.count()):
+            text_element = text_elements.nth(index)
+            if text_element.is_visible():
+                expect(text_element).to_be_visible()
+                return self
+
+        raise AssertionError(f"Текст '{expected_text}' не отображается на странице")
 
     def get_product_info(self) -> dict:
         self.logger.info("Собираем информацию о товаре")
