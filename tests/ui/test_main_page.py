@@ -48,3 +48,16 @@ class TestMainPage:
         sorted_titles = sorted(titles)
 
         books_page.asserts.assert_is_equal(sorted_titles, titles)
+
+
+    @pytest.mark.ui
+    @allure.title("Новый клиент")
+    @allure.link("https://testit.example.com/tc-1")
+    def test_valid_login(self, main_page, login_page, account_page):
+        (main_page
+         .open_main_page()
+         .accept_cookies()
+         .open_user_menu()
+         .click_authorization()
+         .check_new_client()
+         )

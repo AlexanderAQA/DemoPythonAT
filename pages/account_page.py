@@ -4,6 +4,7 @@ from src.utils.test_data import TestUsers
 from src.utils.logger import get_logger
 
 
+
 class AccountPage(BasePage):
     def __init__(self, driver):
         self.logger = get_logger(__name__)
