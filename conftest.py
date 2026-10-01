@@ -14,11 +14,15 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
+from pages.otzovik_main_page import OtzovikMainPage
+
+
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from pages.otzovik_promotions_page import OtzovikPromotionsPage
 from pages.web_element_practice_page import WebElementPracticePage
 from src.utils.api_client_hh import ApiHH
 from src.utils.api_client_weather import ApiWeather
@@ -187,6 +191,11 @@ def main_page(driver):
     page = MainPage(driver)
     yield page
 
+@pytest.fixture(scope="function", autouse=False)
+def otzivik_main_page(driver):
+    page = OtzovikMainPage(driver)
+    yield page
+
 @pytest.fixture(scope="function")
 def api_client():
     return ApiClient()
@@ -258,4 +267,8 @@ def playwright_practice_page(page):
     page = PlaywrightPracticePage(page)
     return page
 
+@pytest.fixture(scope="function", autouse=False)
+def otzivik_promotion_page(driver):
+    page = OtzovikPromotionsPage(driver)
+    yield page
 
