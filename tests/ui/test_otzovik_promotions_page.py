@@ -22,9 +22,4 @@ class TestOtzovikPromotionsPage:
         .open()
         .open_details_campaign()
         .check_promo_active()
-        .check_have_all_text()
-         )
-
-
-
-
+        .check_have_all_text())

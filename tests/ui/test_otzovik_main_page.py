@@ -13,7 +13,7 @@ class TestOtzovikMainPage:
         (otzivik_main_page
          .open()
          .search_by_button('Сериал \"Кремниевая долина\"')
-         .check_film('Сериал \"Кремниевая долина\"'))
+         .check_result('Сериал \"Кремниевая долина\"'))
 
 
     @pytest.mark.ui
@@ -27,6 +27,6 @@ class TestOtzovikMainPage:
          .check_review_tab()
          .check_negative_tab()
          .check_positive_tab()
-         .check_headline('Смартфон Apple iPhone 17'))
+         .check_headline_item('Смартфон Apple iPhone 17'))
 
 
