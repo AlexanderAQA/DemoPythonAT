@@ -19,12 +19,6 @@ class PlaywrightBasePage:
         self.BASE_URL = 'https://shop.finarty.ru'
         self.asserts = CommonAssertions(self)
 
-
-    def allure_and_logger(self, text):
-        with allure.step(text):
-            self.logger.info(text)
-        return self
-
     def open(self, url: str):
         self.logger.info(f"Открываем страницу: '{url}'")
         self.page.goto(url)
