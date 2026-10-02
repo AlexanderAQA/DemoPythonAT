@@ -274,11 +274,57 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_END))
         return self
 
-    def open_popup(self):
-        self.allure_and_logger("Кликает на кнопку Popup Windows и переключается на новое окно")
-        with self.page.context.expect_page() as popup_info:
-            self.page.get_by_role("button", name="Popup Windows").click()
-        self.page = popup_info.value
+    def open_multi_popup(self, expected_url: str):
+        self.allure_and_logger("Открывает Popup среди множество новых страниц")
+
+        context = self.page.context
+
+        button = self.page.get_by_role("button", name="Popup Windows", exact=True)
+
+        # Ждём первую новую страницу
+        with context.expect_page() as page_info:
+            button.click()
+
+        page_1 = page_info.value
+        page_1.wait_for_load_state()
+
+        self.allure_and_logger(f"Страниц (окон): {len(context.pages)}")
+
+        for i, page in enumerate(context.pages):
+            self.allure_and_logger(f"PAGE {i}: url={page.url}, title={page.title()}")
+
+        # Ждём вторую страницу, если она создаётся сайтом
+        try:
+            with context.expect_page(timeout=5000) as page_info_2:
+                page_1.wait_for_timeout(1000)
+
+            page_2 = page_info_2.value
+            page_2.wait_for_load_state()
+
+        except Exception:
+            page_2 = None
+
+        for i, page in enumerate(context.pages):
+            self.allure_and_logger(f"PAGE {i}: url={page.url}, title={page.title()}")
+
+        # Ищем именно нужную страницу
+        target_page = next(
+            (
+                page
+                for page in context.pages
+                if expected_url in page.url
+            ),
+            None
+        )
+
+        if target_page is None:
+            raise AssertionError(f"Не нашли нужную страницу с URL '{expected_url}'")
+
+        self.page = target_page
+        self.allure_and_logger(
+            f"Переключились на нужную страницу: {self.page.url}"
+        )
+
         return self
 
     def click_new_tab(self):
