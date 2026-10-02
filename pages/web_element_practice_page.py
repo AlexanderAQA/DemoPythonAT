@@ -37,7 +37,8 @@ class WebElementPracticePage(PlaywrightBasePage):
     ONLINE_TRAINING_LINK_TEXT = "a:has-text('Online Training')"
     PLAYWRIGHT_GET_STARTED_LINK = "a.getStarted_Sjon[href='/docs/intro']"
     DROPDOWN_MENU_LINKS = ".dropdown-content a"
-    POPUP_WINDOWS = "#button#PopUp"
+    MOBILES_LINK = "a:has-text('Mobiles')"
+    LAPTOPS_LINK = "a:has-text('Laptops')"
 
     @staticmethod
     def get_gender_button(gender: str):
@@ -348,8 +349,12 @@ class WebElementPracticePage(PlaywrightBasePage):
         self.page.locator(self.POINT_ME_BUTTON).hover()
         return self
 
-    def assert_dropdown_links_count(self, expected_count: int):
-        self.allure_and_logger(f"Проверяет количество ссылок в выпадающем меню: {expected_count}")
-        links = self.page.locator(self.DROPDOWN_MENU_LINKS)
-        expect(links).to_have_count(expected_count)
+    def assert_mobiles_link_visible(self):
+        self.allure_and_logger("Проверяет видимость ссылки Mobiles")
+        expect(self.page.locator(self.MOBILES_LINK)).to_be_visible()
+        return self
+
+    def assert_laptops_link_visible(self):
+        self.allure_and_logger("Проверяет видимость ссылки Laptops")
+        expect(self.page.locator(self.LAPTOPS_LINK)).to_be_visible()
         return self
