@@ -124,7 +124,7 @@ class TestPlaywrightPractice:
         (web_element_practice_page
          .open_practice_page()
          .close_google_popup()
-         .open_popup()
+         .open_multi_popup("https://playwright.dev/")
          .should_have_partial_url(expected_path))
 
         actual_text = web_element_practice_page.get_playwright_get_started_text()
