@@ -139,4 +139,5 @@ class TestPlaywrightPractice:
          .open_practice_page()
          .close_google_popup()
          .hover_point_me()
-         .assert_dropdown_links_count(2))
+         .assert_mobiles_link_visible()
+         .assert_laptops_link_visible())
