@@ -31,14 +31,6 @@ class WebElementPracticePage(PlaywrightBasePage):
     CALENDAR_PREV_MONTH = ".ui-datepicker-prev"
     CALENDAR_MONTH_TITLE = ".ui-datepicker-month"
     CALENDAR_YEAR_TITLE = ".ui-datepicker-year"
-    NEW_TAB_BUTTON = "button:has-text('New Tab')"
-    POPUP_WINDOWS_BUTTON = "#PopUp"
-    POINT_ME_BUTTON = "button.dropbtn"
-    ONLINE_TRAINING_LINK_TEXT = "a:has-text('Online Training')"
-    PLAYWRIGHT_GET_STARTED_LINK = "a.getStarted_Sjon[href='/docs/intro']"
-    DROPDOWN_MENU_LINKS = ".dropdown-content a"
-    MOBILES_LINK = "a:has-text('Mobiles')"
-    LAPTOPS_LINK = "a:has-text('Laptops')"
 
     @staticmethod
     def get_gender_button(gender: str):
@@ -273,88 +265,4 @@ class WebElementPracticePage(PlaywrightBasePage):
 
     def assert_check_end_date(self, date):
         self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_END))
-        return self
-
-    def open_multi_popup(self, expected_url: str):
-        self.allure_and_logger("Открывает Popup среди множество новых страниц")
-
-        context = self.page.context
-
-        button = self.page.get_by_role("button", name="Popup Windows", exact=True)
-
-        # Ждём первую новую страницу
-        with context.expect_page() as page_info:
-            button.click()
-
-        page_1 = page_info.value
-        page_1.wait_for_load_state()
-
-        self.allure_and_logger(f"Страниц (окон): {len(context.pages)}")
-
-        for i, page in enumerate(context.pages):
-            self.allure_and_logger(f"PAGE {i}: url={page.url}, title={page.title()}")
-
-        # Ждём вторую страницу, если она создаётся сайтом
-        try:
-            with context.expect_page(timeout=5000) as page_info_2:
-                page_1.wait_for_timeout(1000)
-
-            page_2 = page_info_2.value
-            page_2.wait_for_load_state()
-
-        except Exception:
-            page_2 = None
-
-        for i, page in enumerate(context.pages):
-            self.allure_and_logger(f"PAGE {i}: url={page.url}, title={page.title()}")
-
-        # Ищем именно нужную страницу
-        target_page = next(
-            (
-                page
-                for page in context.pages
-                if expected_url in page.url
-            ),
-            None
-        )
-
-        if target_page is None:
-            raise AssertionError(f"Не нашли нужную страницу с URL '{expected_url}'")
-
-        self.page = target_page
-        self.allure_and_logger(
-            f"Переключились на нужную страницу: {self.page.url}"
-        )
-
-        return self
-
-    def click_new_tab(self):
-        self.allure_and_logger("Кликает на кнопку New Tab и переключается на новую вкладку")
-        with self.page.context.expect_page() as new_page_info:
-            self.page.locator(self.NEW_TAB_BUTTON).click()
-
-        self.page = new_page_info.value
-        return self
-
-    def get_text_from_new_tab(self):
-        self.allure_and_logger("Получаем текст проверочной ссылки на новой вкладке `pavantestingtools`")
-        return self.page.locator(self.ONLINE_TRAINING_LINK_TEXT).text_content().strip()
-
-    def get_playwright_get_started_text(self):
-        self.allure_and_logger("Получает текст ссылки Get started на странице Playwright")
-        return self.page.locator(self.PLAYWRIGHT_GET_STARTED_LINK).text_content().strip()
-
-    def hover_point_me(self):
-        self.allure_and_logger("Наводит курсор на кнопку Point Me")
-        self.page.locator(self.POINT_ME_BUTTON).hover()
-        return self
-
-    def assert_mobiles_link_visible(self):
-        self.allure_and_logger("Проверяет видимость ссылки Mobiles")
-        expect(self.page.locator(self.MOBILES_LINK)).to_be_visible()
-        return self
-
-    def assert_laptops_link_visible(self):
-        self.allure_and_logger("Проверяет видимость ссылки Laptops")
-        expect(self.page.locator(self.LAPTOPS_LINK)).to_be_visible()
         return self
