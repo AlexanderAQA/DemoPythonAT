@@ -1,12 +1,11 @@
 import allure
-
 from pages.playwright_base_page import PlaywrightBasePage
 from playwright.sync_api import expect
 from datetime import datetime
 
 class WebElementPracticePage(PlaywrightBasePage):
     WEB_ELEMENT_URL = 'https://testautomationpractice.blogspot.com/'
-    
+
     NAME_FIELD = "#name"
     PHONE_FIELD = "#phone"
     EMAIL_FIELD = "#email"
@@ -32,7 +31,6 @@ class WebElementPracticePage(PlaywrightBasePage):
     CALENDAR_PREV_MONTH = ".ui-datepicker-prev"
     CALENDAR_MONTH_TITLE = ".ui-datepicker-month"
     CALENDAR_YEAR_TITLE = ".ui-datepicker-year"
-    POPUP_WINDOWS = "#button#PopUp"
 
     @staticmethod
     def get_gender_button(gender: str):
@@ -45,7 +43,6 @@ class WebElementPracticePage(PlaywrightBasePage):
         locator = f"#{day}"
 
         return locator
-
 
     def open_practice_page(self):
         self.logger.info(f"Открываем страницу {self.WEB_ELEMENT_URL}")
@@ -268,8 +265,4 @@ class WebElementPracticePage(PlaywrightBasePage):
 
     def assert_check_end_date(self, date):
         self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_END))
-        return self
-
-    def open_popup(self):
-        self.page.get_by_role("button", name="Popup Windows").click()
         return self

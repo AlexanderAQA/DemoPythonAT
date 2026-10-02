@@ -1,8 +1,6 @@
 import re
-
 import allure
 from playwright.sync_api import Page, expect
-
 from src.utils.assertions import CommonAssertions
 from src.utils.logger import get_logger
 
@@ -57,7 +55,7 @@ class PlaywrightBasePage:
         return self
 
     def should_have_partial_url(self, path_url):
-        self.logger.info(f"CoursesPage: проверяем что в url содержится '{path_url}'")
+        self.logger.info(f"Проверяем что в url содержится '{path_url}'")
         expect(self.page).to_have_url(
             re.compile(fr".*{path_url}")
         )
