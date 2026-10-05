@@ -22,7 +22,7 @@ class OtzovikPromotionsPage(BasePage):
         return self
 
     def open_details_campaign(self):
-        self.click(OtzovikPromotionsPageLocators.DETAILS_ABOUT_CAMPAIGN)
+        self.click_by_script(OtzovikPromotionsPageLocators.DETAILS_ABOUT_CAMPAIGN)
         return self
 
     def check_promo_active(self):

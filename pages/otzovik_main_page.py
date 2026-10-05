@@ -50,6 +50,6 @@ class OtzovikMainPage(BasePage):
         return self
 
     def open_tab_promotions(self):
-        self.click(OtzovikMainPageLocators.PROMOTION_TAB)
+        self.click_by_script(OtzovikMainPageLocators.PROMOTION_TAB)
         return self
 

@@ -54,8 +54,11 @@ class BasePage:
             self.wait_for_element(locator).click()
         except NoSuchElementException:
             self.logger.info(f"Элемент не найден. Локатор: '{locator}'")
-        except ElementNotInteractableException:
-            self.driver.execute_script("arguments[0].click();", self.wait_for_element(locator))
+        return self
+
+    def click_by_script(self, locator):
+        self.logger.info(f"Клик по элементу")
+        self.driver.execute_script("arguments[0].click();", self.wait_for_element(locator))
         return self
 
     def enter_text(self, locator, text):
