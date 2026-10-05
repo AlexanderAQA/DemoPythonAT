@@ -1,5 +1,6 @@
 import allure
-from selenium.common import NoSuchElementException, TimeoutException
+from selenium.common import NoSuchElementException, TimeoutException, \
+    ElementNotInteractableException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -53,6 +54,11 @@ class BasePage:
             self.wait_for_element(locator).click()
         except NoSuchElementException:
             self.logger.info(f"Элемент не найден. Локатор: '{locator}'")
+        return self
+
+    def click_by_script(self, locator):
+        self.logger.info(f"Клик по элементу")
+        self.driver.execute_script("arguments[0].click();", self.wait_for_element(locator))
         return self
 
     def enter_text(self, locator, text):
