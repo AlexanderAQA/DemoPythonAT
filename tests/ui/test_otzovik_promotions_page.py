@@ -11,7 +11,9 @@ class TestOtzovikPromotionsPage:
     def test_active_promotion(self, otzivik_promotion_page, otzivik_main_page):
         (otzivik_main_page
          .open()
-         .open_tab_promotions()
+         .open_tab_promotions())
+
+        (otzivik_promotion_page
          .check_promo_ozon())
 
     @pytest.mark.ui
@@ -19,23 +21,23 @@ class TestOtzovikPromotionsPage:
     @allure.link("https://testit.example.com/tc-1")
     def test_transition_active_promotion(self, otzivik_promotion_page):
         (otzivik_promotion_page
-        .open()
-        .open_details_campaign()
-        .check_promo_active()
-        .check_have_all_text())
+         .open()
+         .open_details_campaign()
+         .check_promo_active()
+         .check_have_promo_ozon_text())
 
     @pytest.mark.ui
     @allure.title("Проверка завершенной промоакции")
     @allure.link("https://testit.example.com/tc-1")
-    def test_transition_active_promotion(self, otzivik_promotion_page):
+    def test_completed_promotion(self, otzivik_promotion_page):
         (otzivik_promotion_page
-        .open()
-        .check_promo_completed_number())
+         .open()
+         .check_promo_completed_zufra())
 
     @pytest.mark.ui
     @allure.title("Проверка наличия информационного сообщения")
     @allure.link("https://testit.example.com/tc-1")
-    def test_transition_active_promotion(self, otzivik_promotion_page):
+    def test_have_info_message(self, otzivik_promotion_page):
         (otzivik_promotion_page
-        .open()
-        .check_have_massange())
+         .open()
+         .check_info_message())
