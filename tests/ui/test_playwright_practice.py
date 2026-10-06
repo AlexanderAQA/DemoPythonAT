@@ -176,3 +176,43 @@ class TestPlaywrightPractice:
         (sidebar_practice_page
          .slide_price()
          .assert_price_amount())
+
+    @pytest.mark.ui
+    @allure.title("Выставление диапазона цен в слайдере")
+    def test_set_price_range(self, web_element_practice_page, sidebar_practice_page):
+        expected_price_text = "$120 - $125"
+
+        (web_element_practice_page
+         .open_practice_page()
+         .close_google_popup())
+
+        (sidebar_practice_page
+         .set_price_range(min_val=120, max_val=125)
+         .assert_price_range(expected_price_text))
+
+    @pytest.mark.ui
+    @allure.title("Кастомный дабл клик")
+    def test_custom_double_click(self, web_element_practice_page, sidebar_practice_page):
+        random_word = "Привет"
+
+        (web_element_practice_page
+         .open_practice_page()
+         .close_google_popup())
+
+        (sidebar_practice_page
+         .clear_field_1()
+         .assert_field_1_is_empty()
+         .fill_field_1(random_word)
+         .copy_text_double_click()
+         .assert_field_2_text(random_word))
+
+    @pytest.mark.ui
+    @allure.title("Перетаскивание ссылки Posts (Atom) в текстовое поле")
+    def test_drag_and_drop_link(self, web_element_practice_page, sidebar_practice_page):
+        (web_element_practice_page
+         .open_practice_page()
+         .close_google_popup())
+
+        (sidebar_practice_page
+         .drag_atom_link_to_field2()
+         .assert_field2_url())
