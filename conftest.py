@@ -19,6 +19,7 @@ project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from pages.otzovik_prereview_page import OtzovikPrereviwPage
 from pages.otzovik_main_page import OtzovikMainPage
 from pages.otzovik_promotions_page import OtzovikPromotionsPage
 from pages.web_element_practice_page import WebElementPracticePage
@@ -57,7 +58,7 @@ def browser(playwright):
         headless = True
     else:
         headless = False
-    browser = playwright.chromium.launch(headless=headless, args = ["--disable-features=Translate"])
+    browser = playwright.chromium.launch(headless=headless)
     yield browser
     browser.close()
 
@@ -276,3 +277,7 @@ def otzivik_promotion_page(driver):
     page = OtzovikPromotionsPage(driver)
     yield page
 
+@pytest.fixture(scope="function", autouse=False)
+def otzivik_prereview_page(driver):
+    page = OtzovikPrereviwPage(driver)
+    yield page

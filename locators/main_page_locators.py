@@ -12,3 +12,6 @@ class MainPageLocators:
 
     # Кнопка "ОК" принять cookies
     COOKIE_BUTTON = (By.XPATH, "//button[contains(@value,'cookie.confirm&agree')]")
+
+    # Кнопка "Написать отзыв"
+    REVIEW_BUTTON =(By.XPATH, "//span[text()='Написать отзыв']")
