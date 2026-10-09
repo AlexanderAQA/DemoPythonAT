@@ -34,7 +34,7 @@ class SideBarPracticePage(PlaywrightBasePage):
 
     def search_value(self, value: str):
         """Вводит значение и нажимает кнопку поиска"""
-        self.logger.info(f"Поиск значения: '{value}'")
+        allure_and_logger(f"Поиск значения: '{value}'")
         self.page.locator(self.SEARCH_INPUT_W).fill(value)
         self.page.locator(self.SEARCH_BUTTON).click()
         self.page.wait_for_load_state("networkidle")
@@ -43,6 +43,7 @@ class SideBarPracticePage(PlaywrightBasePage):
     def get_results_text(self) -> str:
         """Возвращает текст из блока результатов"""
         allure_and_logger("Получение текста из блока результатов")
+        self.page.wait_for_timeout(200)
         locator = self.page.locator(self.SEARCH_RESULTS_CONTAINER)
         locator.wait_for(state="visible")
         return locator.inner_text()
@@ -233,34 +234,10 @@ class SideBarPracticePage(PlaywrightBasePage):
         self.asserts.assert_is_equal("Dropped!", target_text)
         return self
 
-    def slide_price(self):
-        allure_and_logger("Передвигает слайдер цены")
-        slider_range = self.page.locator("#slider-range")
-        slider_handles = slider_range.locator(".ui-slider-handle")
-
-        left = slider_handles.nth(0)
-        right = slider_handles.nth(1)
-
-        left.focus()
-
-        for _ in range(10):
-            left.press("ArrowLeft")
-
-        right.focus()
-
-        for _ in range(10):
-            right.press("ArrowRight")
-
-        return self
-
-    def assert_price_amount(self):
-        allure_and_logger("Проверяет цену")
-        self.asserts.assert_is_equal("$65 - $310", self.get_field_value(self.PRICE_AMOUNT))
-        return self
-
-    def set_price_range(self, min_val: int, max_val: int):
-        allure_and_logger(f"Выставляет диапазон цен: от {min_val} до {max_val}")
-
+    def set_price_range(self, target_price_val):
+        allure_and_logger(f"Выставляет диапазон цен")
+        min_val = target_price_val[0]
+        max_val = target_price_val[1]
         slider = self.page.locator(self.SLIDER_RANGE)
         handles = slider.locator(self.SLIDER_HANDLES)
         left = handles.nth(0)
@@ -280,8 +257,9 @@ class SideBarPracticePage(PlaywrightBasePage):
 
         return self
 
-    def assert_price_range(self, expected_text: str):
-        allure_and_logger(f"Проверяет, что цена соответствует: '{expected_text}'")
+    def assert_price_range(self, target_price_range):
+        allure_and_logger(f"Проверяет, что цена соответствует: '{target_price_range}'")
+        expected_text = f"${target_price_range[0]} - ${target_price_range[1]}"
         actual_text = self.get_field_value(self.PRICE_AMOUNT)
         self.asserts.assert_is_equal(expected_text, actual_text)
         return self
@@ -310,11 +288,11 @@ class SideBarPracticePage(PlaywrightBasePage):
         source = self.page.locator(self.POSTS_ATOM_LINK)
         target = self.page.locator(self.FIELD_2)
         source.drag_to(target)
+        self.page.wait_for_timeout(200)
         return self
 
-    def assert_field2_url(self):
+    def assert_field2_url(self, expected_url):
         allure_and_logger("Проверка URL в поле Field2")
-        expected_url = "https://testautomationpractice.blogspot.com/feeds/posts/default"
         actual_url = self.get_field_value(self.FIELD_2)
         self.asserts.assert_is_equal(expected_url, actual_url)
         return self

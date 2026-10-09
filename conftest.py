@@ -57,7 +57,7 @@ def browser(playwright):
         headless = True
     else:
         headless = False
-    browser = playwright.chromium.launch(headless=headless)
+    browser = playwright.chromium.launch(headless=headless, args = ["--disable-features=Translate"])
     yield browser
     browser.close()
 

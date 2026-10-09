@@ -1,9 +1,11 @@
 import allure
 import pytest
 
+from src.utils.test_data import generate_random_string
+
 
 @pytest.mark.ui
-class TestPlaywrightPractice:
+class TestSidebarPage:
 
     @allure.title("Поиск невалидного значения в 'W'-поисковой строке")
     def test_searching_invalid_value(self, web_element_practice_page, sidebar_practice_page):
@@ -104,13 +106,12 @@ class TestPlaywrightPractice:
         expected_text = "Online Training"
 
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
         (sidebar_practice_page
          .click_new_tab()
          .should_have_partial_url(expected_path))
 
-        actual_text = web_element_practice_page.get_text_from_new_tab()
+        actual_text = sidebar_practice_page.get_text_from_new_tab()
 
         (web_element_practice_page.
          asserts.assert_is_equal(expected_text, actual_text))
@@ -122,13 +123,12 @@ class TestPlaywrightPractice:
         expected_text = "Get started"
 
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
         (sidebar_practice_page
          .open_multi_popup("https://playwright.dev/")
          .should_have_partial_url(expected_path))
 
-        actual_text = web_element_practice_page.get_playwright_get_started_text()
+        actual_text = sidebar_practice_page.get_playwright_get_started_text()
 
         (web_element_practice_page
          .asserts.assert_is_equal(expected_text, actual_text))
@@ -137,8 +137,7 @@ class TestPlaywrightPractice:
     @allure.title("Проверка появления 2 ссылок при наведении на Point Me")
     def test_point_me_hover(self, web_element_practice_page, sidebar_practice_page):
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
         (sidebar_practice_page
          .hover_point_me()
          .assert_mobiles_link_visible()
@@ -148,8 +147,7 @@ class TestPlaywrightPractice:
     @allure.title("Проверка двойного клика")
     def test_double_click(self, web_element_practice_page, sidebar_practice_page):
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
 
         expected_text = sidebar_practice_page.get_text_field_1()
 
@@ -161,8 +159,7 @@ class TestPlaywrightPractice:
     @allure.title("Проверка Drag and Drop")
     def test_drag_and_drop(self, web_element_practice_page, sidebar_practice_page):
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
         (sidebar_practice_page
          .drag_and_drop_object()
          .assert_object_dropped())
@@ -170,34 +167,32 @@ class TestPlaywrightPractice:
     @pytest.mark.ui
     @allure.title("Проверка Slider")
     def test_slider(self, web_element_practice_page, sidebar_practice_page):
+        target_price_range = (30, 400)
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
         (sidebar_practice_page
-         .slide_price()
-         .assert_price_amount())
+         .set_price_range(target_price_range)
+         .assert_price_range(target_price_range))
 
     @pytest.mark.ui
     @allure.title("Выставление диапазона цен в слайдере")
     def test_set_price_range(self, web_element_practice_page, sidebar_practice_page):
-        expected_price_text = "$120 - $125"
+        expected_price = (120, 125)
 
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
 
         (sidebar_practice_page
-         .set_price_range(min_val=120, max_val=125)
-         .assert_price_range(expected_price_text))
+         .set_price_range(expected_price)
+         .assert_price_range(expected_price))
 
     @pytest.mark.ui
     @allure.title("Кастомный дабл клик")
     def test_custom_double_click(self, web_element_practice_page, sidebar_practice_page):
-        random_word = "Привет"
+        random_word = generate_random_string(10)
 
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
 
         (sidebar_practice_page
          .clear_field_1()
@@ -209,10 +204,10 @@ class TestPlaywrightPractice:
     @pytest.mark.ui
     @allure.title("Перетаскивание ссылки Posts (Atom) в текстовое поле")
     def test_drag_and_drop_link(self, web_element_practice_page, sidebar_practice_page):
+        expected_url = "https://testautomationpractice.blogspot.com/feeds/posts/default"
         (web_element_practice_page
-         .open_practice_page()
-         .close_google_popup())
+         .open_practice_page())
 
         (sidebar_practice_page
          .drag_atom_link_to_field2()
-         .assert_field2_url())
+         .assert_field2_url(expected_url))

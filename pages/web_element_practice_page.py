@@ -19,7 +19,6 @@ class WebElementPracticePage(PlaywrightBasePage):
     DAY_SATURDAY = "#saturday"
     COUNTRY_DROPDOWN = "#country"
     SUBMIT_BUTTON = "button.submit-btn"
-    CLOSE_GOOGLE_POPUP = "button[aria-label='Close']"
     RESULT_MESSAGE = "#result.result"
     COLORS_LISTBOX = "#colors"
     ANIMALS_LISTBOX = "#animals"
@@ -47,18 +46,6 @@ class WebElementPracticePage(PlaywrightBasePage):
     def open_practice_page(self):
         self.logger.info(f"Открываем страницу {self.WEB_ELEMENT_URL}")
         self.page.goto(self.WEB_ELEMENT_URL)
-        return self
-
-    def close_google_popup(self):
-        """Закрывает всплывающее окно выбора языка Google"""
-        try:
-            close_button = self.page.locator(self.CLOSE_GOOGLE_POPUP)
-            close_button.wait_for(state="visible", timeout=2000)
-            self.logger.info("Закрываем всплывающее окно Google")
-            close_button.click()
-            self.page.wait_for_timeout(300)
-        except Exception:
-            self.logger.warning("Popup Google не появился или уже закрыт")
         return self
 
     def fill_name_field(self, name):

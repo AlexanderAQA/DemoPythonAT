@@ -31,7 +31,6 @@ class TestWebElementPractice:
 
         (practice_page
          .open_practice_page()
-         .close_google_popup()
          .assert_form()
          .fill_name_field(test_user.name)
          .fill_email_field(test_user.email)
