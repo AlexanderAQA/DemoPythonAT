@@ -1,10 +1,7 @@
 import re
-
-import allure
 from playwright.sync_api import Page, expect
-
 from src.utils.assertions import CommonAssertions
-from src.utils.logger import get_logger
+from src.utils.logger import get_logger, allure_and_logger
 
 
 class PlaywrightBasePage:
@@ -20,14 +17,14 @@ class PlaywrightBasePage:
         self.asserts = CommonAssertions(self)
 
     def open(self, url: str):
-        self.logger.info(f"Открываем страницу: '{url}'")
+        allure_and_logger(f"Открываем страницу: '{url}'")
         self.page.goto(url)
         self.accept_chrome_cookies(self.page)
         self.accept_cookie(self.page)
         return self
 
     def accept_chrome_cookies(self, page):
-        self.logger.info("Принимаем куки в хром браузере")
+        allure_and_logger("Принимаем куки в хром браузере")
         button = page.get_by_role("button", name="Принять все")
 
         if button.is_visible():
@@ -36,7 +33,7 @@ class PlaywrightBasePage:
         return self
 
     def accept_cookie(self, page):
-        self.logger.info("Принимаем куки на сайте")
+        allure_and_logger("Принимаем куки на сайте")
         cookie_btn = page.get_by_role("button", name="ОК")
         if cookie_btn.is_visible():
             cookie_btn.click()
@@ -44,21 +41,21 @@ class PlaywrightBasePage:
         return self
 
     def should_have_title(self, expected_title):
-        self.logger.info(f"Проверяем, что в заголовке есть '{expected_title}'")
+        allure_and_logger(f"Проверяем, что в заголовке есть '{expected_title}'")
         expect(self.page).to_have_title(
             expected_title
         )
         return self
 
     def should_have_partial_url(self, path_url):
-        self.logger.info(f"CoursesPage: проверяем что в url содержится '{path_url}'")
+        allure_and_logger(f"Проверяем что в url содержится '{path_url}'")
         expect(self.page).to_have_url(
             re.compile(fr".*{path_url}")
         )
         return self
 
     def get_product_info(self) -> dict:
-        self.logger.info("Собираем информацию о товаре")
+        allure_and_logger("Собираем информацию о товаре")
 
         name = self.page.locator("h1.mb-3").inner_text().strip()
 
@@ -79,7 +76,7 @@ class PlaywrightBasePage:
         return product_data
 
     def set_quantity_by_clicks(self, target_quantity: int):
-        self.logger.info(f"Выбор количества: {target_quantity} кликом по +")
+        allure_and_logger(f"Выбор количества: {target_quantity} кликом по +")
 
         plus_button = self.page.locator(self.PLUS_BUTTON)
         clicks_needed = target_quantity - 1
@@ -94,12 +91,12 @@ class PlaywrightBasePage:
         return self
 
     def click_buy(self):
-        self.logger.info("Нажимаем кнопку 'Купить'")
+        allure_and_logger("Нажимаем кнопку 'Купить'")
         self.page.locator(self.BUY_BUTTON).click()
         return self
 
     def open_product(self, name):
-        self.logger.info("Открыть карточку конкретного товара по названию")
+        allure_and_logger("Открыть карточку конкретного товара по названию")
         self.page.get_by_text(name).click()
 
         return self
@@ -109,12 +106,12 @@ class PlaywrightBasePage:
         return self.page.locator(locator).input_value()
 
     def check_text_result(self, text):
-        self.logger.info("Проверка текста в уведомлении при отправке")
+        allure_and_logger("Проверка текста в уведомлении при отправке")
         result = self.page.get_by_text(text)
         expect(result).to_be_visible()
         return self
 
     def assert_is_visible(self, locator):
-        self.logger.info(f"Проверяем, что элемент '{locator}' виден")
+        allure_and_logger(f"Проверяем, что элемент '{locator}' виден")
         expect(self.page.locator(locator)).to_be_visible()
         return self
