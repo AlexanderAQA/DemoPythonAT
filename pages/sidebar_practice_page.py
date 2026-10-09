@@ -30,6 +30,7 @@ class SideBarPracticePage(PlaywrightBasePage):
     SLIDER_HANDLES = ".ui-slider-handle"
     COPY_TEXT_BUTTON = "button:has-text('Copy Text')"
     POSTS_ATOM_LINK = "a.feed-link"
+    SELECT_ITEM_DROPDOWN = "#comboBox"
 
 
     def search_value(self, value: str):
@@ -295,4 +296,33 @@ class SideBarPracticePage(PlaywrightBasePage):
         allure_and_logger("Проверка URL в поле Field2")
         actual_url = self.get_field_value(self.FIELD_2)
         self.asserts.assert_is_equal(expected_url, actual_url)
+        return self
+
+    def open_dropdown(self):
+        """Нажимает дропдаун"""
+        allure_and_logger("Открытие выпадающего списка")
+        self.page.locator(self.SELECT_ITEM_DROPDOWN).click()
+        return self
+
+    def assert_items_dropdown(self):
+        allure_and_logger("Проверка элементов списка")
+
+        for n in range(1, 101):
+            locator = self.page.get_by_text(f"Item {n}", exact=True)
+            self.assert_is_visible(locator)
+        return self
+
+    def select_item(self, n):
+        allure_and_logger("Выбор элемента")
+        self.page.get_by_text(f"Item {n}").click()
+        return self
+
+    def assert_item_selected_dropdown(self, value):
+        allure_and_logger("Проверка элемента")
+        locator = self.page.locator(self.SELECT_ITEM_DROPDOWN)
+        expect(locator).to_have_value(value)
+        return self
+
+    def assert_is_visible(self, locator):
+        expect(locator).to_be_visible()
         return self

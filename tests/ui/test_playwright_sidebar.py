@@ -211,3 +211,15 @@ class TestSidebarPage:
         (sidebar_practice_page
          .drag_atom_link_to_field2()
          .assert_field2_url(expected_url))
+
+    @pytest.mark.ui
+    @allure.title("Проверка значения в выпадающем списке")
+    def test_items_dropdown(self, web_element_practice_page, sidebar_practice_page):
+        (web_element_practice_page
+         .open_practice_page())
+
+        (sidebar_practice_page
+         .open_dropdown()
+         .assert_items_dropdown()
+         .select_item(40)
+         .assert_item_selected_dropdown("Item 40"))
