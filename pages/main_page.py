@@ -6,3 +6,4 @@ class MainPage(BasePage):
     def __init__(self, driver):
         self.logger = get_logger(__name__)
         super().__init__(driver)
+

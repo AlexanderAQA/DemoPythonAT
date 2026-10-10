@@ -92,3 +92,7 @@ class LoginPage(BasePage):
                 pass
 
             return self
+
+    def check_new_client(self):
+        self.assert_element_is_visible(LoginPageLocators.NEW_CLIENT_LABEL)
+        return self

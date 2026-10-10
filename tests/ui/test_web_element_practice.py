@@ -9,6 +9,18 @@ from datetime import datetime, timedelta
 class TestWebElementPractice:
 
     @pytest.mark.ui
+    @pytest.mark.negative
+    @allure.title("Валидация Email с некорректным форматом")
+    def test_email_field_rejects_invalid_format(self, web_element_practice_page):
+        invalid_email = "invalid-email"
+
+        (web_element_practice_page
+         .open_practice_page()
+         .close_google_popup()
+         .fill_email_field(invalid_email)
+         .assert_field_is_invalid(Practice.EMAIL_FIELD))
+
+    @pytest.mark.ui
     @allure.title("Заполнение формы, проверки и нажатие Submit")
     def test_full_fill_form_and_submit(self, web_element_practice_page, generate_user):
         practice_page = web_element_practice_page

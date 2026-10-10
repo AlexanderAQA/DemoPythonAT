@@ -11,3 +11,6 @@ class LoginPageLocators:
 
     # Поле ввода пароля на странице авторизации
     PASSWORD_FIELD = (By.XPATH, f"//input[@id='input-password']")
+
+    # Новый клиент
+    NEW_CLIENT_LABEL = (By.XPATH, "//h2[text()='Новый клиент'")
