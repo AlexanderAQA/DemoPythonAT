@@ -31,6 +31,10 @@ class SideBarPracticePage(PlaywrightBasePage):
     COPY_TEXT_BUTTON = "button:has-text('Copy Text')"
     POSTS_ATOM_LINK = "a.feed-link"
     SELECT_ITEM_DROPDOWN = "#comboBox"
+    LENOVO_LINK = "a#lenovo"
+    LENOVO_ACCEPT_COOKIES_BUTTON = "#_evidon-banner-acceptbutton"
+    LENOVO_LOGO = "img[alt='Lenovo']"
+    ERROR_400_LINK = "a:has-text('Errorcode 400')"
 
 
     def search_value(self, value: str):
@@ -325,4 +329,118 @@ class SideBarPracticePage(PlaywrightBasePage):
 
     def assert_is_visible(self, locator):
         expect(locator).to_be_visible()
+        return self
+
+    def click_lenovo_link(self):
+        allure_and_logger("Кликает по ссылке Lenovo")
+        self.page.locator(self.LENOVO_LINK).click()
+        self.page.wait_for_load_state("domcontentloaded")
+        return self
+
+    def accept_lenovo_cookies(self):
+        allure_and_logger("Проверяет и принимает куки на сайте Lenovo если баннер есть")
+        accept_cookie_btn = self.page.locator(self.LENOVO_ACCEPT_COOKIES_BUTTON)
+        if accept_cookie_btn.is_visible():
+            accept_cookie_btn.click()
+        return self
+
+    def assert_lenovo_logo_visible(self):
+        allure_and_logger("Проверяет видимость логотипа Lenovo")
+        expect(self.page.locator(self.LENOVO_LOGO)).to_be_visible()
+        return self
+
+    def click_error_400_link(self):
+        allure_and_logger("Кликает по ссылке Error 400")
+        self.page.locator(self.ERROR_400_LINK).click()
+        self.page.wait_for_load_state("domcontentloaded")
+        return self
+
+    def assert_bad_request_text(self):
+        allure_and_logger("Проверяет текст 'Bad Request' на странице")
+        expect(self.page.locator("body")).to_contain_text("Bad Request")
+        return self
+
+    def set_price_range_reliable(self, target_price_val):
+        allure_and_logger("Выставляет диапазон цен, двигая оба ползунка, сначала разводит их в крайние положения,"
+                          "потом сводит к нужным")
+        min_val = target_price_val[0]
+        max_val = target_price_val[1]
+        max_limit = 500
+
+        slider = self.page.locator(self.SLIDER_RANGE)
+        handles = slider.locator(self.SLIDER_HANDLES)
+        left = handles.nth(0)
+        right = handles.nth(1)
+
+        left.focus()
+        left.press("Home")
+
+        right.focus()
+        right.press("End")
+
+        left.focus()
+        for _ in range(min_val):
+            left.press("ArrowRight")
+
+        right.focus()
+        steps_left = max_limit - max_val
+        for _ in range(steps_left):
+            right.press("ArrowLeft")
+        return self
+
+    def set_price_with_mouse(self, min_val: int, max_val: int):
+        allure_and_logger(f"Симулирует движение мыши для установки цены: {min_val} - {max_val}")
+
+        slider = self.page.locator(self.SLIDER_RANGE)
+        handles = slider.locator(self.SLIDER_HANDLES)
+        left = handles.nth(0)
+        right = handles.nth(1)
+
+        left.focus()
+        left.press("Home")
+        right.focus()
+        right.press("End")
+
+        slider_box = slider.bounding_box()
+        width = slider_box['width']
+        start_x = slider_box['x']
+        y = slider_box['y'] + (slider_box['height'] / 2)
+        max_limit = 500
+
+        target_x_left = round(start_x + (min_val / max_limit) * width)
+        target_x_right = round(start_x + (max_val / max_limit) * width)
+
+        self.page.mouse.move(start_x, y)
+        self.page.mouse.down()
+        self.page.mouse.move(target_x_left, y, steps=20)
+        self.page.mouse.up()
+        self.page.wait_for_timeout(200)
+
+        current_min = int(self.get_field_value(self.PRICE_AMOUNT).split(' - ')[0].replace('$', ''))
+        diff = min_val - current_min
+
+        if diff != 0:
+            allure_and_logger(f"Обнаружена разница {diff}, нужна корректировка")
+            left.focus()
+            key = "ArrowRight" if diff > 0 else "ArrowLeft"
+            for _ in range(abs(diff)):
+                left.press(key)
+                self.page.wait_for_timeout(50)
+
+        right_box = right.bounding_box()
+        current_x_right = round(right_box['x'] + (right_box['width'] / 2))
+
+        self.page.mouse.move(current_x_right, y)
+        self.page.mouse.down()
+        self.page.mouse.move(target_x_right, y, steps=20)
+        self.page.mouse.up()
+        self.page.wait_for_timeout(200)
+        return self
+
+    def assert_price_set_by_mouse(self, target_price_range):
+        allure_and_logger("Проверяет цену, выставленную с помощью мыши")
+        min_val, max_val = target_price_range
+        expected_value = f"${min_val} - ${max_val}"
+        allure_and_logger(f"Проверяем, что цена, выставленная мышью, равна: '{expected_value}'")
+        expect(self.page.locator(self.PRICE_AMOUNT)).to_have_value(expected_value)
         return self

@@ -223,3 +223,54 @@ class TestSidebarPage:
          .assert_items_dropdown()
          .select_item(40)
          .assert_item_selected_dropdown("Item 40"))
+
+    @pytest.mark.ui
+    @allure.title("Переход по ссылке Lenovo и проверка URL и заголовка")
+    def test_lenovo_link(self, web_element_practice_page, sidebar_practice_page):
+        expected_url = "https://www.lenovo.com/"
+
+        (web_element_practice_page
+         .open_practice_page())
+
+        (sidebar_practice_page
+         .click_lenovo_link()
+         .accept_lenovo_cookies()
+         .should_have_partial_url(expected_url)
+         .assert_lenovo_logo_visible())
+
+    @pytest.mark.ui
+    @allure.title("Переход на страницу 400 и проверка URL и текста")
+    def test_error_400_page(self, web_element_practice_page, sidebar_practice_page):
+        expected_url = "deadlinkcity.com/error-page"
+
+        (web_element_practice_page
+         .open_practice_page())
+
+        (sidebar_practice_page
+         .click_error_400_link()
+         .should_have_partial_url(expected_url)
+         .assert_bad_request_text())
+
+    @pytest.mark.ui
+    @allure.title("Выставление на слайдере цены 200-200")
+    def test_set_slider_price_200_200(self, web_element_practice_page, sidebar_practice_page):
+        target_price = [200, 200]
+
+        (web_element_practice_page
+         .open_practice_page())
+
+        (sidebar_practice_page
+         .set_price_range_reliable(target_price)
+         .assert_price_range(target_price))
+
+    @pytest.mark.ui
+    @allure.title("Выставление цены на слайдере с помощью мыши")
+    def test_set_slider_price_with_mouse(self, web_element_practice_page, sidebar_practice_page):
+        target_price = [150, 250]
+
+        (web_element_practice_page
+         .open_practice_page())
+
+        (sidebar_practice_page
+         .set_price_with_mouse(target_price[0], target_price[1])
+         .assert_price_set_by_mouse(target_price))
