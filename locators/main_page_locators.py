@@ -12,3 +12,5 @@ class MainPageLocators:
 
     # Кнопка "ОК" принять cookies
     COOKIE_BUTTON = (By.XPATH, "//button[contains(@value,'cookie.confirm&agree')]")
+
+

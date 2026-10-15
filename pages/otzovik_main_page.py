@@ -53,3 +53,8 @@ class OtzovikMainPage(BasePage):
         self.click_by_script(OtzovikMainPageLocators.PROMOTION_TAB)
         return self
 
+    def open_prereview_form(self):
+        allure_and_logger("Нажатия на кнопку - Написать отзыв")
+        self.click(OtzovikMainPageLocators.WRITE_REVIEW_BUTTON)
+        return self
+
