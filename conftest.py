@@ -14,6 +14,8 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from playwright.sync_api import sync_playwright
 
+from pages.otzovik_review_page import OtzovikReviewPage
+
 # Сделано для локального запуска, иначе сохраняет allure-отчет не в том месте
 project_root = os.path.dirname(os.path.abspath(__file__))
 if project_root not in sys.path:
@@ -192,7 +194,7 @@ def main_page(driver):
     yield page
 
 @pytest.fixture(scope="function", autouse=False)
-def otzivik_main_page(driver):
+def otzovik_main_page(driver):
     page = OtzovikMainPage(driver)
     yield page
 
@@ -273,11 +275,16 @@ def sidebar_practice_page(page):
     return page
 
 @pytest.fixture(scope="function", autouse=False)
-def otzivik_promotion_page(driver):
+def otzovik_promotion_page(driver):
     page = OtzovikPromotionsPage(driver)
     yield page
 
 @pytest.fixture(scope="function", autouse=False)
-def otzivik_prereview_page(driver):
+def otzovik_prereview_page(driver):
     page = OtzovikPrereviwPage(driver)
+    yield page
+
+@pytest.fixture(scope="function", autouse=False)
+def otzovik_review_page(driver):
+    page = OtzovikReviewPage(driver)
     yield page

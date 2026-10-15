@@ -54,7 +54,7 @@ class OtzovikMainPage(BasePage):
         return self
 
     def open_prereview_form(self):
-        allure_and_logger("Проверка нажатия на кнопку Написать отзыв")
-        self.click(OtzovikMainPageLocators.REVIEW_BUTTON)
+        allure_and_logger("Нажатия на кнопку - Написать отзыв")
+        self.click(OtzovikMainPageLocators.WRITE_REVIEW_BUTTON)
         return self
 
