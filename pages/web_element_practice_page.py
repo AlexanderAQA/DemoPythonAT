@@ -3,6 +3,9 @@ from pages.playwright_base_page import PlaywrightBasePage
 from playwright.sync_api import expect
 from datetime import datetime
 
+from src.utils.logger import allure_and_logger
+
+
 class WebElementPracticePage(PlaywrightBasePage):
     WEB_ELEMENT_URL = 'https://testautomationpractice.blogspot.com/'
 
@@ -30,6 +33,8 @@ class WebElementPracticePage(PlaywrightBasePage):
     CALENDAR_PREV_MONTH = ".ui-datepicker-prev"
     CALENDAR_MONTH_TITLE = ".ui-datepicker-month"
     CALENDAR_YEAR_TITLE = ".ui-datepicker-year"
+    SINGLE_FILE_INPUT_BUTTON = "#singleFileInput"
+    UPLOAD_SINGLE_FILE_BUTTON = "button:has-text('Upload Single File')"
 
     @staticmethod
     def get_gender_button(gender: str):
@@ -252,4 +257,16 @@ class WebElementPracticePage(PlaywrightBasePage):
 
     def assert_check_end_date(self, date):
         self.asserts.assert_is_equal(date, self.get_field_value(self.DATE_PICKER_3_END))
+        return self
+
+    def select_file_to_upload(self, file_path):
+        allure_and_logger("Выбор файла для загрузки")
+        file_input = self.page.locator(self.SINGLE_FILE_INPUT_BUTTON)
+        file_input.set_input_files(str(file_path))
+        return self
+
+    def assert_file_selected(self, expected_file):
+        allure_and_logger("Проверка выбранного файла")
+        file_input = self.page.locator(self.SINGLE_FILE_INPUT_BUTTON)
+        expect(file_input).to_have_value(fr"C:\fakepath\{expected_file}")
         return self
