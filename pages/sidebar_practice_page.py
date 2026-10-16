@@ -32,8 +32,6 @@ class SideBarPracticePage(PlaywrightBasePage):
     POSTS_ATOM_LINK = "a.feed-link"
     SELECT_ITEM_DROPDOWN = "#comboBox"
     LENOVO_LINK = "a#lenovo"
-    LENOVO_ACCEPT_COOKIES_BUTTON = "#_evidon-banner-acceptbutton"
-    LENOVO_LOGO = "img[alt='Lenovo']"
     ERROR_400_LINK = "a:has-text('Errorcode 400')"
 
 
@@ -239,29 +237,6 @@ class SideBarPracticePage(PlaywrightBasePage):
         self.asserts.assert_is_equal("Dropped!", target_text)
         return self
 
-    def set_price_range(self, target_price_val):
-        allure_and_logger(f"Выставляет диапазон цен")
-        min_val = target_price_val[0]
-        max_val = target_price_val[1]
-        slider = self.page.locator(self.SLIDER_RANGE)
-        handles = slider.locator(self.SLIDER_HANDLES)
-        left = handles.nth(0)
-        right = handles.nth(1)
-
-        left.focus()
-        left.press("Home")
-        for _ in range(min_val):
-            left.press("ArrowRight")
-
-        right.focus()
-        right.press("Home")
-
-        steps = max_val - min_val
-        for _ in range(steps):
-            right.press("ArrowRight")
-
-        return self
-
     def assert_price_range(self, target_price_range):
         allure_and_logger(f"Проверяет, что цена соответствует: '{target_price_range}'")
         expected_text = f"${target_price_range[0]} - ${target_price_range[1]}"
@@ -337,28 +312,42 @@ class SideBarPracticePage(PlaywrightBasePage):
         self.page.wait_for_load_state("domcontentloaded")
         return self
 
-    def accept_lenovo_cookies(self):
-        allure_and_logger("Проверяет и принимает куки на сайте Lenovo если баннер есть")
-        accept_cookie_btn = self.page.locator(self.LENOVO_ACCEPT_COOKIES_BUTTON)
-        if accept_cookie_btn.is_visible():
-            accept_cookie_btn.click()
-        return self
-
-    def assert_lenovo_logo_visible(self):
-        allure_and_logger("Проверяет видимость логотипа Lenovo")
-        expect(self.page.locator(self.LENOVO_LOGO)).to_be_visible()
-        return self
-
     def click_error_400_link(self):
         allure_and_logger("Кликает по ссылке Error 400")
         self.page.locator(self.ERROR_400_LINK).click()
         self.page.wait_for_load_state("domcontentloaded")
         return self
 
-    def assert_bad_request_text(self):
-        allure_and_logger("Проверяет текст 'Bad Request' на странице")
-        expect(self.page.locator("body")).to_contain_text("Bad Request")
+    def assert_errorcode_400(self):
+        responses = []
+        self.page.on(
+            "response",
+            lambda response: responses.append({
+                "url": response.url,
+                "status": response.status,
+            })
+        )
+        self.click_error_400_link()
+        for response in responses:
+            allure_and_logger(response["status"], response["url"])
+        self.asserts.assert_is_equal(
+            "400",
+            str(response["status"])
+        )
         return self
+
+    def set_handles_default(self):
+        allure_and_logger("Выставляет ползунки ценового диапазона в крайние положения")
+        slider = self.page.locator(self.SLIDER_RANGE)
+        handles = slider.locator(self.SLIDER_HANDLES)
+        left = handles.nth(0)
+        right = handles.nth(1)
+
+        left.focus()
+        left.press("Home")
+        right.focus()
+        right.press("End")
+        return slider, left, right
 
     def set_price_range_reliable(self, target_price_val):
         allure_and_logger("Выставляет диапазон цен, двигая оба ползунка, сначала разводит их в крайние положения,"
@@ -367,16 +356,7 @@ class SideBarPracticePage(PlaywrightBasePage):
         max_val = target_price_val[1]
         max_limit = 500
 
-        slider = self.page.locator(self.SLIDER_RANGE)
-        handles = slider.locator(self.SLIDER_HANDLES)
-        left = handles.nth(0)
-        right = handles.nth(1)
-
-        left.focus()
-        left.press("Home")
-
-        right.focus()
-        right.press("End")
+        slider, left, right = self.set_handles_default()
 
         left.focus()
         for _ in range(min_val):
@@ -388,18 +368,12 @@ class SideBarPracticePage(PlaywrightBasePage):
             right.press("ArrowLeft")
         return self
 
-    def set_price_with_mouse(self, min_val: int, max_val: int):
-        allure_and_logger(f"Симулирует движение мыши для установки цены: {min_val} - {max_val}")
+    def set_price_with_mouse(self, val):
+        allure_and_logger(f"Симулирует движение мыши для установки цены: {val}")
 
-        slider = self.page.locator(self.SLIDER_RANGE)
-        handles = slider.locator(self.SLIDER_HANDLES)
-        left = handles.nth(0)
-        right = handles.nth(1)
-
-        left.focus()
-        left.press("Home")
-        right.focus()
-        right.press("End")
+        slider, left, right = self.set_handles_default()
+        min_val = val[0]
+        max_val = val[1]
 
         slider_box = slider.bounding_box()
         width = slider_box['width']

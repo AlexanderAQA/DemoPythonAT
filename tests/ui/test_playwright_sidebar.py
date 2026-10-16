@@ -171,7 +171,7 @@ class TestSidebarPage:
         (web_element_practice_page
          .open_practice_page())
         (sidebar_practice_page
-         .set_price_range(target_price_range)
+         .set_price_range_reliable(target_price_range)
          .assert_price_range(target_price_range))
 
     @pytest.mark.ui
@@ -183,7 +183,7 @@ class TestSidebarPage:
          .open_practice_page())
 
         (sidebar_practice_page
-         .set_price_range(expected_price)
+         .set_price_range_reliable(expected_price)
          .assert_price_range(expected_price))
 
     @pytest.mark.ui
@@ -226,17 +226,20 @@ class TestSidebarPage:
 
     @pytest.mark.ui
     @allure.title("Переход по ссылке Lenovo и проверка URL и заголовка")
-    def test_lenovo_link(self, web_element_practice_page, sidebar_practice_page):
+    def test_lenovo_link(self, web_element_practice_page, sidebar_practice_page, lenovo_page):
         expected_url = "https://www.lenovo.com/"
+        expected_lenovo = "Lenovo"
 
         (web_element_practice_page
          .open_practice_page())
 
         (sidebar_practice_page
-         .click_lenovo_link()
+         .click_lenovo_link())
+
+        (lenovo_page
          .accept_lenovo_cookies()
          .should_have_partial_url(expected_url)
-         .assert_lenovo_logo_visible())
+         .should_have_match_title(expected_lenovo))
 
     @pytest.mark.ui
     @allure.title("Переход на страницу 400 и проверка URL и текста")
@@ -247,14 +250,13 @@ class TestSidebarPage:
          .open_practice_page())
 
         (sidebar_practice_page
-         .click_error_400_link()
-         .should_have_partial_url(expected_url)
-         .assert_bad_request_text())
+         .assert_errorcode_400()
+         .should_have_partial_url(expected_url))
 
     @pytest.mark.ui
     @allure.title("Выставление на слайдере цены 200-200")
     def test_set_slider_price_200_200(self, web_element_practice_page, sidebar_practice_page):
-        target_price = [200, 200]
+        target_price = (200, 200)
 
         (web_element_practice_page
          .open_practice_page())
@@ -266,11 +268,11 @@ class TestSidebarPage:
     @pytest.mark.ui
     @allure.title("Выставление цены на слайдере с помощью мыши")
     def test_set_slider_price_with_mouse(self, web_element_practice_page, sidebar_practice_page):
-        target_price = [150, 250]
+        target_price = (150, 250)
 
         (web_element_practice_page
          .open_practice_page())
 
         (sidebar_practice_page
-         .set_price_with_mouse(target_price[0], target_price[1])
+         .set_price_with_mouse(target_price)
          .assert_price_set_by_mouse(target_price))

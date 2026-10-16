@@ -47,6 +47,13 @@ class PlaywrightBasePage:
         )
         return self
 
+    def should_have_match_title(self, expected_title):
+        allure_and_logger(f"Проверяем, что в заголовке есть '{expected_title}'")
+        expect(self.page).to_have_title(
+            re.compile(expected_title)
+        )
+        return self
+
     def should_have_partial_url(self, path_url):
         allure_and_logger(f"Проверяем что в url содержится '{path_url}'")
         expect(self.page).to_have_url(
