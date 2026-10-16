@@ -39,6 +39,7 @@ from pages.otzovik_registration_page import OtzovikRegistrationPage
 from pages.otzovik_authorization_page import OtzovikAuthorizationPage
 from pages.playwright_practice_page import PlaywrightPracticePage
 from pages.sidebar_practice_page import SideBarPracticePage
+from pages.lenovo_page import LenovoPage
 
 logger = logging.getLogger(__name__)
 
@@ -276,3 +277,7 @@ def otzivik_promotion_page(driver):
     page = OtzovikPromotionsPage(driver)
     yield page
 
+@pytest.fixture
+def lenovo_page(page):
+    page = LenovoPage(page)
+    return page
